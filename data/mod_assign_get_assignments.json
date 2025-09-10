@@ -1,0 +1,1051 @@
+{
+    "courses": [
+        {
+            "id": 9268,
+            "fullname": "CSCI*434*D1 Digital Forensics - 25/FA",
+            "shortname": "CSCI*434*D1_25/FA",
+            "timemodified": 1755558952,
+            "assignments": []
+        },
+        {
+            "id": 9267,
+            "fullname": "CSCI*335*D1 Project Management - 25/FA",
+            "shortname": "CSCI*335*D1_25/FA",
+            "timemodified": 1755021152,
+            "assignments": [
+                {
+                    "id": 60890,
+                    "cmid": 494556,
+                    "course": 9267,
+                    "name": "Exercise - Global Green Books Mini Case 1",
+                    "nosubmissions": 0,
+                    "submissiondrafts": 0,
+                    "sendnotifications": 0,
+                    "sendlatenotifications": 0,
+                    "sendstudentnotifications": 1,
+                    "duedate": 1756522800,
+                    "allowsubmissionsfromdate": 0,
+                    "grade": 4,
+                    "timemodified": 1754697769,
+                    "completionsubmit": 1,
+                    "cutoffdate": 0,
+                    "gradingduedate": 0,
+                    "teamsubmission": 0,
+                    "requireallteammemberssubmit": 0,
+                    "teamsubmissiongroupingid": 0,
+                    "blindmarking": 0,
+                    "hidegrader": 0,
+                    "revealidentities": 0,
+                    "attemptreopenmethod": "none",
+                    "maxattempts": -1,
+                    "markingworkflow": 0,
+                    "markingallocation": 0,
+                    "requiresubmissionstatement": 0,
+                    "preventsubmissionnotingroup": 0,
+                    "configs": [
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimit",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimitenabled",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "commentinline",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "editpdf",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "file",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        }
+                    ],
+                    "intro": "<p dir=\"ltr\" style=\"text-align: left;\"></p><div>Read the&nbsp;<em>Mini Case 1: Project Management at Global Green Books Publishing</em>&nbsp;at&nbsp;<a href=\"https://moodle24-26.coastal.edu/mod/resource/view.php?id=543937\" target=\"_blank\">https://moodle24-26.coastal.edu/mod/resource/view.php?id=543937</a>&nbsp;Answer the five questions at the end of the case (a-e).</div><br><div>Submit your answers as text entered directly into the assignment submission screen. I encourage you to work offline, creating and saving your work in a separate offline document, and then copying and pasting the entire final version into the assignment submission screen. Before submitting, be sure that the pasting did not introduce unwanted formatting or other input errors.</div><br><div>No late submissions will be graded.</div><br><br><p></p>",
+                    "introformat": 1,
+                    "introfiles": [],
+                    "introattachments": [
+                        {
+                            "filename": "mini-case-1-global-green-books.pdf",
+                            "filepath": "/",
+                            "filesize": 137188,
+                            "fileurl": "https://moodle24-26.coastal.edu/webservice/pluginfile.php/1293244/mod_assign/introattachment/0/mini-case-1-global-green-books.pdf",
+                            "timemodified": 1754697769,
+                            "mimetype": "application/pdf",
+                            "isexternalfile": true,
+                            "repositorytype": "local"
+                        }
+                    ],
+                    "activity": "<p dir=\"ltr\" style=\"text-align:left;\"></p><p><a name=\"docs-internal-guid-a370a80a-80df-7e7a-e30e-35e3925a0d96\"></a><a name=\"intro\"></a>\r\n</p><div><div></div></div><div>Read the <em>Mini Case 1: Project Management at Global Green Books Publishing</em> at <a href=\"https://moodle24-26.coastal.edu/mod/resource/view.php?id=543937\" target=\"_blank\" rel=\"noreferrer noopener\">https://moodle24-26.coastal.edu/mod/resource/view.php?id=543937</a> Answer the five questions at the end of the case (a-e).</div><br /><div>Submit your answers as text entered directly into the assignment submission screen. I encourage you to work offline, creating and saving your work in a separate offline document, and then copying and pasting the entire final version into the assignment submission screen. Before submitting, be sure that the pasting did not introduce unwanted formatting or other input errors.</div><br /><div>No late submissions will be graded.</div><br /><br /><p></p>",
+                    "activityformat": 1,
+                    "activityattachments": [],
+                    "timelimit": 0,
+                    "submissionattachments": 0
+                },
+                {
+                    "id": 60891,
+                    "cmid": 494557,
+                    "course": 9267,
+                    "name": "Discussion - Personality Traits",
+                    "nosubmissions": 0,
+                    "submissiondrafts": 0,
+                    "sendnotifications": 0,
+                    "sendlatenotifications": 0,
+                    "sendstudentnotifications": 1,
+                    "duedate": 1757127600,
+                    "allowsubmissionsfromdate": 0,
+                    "grade": 3,
+                    "timemodified": 1756597705,
+                    "completionsubmit": 1,
+                    "cutoffdate": 0,
+                    "gradingduedate": 0,
+                    "teamsubmission": 0,
+                    "requireallteammemberssubmit": 0,
+                    "teamsubmissiongroupingid": 0,
+                    "blindmarking": 0,
+                    "hidegrader": 0,
+                    "revealidentities": 0,
+                    "attemptreopenmethod": "none",
+                    "maxattempts": -1,
+                    "markingworkflow": 0,
+                    "markingallocation": 0,
+                    "requiresubmissionstatement": 0,
+                    "preventsubmissionnotingroup": 0,
+                    "configs": [
+                        {
+                            "plugin": "file",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "file",
+                            "subtype": "assignsubmission",
+                            "name": "maxfilesubmissions",
+                            "value": "20"
+                        },
+                        {
+                            "plugin": "file",
+                            "subtype": "assignsubmission",
+                            "name": "maxsubmissionsizebytes",
+                            "value": "5368709120"
+                        },
+                        {
+                            "plugin": "file",
+                            "subtype": "assignsubmission",
+                            "name": "filetypeslist",
+                            "value": ""
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "commentinline",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "editpdf",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "file",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        }
+                    ],
+                    "intro": "<p dir=\"ltr\" style=\"text-align: left;\"></p><p></p><p>Complete\r\nthe personality test at&nbsp;<a href=\"https://www.16personalities.com/\">https://www.16personalities.com/</a>&nbsp;.</p>\r\n\r\n<p>Write\r\na paper that addresses the following two main topics:</p>\r\n\r\n<p><!--[if !supportLists]-->1.&nbsp;&nbsp;&nbsp;&nbsp;\r\n<!--[endif]-->How might the personality traits associated with the resulting\r\ntype influence both how you manage a project team and how you might prefer\r\nbeing managed as a team member.</p>\r\n\r\n<p><!--[if !supportLists]-->2.&nbsp;&nbsp;&nbsp;&nbsp;\r\n<!--[endif]-->Identify a personality type that is different from your\r\ntest result. Do you recognize anyone in your life, past or present, who models\r\nthis personality type’s traits? What issues or conflicts might be predicted if\r\nyou were managing a team member with this personality type?</p>\r\n\r\n<p>The\r\nlength of the response should be detailed and robust enough for a reader to\r\nunderstand what the questions were based solely on your answers. Include at\r\nleast one 2 cited references, including one to the textbook assigned for this\r\nweek.</p>\r\n\r\n<p>Your\r\nfinal submission should be a PDF document. No late submissions will be graded.</p><br><p></p>",
+                    "introformat": 1,
+                    "introfiles": [],
+                    "introattachments": [],
+                    "activity": "<p dir=\"ltr\" style=\"text-align:left;\"></p><p></p><p>Complete\r\nthe personality test at <a href=\"https://www.16personalities.com/\">https://www.16personalities.com/</a> .</p>\r\n\r\n<p>Write\r\na paper that addresses the following two main topics:</p>\r\n\r\n<p>1.    \r\nHow might the personality traits associated with the resulting\r\ntype influence both how you manage a project team and how you might prefer\r\nbeing managed as a team member.</p>\r\n\r\n<p>2.    \r\nIdentify a personality type that is different from your\r\ntest result. Do you recognize anyone in your life, past or present, who models\r\nthis personality type’s traits? What issues or conflicts might be predicted if\r\nyou were managing a team member with this personality type?</p>\r\n\r\n<p>The\r\nlength of the response should be detailed and robust enough for a reader to\r\nunderstand what the questions were based solely on your answers. Include at\r\nleast one 2 cited references, including one to the textbook assigned for this\r\nweek.</p>\r\n\r\n<p>Your\r\nfinal submission should be a PDF document. No late submissions will be graded.</p><br /><p></p>",
+                    "activityformat": 1,
+                    "activityattachments": [],
+                    "timelimit": 0,
+                    "submissionattachments": 0
+                },
+                {
+                    "id": 60897,
+                    "cmid": 494681,
+                    "course": 9267,
+                    "name": "Exercise - Personality Types",
+                    "nosubmissions": 0,
+                    "submissiondrafts": 0,
+                    "sendnotifications": 0,
+                    "sendlatenotifications": 0,
+                    "sendstudentnotifications": 1,
+                    "duedate": 1757127600,
+                    "allowsubmissionsfromdate": 0,
+                    "grade": 4,
+                    "timemodified": 1756598547,
+                    "completionsubmit": 1,
+                    "cutoffdate": 0,
+                    "gradingduedate": 0,
+                    "teamsubmission": 0,
+                    "requireallteammemberssubmit": 0,
+                    "teamsubmissiongroupingid": 0,
+                    "blindmarking": 0,
+                    "hidegrader": 0,
+                    "revealidentities": 0,
+                    "attemptreopenmethod": "none",
+                    "maxattempts": -1,
+                    "markingworkflow": 0,
+                    "markingallocation": 0,
+                    "requiresubmissionstatement": 0,
+                    "preventsubmissionnotingroup": 0,
+                    "configs": [
+                        {
+                            "plugin": "file",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "file",
+                            "subtype": "assignsubmission",
+                            "name": "maxfilesubmissions",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "file",
+                            "subtype": "assignsubmission",
+                            "name": "maxsubmissionsizebytes",
+                            "value": "5368709120"
+                        },
+                        {
+                            "plugin": "file",
+                            "subtype": "assignsubmission",
+                            "name": "filetypeslist",
+                            "value": "document,.pdf"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "commentinline",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "editpdf",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "file",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        }
+                    ],
+                    "intro": "<p dir=\"ltr\" style=\"\"></p><p>Imagine yourself as part of a project team that has just\r\nrecently formed. You have only met your teammates several times and are slowly\r\ngetting to know each other.</p>\r\n\r\n<p>You realize that everyone seems to have very different\r\npersonalities. You suggest that everyone complete an MBTI-based assessment like\r\n16personalities or the Jung Typology Test at <a href=\"http://www.humanmetrics.com\">www.humanmetrics.com</a>. You learn that you\r\nare an ENTJ, Bobbi is an INTJ, Anil is an ISFP, Santiago is an ESTJ, and Aditya\r\nan ISFJ. Based on the associated traits for each of these types, what conflicts\r\nmight you predict? What suggestions might you propose to avoid or reduce those\r\nconflicts?</p>\r\n\r\n<p>Your final submission\r\nshould be a PDF document. No late submissions will be graded.</p><span style=\"font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, &quot;Liberation Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\"></span><p></p><p></p><p></p>",
+                    "introformat": 1,
+                    "introfiles": [],
+                    "introattachments": [],
+                    "activity": "<p dir=\"ltr\" style=\"text-align:left;\"></p><p></p><p>Imagine yourself as part of a project team that has just\r\nrecently formed. You have only met your teammates several times and are slowly\r\ngetting to know each other.</p>\r\n\r\n<p>You realize that everyone seems to have very different\r\npersonalities. You suggest that everyone complete an MBTI-based assessment like\r\n16personalities or the Juny Typology Test at <a href=\"http://www.humanmetrics.com\">www.humanmetrics.com</a>. You learn that you\r\nare an ENTJ, Bobbi is an INTJ, Anil is an ISFP, Santiago is an ESTJ, and Aditya\r\nan ISFJ. Based on the associated traits for each of these types, what conflicts\r\nmight you predict? What suggestions might you propose to avoid or reduce those\r\nconflicts?</p>\r\n\r\n<p>Your final submission\r\nshould be a PDF document. No late submissions will be graded.</p><br /><p></p>",
+                    "activityformat": 1,
+                    "activityattachments": [],
+                    "timelimit": 0,
+                    "submissionattachments": 0
+                },
+                {
+                    "id": 60981,
+                    "cmid": 495675,
+                    "course": 9267,
+                    "name": "Discussion - PMF Chapter 1",
+                    "nosubmissions": 0,
+                    "submissiondrafts": 0,
+                    "sendnotifications": 0,
+                    "sendlatenotifications": 0,
+                    "sendstudentnotifications": 1,
+                    "duedate": 1756522800,
+                    "allowsubmissionsfromdate": 0,
+                    "grade": 3,
+                    "timemodified": 1754698127,
+                    "completionsubmit": 1,
+                    "cutoffdate": 0,
+                    "gradingduedate": 0,
+                    "teamsubmission": 0,
+                    "requireallteammemberssubmit": 0,
+                    "teamsubmissiongroupingid": 0,
+                    "blindmarking": 0,
+                    "hidegrader": 0,
+                    "revealidentities": 0,
+                    "attemptreopenmethod": "none",
+                    "maxattempts": -1,
+                    "markingworkflow": 0,
+                    "markingallocation": 0,
+                    "requiresubmissionstatement": 0,
+                    "preventsubmissionnotingroup": 0,
+                    "configs": [
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimit",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimitenabled",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "commentinline",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "editpdf",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "file",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        }
+                    ],
+                    "intro": "<p dir=\"ltr\" style=\"text-align: left;\"></p><p>Answer the following questions concisely and thoroughly to demonstrate your understanding of the assigned&nbsp;<em>Project Management Fundamentals</em>&nbsp;readings.</p><p></p><ol><li><p>What are the six characteristics that make some endeavor a project?</p></li><li><p>Is responding to your email each day a project? Why or why not?</p></li><li><p>What happened in the world of software development that made traditional waterfall project management technique less effective?</p></li><li><p>Describe agile and how it came about.</p></li><li><p>What are the three main constraints on a project?</p></li><li><p>Describe the 5 categories of processes in the project life cycle. Give an example of a project that you might undertake, such as a software development project for a capstone course. How would you relate this project to the 5 process stages.</p></li><li><p>What is the PMI? What is the difference between the certifications of CAPM and PMP?</p></li><li><p>What is difficult about the role of project manager?</p></li><li><p>What are some skills that a project manager should have? Give an example of how a project manager might use one of the skills you mentioned.</p></li><li><p>Briefly describe Theory X and Theory Y. Have you had any personal experience related to these concepts?</p></li></ol><p></p><div><div>Submit your answers as text entered directly into the assignment submission screen. I encourage you to work offline, creating and saving your work in a separate offline document, and then copying and pasting the entire final version into the assignment submission screen. Before submitting, be sure that the pasting did not introduce unwanted formatting or other input errors.</div><br><div>No late submissions will be graded.</div></div><br><br><p></p>",
+                    "introformat": 1,
+                    "introfiles": [],
+                    "introattachments": [
+                        {
+                            "filename": "PMF_Textbook.pdf",
+                            "filepath": "/",
+                            "filesize": 29387149,
+                            "fileurl": "https://moodle24-26.coastal.edu/webservice/pluginfile.php/1294852/mod_assign/introattachment/0/PMF_Textbook.pdf",
+                            "timemodified": 1754697824,
+                            "mimetype": "application/pdf",
+                            "isexternalfile": true,
+                            "repositorytype": "local"
+                        }
+                    ],
+                    "activity": "<p dir=\"ltr\" style=\"text-align:left;\"></p><p>Answer the following questions concisely and thoroughly to demonstrate your understanding of the assigned <em>Project Management Fundamentals</em> readings.</p><p></p><ol><li><p>What are the six characteristics that make some endeavor a project?</p></li><li><p>Is responding to your email each day a project? Why or why not?</p></li><li><p>What happened in the world of software development that made traditional waterfall project management technique less effective?</p></li><li><p>Describe agile and how it came about.</p></li><li><p>What are the three main constraints on a project?</p></li><li><p>Describe the 5 categories of processes in the project life cycle. Give an example of a project that you might undertake, such as a software development project for a capstone course. How would you relate this project to the 5 process stages.</p></li><li><p>What is the PMI? What is the difference between the certifications of CAPM and PMP?</p></li><li><p>What is difficult about the role of project manager?</p></li><li><p>What are some skills that a project manager should have? Give an example of how a project manager might use one of the skills you mentioned.</p></li><li><p>Briefly describe Theory X and Theory Y. Have you had any personal experience related to these concepts?</p></li></ol><p></p><div><div>Submit your answers as text entered directly into the assignment submission screen. I encourage you to work offline, creating and saving your work in a separate offline document, and then copying and pasting the entire final version into the assignment submission screen. Before submitting, be sure that the pasting did not introduce unwanted formatting or other input errors.</div><br /><div>No late submissions will be graded.</div></div><br /><p></p><br /><p></p>",
+                    "activityformat": 1,
+                    "activityattachments": [],
+                    "timelimit": 0,
+                    "submissionattachments": 0
+                }
+            ]
+        },
+        {
+            "id": 9603,
+            "fullname": "CSCI*490*01 Software Engineering II - 25/FA",
+            "shortname": "CSCI*490*01_25/FA",
+            "timemodified": 1709755033,
+            "assignments": []
+        },
+        {
+            "id": 8186,
+            "fullname": "CSCI*375*D1 Intro to Multimedia Apps - 25/FA",
+            "shortname": "CSCI*375*D1_25/FA",
+            "timemodified": 1753113491,
+            "assignments": [
+                {
+                    "id": 54108,
+                    "cmid": 435513,
+                    "course": 8186,
+                    "name": "Module 1",
+                    "nosubmissions": 0,
+                    "submissiondrafts": 0,
+                    "sendnotifications": 0,
+                    "sendlatenotifications": 0,
+                    "sendstudentnotifications": 1,
+                    "duedate": 1757390340,
+                    "allowsubmissionsfromdate": 0,
+                    "grade": 100,
+                    "timemodified": 1746388280,
+                    "completionsubmit": 1,
+                    "cutoffdate": 0,
+                    "gradingduedate": 0,
+                    "teamsubmission": 0,
+                    "requireallteammemberssubmit": 0,
+                    "teamsubmissiongroupingid": 0,
+                    "blindmarking": 0,
+                    "hidegrader": 0,
+                    "revealidentities": 0,
+                    "attemptreopenmethod": "none",
+                    "maxattempts": -1,
+                    "markingworkflow": 0,
+                    "markingallocation": 0,
+                    "requiresubmissionstatement": 0,
+                    "preventsubmissionnotingroup": 0,
+                    "configs": [
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimitenabled",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimit",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "commentinline",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "editpdf",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        }
+                    ],
+                    "intro": "<div>\r\n\r\n    <!-- begin block -->\r\n\r\n    <div style=\"padding: 5px;\">\r\n        <div onmouseover=\"this.style.boxShadow = '10px 2px 20px #adebeb'\" onmouseout=\"this.style.boxShadow = 'none'\" style=\"padding: 5px; box-shadow: none; background: linear-gradient(rgb(221, 221, 221) 0%, rgb(255, 255, 255) 50%, rgb(221, 221, 221) 100%), linear-gradient(rgba(0, 0, 0, 0.02) 50%, rgba(255, 255, 255, 0.02) 61%, rgba(0, 0, 0, 0.02) 73%), linear-gradient(33deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%); background-blend-mode: normal, color-burn; border: 2px solid rgb(0, 102, 102); border-radius: 10px; display: table;\">\r\n            <p><span style=\"font-size: 22.5px;\"><strong></strong></span></p>\r\n            <p data-start=\"278\" data-end=\"336\"></p><span><p><b></b></p><h2 data-start=\"1458\" data-end=\"1476\"><span style=\"background-color: initial; font-size: 0.9375rem; font-weight: 400; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, &quot;Liberation Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\"><h2 data-start=\"649\" data-end=\"704\">Multimedia Foundations Lab<br></h2><p><br></p><h2 data-start=\"649\" data-end=\"704\">Task 1: Video Compression &amp; Conversion (Chapter 1)</h2>\r\n<ol data-start=\"705\" data-end=\"1004\">\r\n<li data-start=\"705\" data-end=\"767\">\r\n<p data-start=\"708\" data-end=\"767\"><strong data-start=\"708\" data-end=\"729\">Install HandBrake</strong> and open the provided <code data-start=\"752\" data-end=\"764\">sample.mov</code>.</p>\r\n</li>\r\n<li data-start=\"768\" data-end=\"954\">\r\n<p data-start=\"771\" data-end=\"817\"><strong data-start=\"771\" data-end=\"790\">Output two MP4s</strong> using the H.264 encoder:</p>\r\n<ul data-start=\"821\" data-end=\"954\">\r\n<li data-start=\"821\" data-end=\"888\">\r\n<p data-start=\"823\" data-end=\"888\"><strong data-start=\"823\" data-end=\"842\">video_1080p.mp4</strong>: 1080p resolution, RF=20 (constant quality)</p>\r\n</li>\r\n<li data-start=\"892\" data-end=\"954\">\r\n<p data-start=\"894\" data-end=\"954\"><strong data-start=\"894\" data-end=\"912\">video_720p.mp4</strong>: 720p resolution, RF=28 (lower bitrate)</p>\r\n</li>\r\n</ul>\r\n</li>\r\n<li data-start=\"955\" data-end=\"1004\">\r\n<p data-start=\"958\" data-end=\"1004\"><strong data-start=\"958\" data-end=\"966\">Save</strong> both files into <code data-start=\"983\" data-end=\"1001\">videos/</code>.</p>\r\n</li>\r\n</ol>\r\n<p data-start=\"1006\" data-end=\"1099\"><em data-start=\"1006\" data-end=\"1099\">No written explanation needed; differences will be clear by file size and playback quality.</em></p>\r\n<hr data-start=\"1101\" data-end=\"1104\">\r\n<h2 data-start=\"1106\" data-end=\"1155\">Task 2: Text Layout &amp; Typography (Chapter 2)</h2>\r\n<ol data-start=\"1156\" data-end=\"1607\">\r\n<li data-start=\"1156\" data-end=\"1227\">\r\n<p data-start=\"1159\" data-end=\"1227\"><strong data-start=\"1159\" data-end=\"1178\">Install Scribus</strong> and create a new US-letter, one-page document.</p>\r\n</li>\r\n<li data-start=\"1228\" data-end=\"1295\">\r\n<p data-start=\"1231\" data-end=\"1295\"><strong data-start=\"1231\" data-end=\"1241\">Insert</strong> a 300-word paragraph describing your goals or a paragraph from the text book into a text frame.</p>\r\n</li>\r\n<li data-start=\"1296\" data-end=\"1488\">\r\n<p data-start=\"1299\" data-end=\"1338\"><strong data-start=\"1299\" data-end=\"1309\">Divide</strong> the page into two columns:</p>\r\n<ul data-start=\"1342\" data-end=\"1488\">\r\n<li data-start=\"1342\" data-end=\"1410\">\r\n<p data-start=\"1344\" data-end=\"1410\"><strong data-start=\"1344\" data-end=\"1356\">Column 1</strong>: Serif font (e.g. Georgia), 12 pt, 1.5 line-spacing</p>\r\n</li>\r\n<li data-start=\"1414\" data-end=\"1488\">\r\n<p data-start=\"1416\" data-end=\"1488\"><strong data-start=\"1416\" data-end=\"1428\">Column 2</strong>: Sans-serif font (e.g. Arial), 10 pt, single line-spacing</p>\r\n</li>\r\n</ul>\r\n</li>\r\n<li data-start=\"1489\" data-end=\"1537\">\r\n<p data-start=\"1492\" data-end=\"1537\"><strong data-start=\"1492\" data-end=\"1499\">Set</strong> uniform 1″ margins around the page.</p>\r\n</li>\r\n<li data-start=\"1538\" data-end=\"1607\">\r\n<p data-start=\"1541\" data-end=\"1607\"><strong data-start=\"1541\" data-end=\"1551\">Export</strong> as PDF named <code data-start=\"1565\" data-end=\"1582\">text_layout.pdf</code> into <code data-start=\"1588\" data-end=\"1604\">text/</code>.</p>\r\n</li>\r\n</ol>\r\n<p data-start=\"1609\" data-end=\"1696\"></p>\r\n<hr data-start=\"1698\" data-end=\"1701\">\r\n<h2 data-start=\"1703\" data-end=\"1746\">Task 3: Image Manipulation (Chapter 3)</h2>\r\n<ol data-start=\"1747\" data-end=\"2119\">\r\n<li data-start=\"1747\" data-end=\"1804\">\r\n<p data-start=\"1750\" data-end=\"1804\"><strong data-start=\"1750\" data-end=\"1766\">Install GIMP</strong> and open the provided <code data-start=\"1789\" data-end=\"1801\">sample.png</code>.</p>\r\n</li>\r\n<li data-start=\"1805\" data-end=\"1949\">\r\n<p data-start=\"1808\" data-end=\"1833\"><strong data-start=\"1808\" data-end=\"1830\">Create a thumbnail</strong>:</p>\r\n<ul data-start=\"1837\" data-end=\"1949\">\r\n<li data-start=\"1837\" data-end=\"1874\">\r\n<p data-start=\"1839\" data-end=\"1874\">Scale the image to <strong data-start=\"1858\" data-end=\"1872\">150×150 px</strong></p>\r\n</li>\r\n<li data-start=\"1878\" data-end=\"1949\">\r\n<p data-start=\"1880\" data-end=\"1949\">Export as JPEG <code data-start=\"1895\" data-end=\"1906\">thumb.jpg</code> with quality 80% into <code data-start=\"1929\" data-end=\"1947\">images/</code></p>\r\n</li>\r\n</ul>\r\n</li>\r\n<li data-start=\"1950\" data-end=\"2119\">\r\n<p data-start=\"1953\" data-end=\"1986\"><strong data-start=\"1953\" data-end=\"1983\">Create a grayscale version</strong>:</p>\r\n<ul data-start=\"1990\" data-end=\"2119\">\r\n<li data-start=\"1990\" data-end=\"2023\">\r\n<p data-start=\"1992\" data-end=\"2023\">Duplicate your original layer</p>\r\n</li>\r\n<li data-start=\"2027\" data-end=\"2062\">\r\n<p data-start=\"2029\" data-end=\"2062\">Convert that layer to grayscale</p>\r\n</li>\r\n<li data-start=\"2066\" data-end=\"2119\">\r\n<p data-start=\"2068\" data-end=\"2119\">Export as JPEG <code data-start=\"2083\" data-end=\"2093\">gray.jpg</code> into <code data-start=\"2099\" data-end=\"2117\">images/</code></p>\r\n</li>\r\n</ul>\r\n</li>\r\n</ol>\r\n<p data-start=\"2121\" data-end=\"2185\"><em data-start=\"2121\" data-end=\"2185\">No annotations or write-ups needed—just the two output images.</em></p>\r\n<hr data-start=\"2187\" data-end=\"2190\">\r\n<h2 data-start=\"2192\" data-end=\"2220\">Submission Instructions</h2>\r\n<ol data-start=\"2221\" data-end=\"2842\">\r\n<li data-start=\"2221\" data-end=\"2329\">\r\n<p data-start=\"2224\" data-end=\"2329\"><strong data-start=\"2224\" data-end=\"2234\">Verify</strong> each output file opens/plays correctly in its native viewer (VLC, PDF reader, image viewer).</p>\r\n</li>\r\n<li data-start=\"2330\" data-end=\"2444\">\r\n<p data-start=\"2333\" data-end=\"2444\"><strong data-start=\"2333\" data-end=\"2343\">Upload</strong> the entire <code data-start=\"2355\" data-end=\"2371\">Module1/</code> directory via FileZilla to your server at <code data-start=\"2414\" data-end=\"2441\">/<strong>&lt;yourCCUuserName&gt;</strong>/</code>.</p>\r\n</li>\r\n<li data-start=\"2445\" data-end=\"2729\">\r\n<p data-start=\"2448\" data-end=\"2506\"><strong data-start=\"2448\" data-end=\"2459\">Confirm</strong> your folder structure on the server matches:</p>\r\n<pre data-start=\"2510\" data-end=\"2729\"><div><div></div><div><div><div></div></div></div><div dir=\"ltr\"><code>Module1/\r\n├── videos/\r\n│   ├── video_1080p.mp4\r\n│   └── video_720p.mp4\r\n├── text/\r\n│   └── text_layout.pdf\r\n└── images/\r\n    ├── thumb.jpg\r\n    └── gray.jpg\r\n</code></div></div></pre>\r\n</li>\r\n<li data-start=\"2730\" data-end=\"2842\">\r\n<p data-start=\"2733\" data-end=\"2753\"><strong data-start=\"2733\" data-end=\"2743\">Submit</strong> the URL</p>\r\n<pre data-start=\"2757\" data-end=\"2825\"><div><div></div><div dir=\"ltr\"><code><span>https://ccuresearch.coastal.edu/</span><strong>&lt;yourCCUuserName&gt;/</strong><span>CSCI375/Module1/</span></code></div></div></pre></li></ol></span></h2><h2 data-start=\"1458\" data-end=\"1476\"><span style=\"background-color: initial; font-size: 0.9375rem; font-weight: 400; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, &quot;Liberation Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">Submit your web URL only to the text box below your link, which shows the following</span><span style=\"background-color: initial; font-size: 0.9375rem; font-weight: 400; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, &quot;Liberation Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">. Fill in the &lt;&gt; with your data. Test your link in your browser. If your page does not load, I cannot grade it, and you will receive a 0 for this assignment.</span></h2></span><p><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\"><br></span></p>\r\n            <p><span style=\"background-color: initial; font-size: 0.9375rem;\">https://ccuresearch.coastal.edu/</span><strong style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">&lt;yourCCUuserName&gt;/</strong><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">CSCI375/Module1/</span></p>\r\n            <p></p>\r\n        </div>\r\n\r\n    </div>\r\n    <!-- End block -->\r\n\r\n</div>\r\n<!-- close Background -->",
+                    "introformat": 1,
+                    "introfiles": [],
+                    "introattachments": [],
+                    "timelimit": 0,
+                    "submissionattachments": 0
+                },
+                {
+                    "id": 54109,
+                    "cmid": 435522,
+                    "course": 8186,
+                    "name": "Module 2",
+                    "nosubmissions": 0,
+                    "submissiondrafts": 0,
+                    "sendnotifications": 0,
+                    "sendlatenotifications": 0,
+                    "sendstudentnotifications": 1,
+                    "duedate": 1759204740,
+                    "allowsubmissionsfromdate": 0,
+                    "grade": 100,
+                    "timemodified": 1746388236,
+                    "completionsubmit": 1,
+                    "cutoffdate": 0,
+                    "gradingduedate": 0,
+                    "teamsubmission": 0,
+                    "requireallteammemberssubmit": 0,
+                    "teamsubmissiongroupingid": 0,
+                    "blindmarking": 0,
+                    "hidegrader": 0,
+                    "revealidentities": 0,
+                    "attemptreopenmethod": "none",
+                    "maxattempts": -1,
+                    "markingworkflow": 0,
+                    "markingallocation": 0,
+                    "requiresubmissionstatement": 0,
+                    "preventsubmissionnotingroup": 0,
+                    "configs": [
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimit",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimitenabled",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "commentinline",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "editpdf",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        }
+                    ],
+                    "intro": "<div>\r\n\r\n    <!-- begin block -->\r\n\r\n    <div style=\"padding: 5px;\">\r\n        <div onmouseover=\"this.style.boxShadow = '10px 2px 20px #adebeb'\" onmouseout=\"this.style.boxShadow = 'none'\" style=\"padding: 5px; box-shadow: none; background: linear-gradient(rgb(221, 221, 221) 0%, rgb(255, 255, 255) 50%, rgb(221, 221, 221) 100%), linear-gradient(rgba(0, 0, 0, 0.02) 50%, rgba(255, 255, 255, 0.02) 61%, rgba(0, 0, 0, 0.02) 73%), linear-gradient(33deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%); background-blend-mode: normal, color-burn; border: 2px solid rgb(0, 102, 102); border-radius: 10px; display: table;\">\r\n            <p><span style=\"font-size: 22.5px;\"><strong></strong></span></p>\r\n            <p data-start=\"278\" data-end=\"336\"><strong><strong data-start=\"278\" data-end=\"336\"></strong></strong></p>\r\n            <h3 data-start=\"392\" data-end=\"429\"></h3><h3 data-start=\"120\" data-end=\"134\">Module 2: Audio &amp; Animation Production Lab<br></h3><h3 data-start=\"120\" data-end=\"134\">Overview</h3>\r\n<p data-start=\"135\" data-end=\"291\">In this module, you’ll apply Chapters 4 (Sound) and 5 (Animation) of <em data-start=\"204\" data-end=\"232\">Multimedia: Making It Work</em> to produce real multimedia assets.</p>\r\n<ul data-start=\"292\" data-end=\"689\">\r\n<li data-start=\"292\" data-end=\"505\">\r\n<p data-start=\"294\" data-end=\"505\"><strong data-start=\"294\" data-end=\"316\">Chapter 4 (Sound):</strong> Digital audio fundamentals—sampling, MIDI vs. digital audio, file formats, and basic editing through recording, noise removal, and format conversion</p>\r\n</li>\r\n<li data-start=\"506\" data-end=\"689\">\r\n<p data-start=\"508\" data-end=\"689\"><strong data-start=\"508\" data-end=\"534\">Chapter 5 (Animation):</strong> 2D animation principles—persistence of vision, keyframes, tweening, and exporting your work as a playable sequence</p></li></ul><p data-start=\"446\" data-end=\"651\"></p>\r\n            <h4 data-start=\"653\" data-end=\"670\">Instructions</h4><h3 data-start=\"939\" data-end=\"977\">Task 1: Digital Audio Production</h3>\r\n<ol data-start=\"978\" data-end=\"1335\">\r\n<li data-start=\"978\" data-end=\"1056\">\r\n<p data-start=\"981\" data-end=\"1056\"><strong data-start=\"981\" data-end=\"991\">Record</strong> a 15-second ambient sound clip using Audacity’s input capture.</p>\r\n</li>\r\n<li data-start=\"1057\" data-end=\"1213\">\r\n<p data-start=\"1060\" data-end=\"1084\"><strong data-start=\"1060\" data-end=\"1068\">Edit</strong> your clip by:</p>\r\n<ul data-start=\"1088\" data-end=\"1213\">\r\n<li data-start=\"1088\" data-end=\"1131\">\r\n<p data-start=\"1090\" data-end=\"1131\">Trimming to remove silence at start/end</p>\r\n</li>\r\n<li data-start=\"1135\" data-end=\"1173\">\r\n<p data-start=\"1137\" data-end=\"1173\">Applying a noise-reduction profile</p>\r\n</li>\r\n<li data-start=\"1177\" data-end=\"1213\">\r\n<p data-start=\"1179\" data-end=\"1213\">Normalizing volume to −1 dB peak</p>\r\n</li>\r\n</ul>\r\n</li>\r\n<li data-start=\"1214\" data-end=\"1335\">\r\n<p data-start=\"1217\" data-end=\"1263\"><strong data-start=\"1217\" data-end=\"1227\">Export</strong> two files into <code data-start=\"1243\" data-end=\"1260\">audio/</code>:</p>\r\n<ul data-start=\"1267\" data-end=\"1335\">\r\n<li data-start=\"1267\" data-end=\"1301\">\r\n<p data-start=\"1269\" data-end=\"1301\"><code data-start=\"1269\" data-end=\"1280\">audio.wav</code> (uncompressed WAV)</p>\r\n</li>\r\n<li data-start=\"1305\" data-end=\"1335\">\r\n<p data-start=\"1307\" data-end=\"1335\"><code data-start=\"1307\" data-end=\"1318\">audio.mp3</code> (128 kbps MP3)</p>\r\n</li>\r\n</ul>\r\n</li>\r\n</ol>\r\n<p data-start=\"1337\" data-end=\"1420\"><em data-start=\"1337\" data-end=\"1420\">No written explanations—differences in file size and quality demonstrate mastery.</em></p>\r\n<hr data-start=\"1422\" data-end=\"1425\">\r\n<h3 data-start=\"1427\" data-end=\"1457\">Task 2: MIDI Composition</h3>\r\n<ol data-start=\"1458\" data-end=\"1784\">\r\n<li data-start=\"1458\" data-end=\"1564\">\r\n<p data-start=\"1461\" data-end=\"1564\"><strong data-start=\"1461\" data-end=\"1472\">Compose</strong> a simple 8-bar melody in MuseScore using at least two instruments (e.g., piano + violin).</p>\r\n</li>\r\n<li data-start=\"1565\" data-end=\"1647\">\r\n<p data-start=\"1568\" data-end=\"1647\"><strong data-start=\"1568\" data-end=\"1575\">Use</strong> dynamics, slurs, and articulation marks to demonstrate score editing.</p>\r\n</li>\r\n<li data-start=\"1648\" data-end=\"1784\">\r\n<p data-start=\"1651\" data-end=\"1690\"><strong data-start=\"1651\" data-end=\"1661\">Export</strong> into <code data-start=\"1667\" data-end=\"1684\">audio/</code> as:</p>\r\n<ul data-start=\"1694\" data-end=\"1784\">\r\n<li data-start=\"1694\" data-end=\"1731\">\r\n<p data-start=\"1696\" data-end=\"1731\"><code data-start=\"1696\" data-end=\"1708\">melody.mid</code> (Standard MIDI file)</p>\r\n</li>\r\n<li data-start=\"1735\" data-end=\"1784\">\r\n<p data-start=\"1737\" data-end=\"1784\"><code data-start=\"1737\" data-end=\"1749\">melody.wav</code> (rendered audio from your score)</p>\r\n</li>\r\n</ul>\r\n</li>\r\n</ol>\r\n<hr data-start=\"1786\" data-end=\"1789\">\r\n<h3 data-start=\"1791\" data-end=\"1826\">Task 3: 2D Animation Creation</h3>\r\n<ol data-start=\"1827\" data-end=\"2251\">\r\n<li data-start=\"1827\" data-end=\"1906\">\r\n<p data-start=\"1830\" data-end=\"1906\"><strong data-start=\"1830\" data-end=\"1838\">Plan</strong> a 5-second loop where an object (e.g., ball) bounces three times.</p>\r\n</li>\r\n<li data-start=\"1907\" data-end=\"2095\">\r\n<p data-start=\"1910\" data-end=\"1945\"><strong data-start=\"1910\" data-end=\"1925\">In Pencil2D</strong>, set up at least:</p>\r\n<ul data-start=\"1949\" data-end=\"2095\">\r\n<li data-start=\"1949\" data-end=\"1992\">\r\n<p data-start=\"1951\" data-end=\"1992\">A new project at 24 fps, 640×480 canvas</p>\r\n</li>\r\n<li data-start=\"1996\" data-end=\"2047\">\r\n<p data-start=\"1998\" data-end=\"2047\">Keyframes for start, peak, and impact positions</p>\r\n</li>\r\n<li data-start=\"2051\" data-end=\"2095\">\r\n<p data-start=\"2053\" data-end=\"2095\">Tweened in-betweens (onion-skin enabled)</p>\r\n</li>\r\n</ul>\r\n</li>\r\n<li data-start=\"2096\" data-end=\"2251\">\r\n<p data-start=\"2099\" data-end=\"2152\"><strong data-start=\"2099\" data-end=\"2109\">Export</strong> your loop into <code data-start=\"2125\" data-end=\"2146\">animation/</code> as:</p>\r\n<ul data-start=\"2156\" data-end=\"2251\">\r\n<li data-start=\"2156\" data-end=\"2187\">\r\n<p data-start=\"2158\" data-end=\"2187\"><code data-start=\"2158\" data-end=\"2170\">bounce.gif</code> (animated GIF)</p>\r\n</li>\r\n<li data-start=\"2191\" data-end=\"2251\">\r\n<p data-start=\"2193\" data-end=\"2251\"><code data-start=\"2193\" data-end=\"2205\">bounce.mp4</code> (H.264 MP4 via Pencil2D’s export or FFmpeg)</p>\r\n</li>\r\n</ul>\r\n</li>\r\n</ol>\r\n<hr data-start=\"2253\" data-end=\"2256\">\r\n<h3 data-start=\"2258\" data-end=\"2287\">Submission Instructions</h3>\r\n<ol data-start=\"2288\" data-end=\"2918\">\r\n<li data-start=\"2288\" data-end=\"2471\">\r\n<p data-start=\"2291\" data-end=\"2316\"><strong data-start=\"2291\" data-end=\"2301\">Verify</strong> playback of:</p>\r\n<ul data-start=\"2320\" data-end=\"2471\">\r\n<li data-start=\"2320\" data-end=\"2400\">\r\n<p data-start=\"2322\" data-end=\"2400\"><code data-start=\"2322\" data-end=\"2333\">audio.wav</code> / <code data-start=\"2336\" data-end=\"2347\">audio.mp3</code> / <code data-start=\"2350\" data-end=\"2362\">melody.mid</code> / <code data-start=\"2365\" data-end=\"2377\">melody.wav</code> in any media player.</p>\r\n</li>\r\n<li data-start=\"2404\" data-end=\"2471\">\r\n<p data-start=\"2406\" data-end=\"2471\"><code data-start=\"2406\" data-end=\"2418\">bounce.gif</code> and <code data-start=\"2423\" data-end=\"2435\">bounce.mp4</code> in a web browser or video player.</p>\r\n</li>\r\n</ul>\r\n</li>\r\n<li data-start=\"2472\" data-end=\"2760\">\r\n<p data-start=\"2475\" data-end=\"2544\"><strong data-start=\"2475\" data-end=\"2487\">Organize</strong> your server folder <code data-start=\"2507\" data-end=\"2538\">/<strong>&lt;yourCCUuserName&gt;</strong>/Module2/</code> as:</p>\r\n<pre data-start=\"2548\" data-end=\"2760\"><div><div><span style=\"color: inherit; font-size: inherit;\">Module2/</span></div><div dir=\"ltr\"><code>├── audio/\r\n│   ├── audio.wav\r\n│   ├── audio.mp3\r\n│   ├── melody.mid\r\n│   └── melody.wav\r\n└── animation/\r\n    ├── bounce.gif\r\n    └── bounce.mp4\r\n</code></div></div></pre>\r\n</li>\r\n<li data-start=\"2761\" data-end=\"2802\">\r\n<p data-start=\"2764\" data-end=\"2802\"><strong data-start=\"2764\" data-end=\"2774\">Upload</strong> all files with FileZilla.</p>\r\n</li>\r\n<li data-start=\"2803\" data-end=\"2918\">\r\n<p data-start=\"2806\" data-end=\"2826\"><strong data-start=\"2806\" data-end=\"2816\">Submit</strong> the URL</p>\r\n<pre data-start=\"2830\" data-end=\"2902\"><div><div><span style=\"color: inherit; font-size: inherit;\"><span>https://ccuresearch.coastal.edu/</span><strong>&lt;yourCCUuserName&gt;/</strong><span>CSCI375/Module2/</span></span></div></div></pre></li></ol>\r\n            <p></p>\r\n            <p data-start=\"2642\" data-end=\"2683\" style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\"><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">Submit your web URL only to the text box below your link, which shows the following</span><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; white-space-collapse: preserve;\">. Fill in the &lt;&gt; with your data. Test your link in your browser. If your page does not load, I cannot grade it, and you will receive a 0 for this assignment.</span></p><span style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem; white-space-collapse: preserve;\"><br></span><span style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">https://ccuresearch.coastal.edu/</span><strong style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">&lt;yourCCUuserName&gt;/</strong><span style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">CSCI375/Module2/</span>\r\n            <p></p>\r\n            <p></p>\r\n        </div>\r\n\r\n    </div>\r\n    <!-- End block -->\r\n\r\n</div>\r\n<!-- close Background -->",
+                    "introformat": 1,
+                    "introfiles": [],
+                    "introattachments": [],
+                    "timelimit": 0,
+                    "submissionattachments": 0
+                },
+                {
+                    "id": 54110,
+                    "cmid": 435531,
+                    "course": 8186,
+                    "name": "Module 3",
+                    "nosubmissions": 0,
+                    "submissiondrafts": 0,
+                    "sendnotifications": 0,
+                    "sendlatenotifications": 0,
+                    "sendstudentnotifications": 1,
+                    "duedate": 1759809540,
+                    "allowsubmissionsfromdate": 0,
+                    "grade": 100,
+                    "timemodified": 1746193882,
+                    "completionsubmit": 1,
+                    "cutoffdate": 0,
+                    "gradingduedate": 0,
+                    "teamsubmission": 0,
+                    "requireallteammemberssubmit": 0,
+                    "teamsubmissiongroupingid": 0,
+                    "blindmarking": 0,
+                    "hidegrader": 0,
+                    "revealidentities": 0,
+                    "attemptreopenmethod": "none",
+                    "maxattempts": -1,
+                    "markingworkflow": 0,
+                    "markingallocation": 0,
+                    "requiresubmissionstatement": 0,
+                    "preventsubmissionnotingroup": 0,
+                    "configs": [
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimitenabled",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimit",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "commentinline",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "editpdf",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        }
+                    ],
+                    "intro": "<div>\r\n\r\n    <!-- begin block -->\r\n\r\n    <div style=\"padding: 5px;\">\r\n        <div onmouseover=\"this.style.boxShadow = '10px 2px 20px #adebeb'\" onmouseout=\"this.style.boxShadow = 'none'\" style=\"padding: 5px; box-shadow: none; background: linear-gradient(rgb(221, 221, 221) 0%, rgb(255, 255, 255) 50%, rgb(221, 221, 221) 100%), linear-gradient(rgba(0, 0, 0, 0.02) 50%, rgba(255, 255, 255, 0.02) 61%, rgba(0, 0, 0, 0.02) 73%), linear-gradient(33deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%); background-blend-mode: normal, color-burn; border: 2px solid rgb(0, 102, 102); border-radius: 10px; display: table;\">\r\n            <p><span style=\"font-size: 22.5px;\"><strong></strong></span></p>\r\n            <p data-start=\"278\" data-end=\"336\"><strong><strong data-start=\"278\" data-end=\"336\"></strong></strong></p>\r\n            <h3 data-start=\"392\" data-end=\"429\"><span style=\"font-size: 1.64062rem; background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">Assignment: Dynamic Web Interaction</span></h3>\r\n            <h4 data-start=\"337\" data-end=\"351\">Objective</h4>\r\n            <p data-start=\"352\" data-end=\"558\">Create an interactive webpage that uses JavaScript to dynamically add new content when a button is clicked. This demonstrates your ability to design and implement a solution using the required technologies.</p>\r\n            <h4 data-start=\"560\" data-end=\"577\">Requirements</h4>\r\n            <ol data-start=\"579\" data-end=\"1586\">\r\n                <li data-start=\"579\" data-end=\"667\">\r\n                    <p data-start=\"582\" data-end=\"613\"><strong data-start=\"582\" data-end=\"611\">Project Setup in PHPStorm</strong></p>\r\n                    <ul data-start=\"617\" data-end=\"667\">\r\n                        <li data-start=\"617\" data-end=\"667\">\r\n                            <p data-start=\"619\" data-end=\"667\">Create a new project named <code data-start=\"646\" data-end=\"666\">Module3</code>.</p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"669\" data-end=\"748\">\r\n                    <p data-start=\"672\" data-end=\"692\"><strong data-start=\"672\" data-end=\"690\">File Structure</strong></p>\r\n                    <ul data-start=\"696\" data-end=\"748\">\r\n                        <li data-start=\"696\" data-end=\"712\">\r\n                            <p data-start=\"698\" data-end=\"712\"><code data-start=\"698\" data-end=\"710\">index.html</code></p>\r\n                        </li>\r\n                        <li data-start=\"716\" data-end=\"731\">\r\n                            <p data-start=\"718\" data-end=\"731\"><code data-start=\"718\" data-end=\"729\">style.css</code></p>\r\n                        </li>\r\n                        <li data-start=\"735\" data-end=\"748\">\r\n                            <p data-start=\"737\" data-end=\"748\"><code data-start=\"737\" data-end=\"748\">script.js</code></p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"750\" data-end=\"957\">\r\n                    <p data-start=\"753\" data-end=\"769\"><strong data-start=\"753\" data-end=\"767\">index.html</strong></p>\r\n                    <ul data-start=\"773\" data-end=\"957\">\r\n                        <li data-start=\"773\" data-end=\"836\">\r\n                            <p data-start=\"775\" data-end=\"836\">Use HTML5 and include links to <code data-start=\"806\" data-end=\"817\">style.css</code> and <code data-start=\"822\" data-end=\"833\">script.js</code>.</p>\r\n                        </li>\r\n                        <li data-start=\"840\" data-end=\"957\">\r\n                            <p data-start=\"842\" data-end=\"957\">Include a header, a content area (with an initial paragraph), and a button with an id to trigger JavaScript events.</p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"959\" data-end=\"1055\">\r\n                    <p data-start=\"962\" data-end=\"977\"><strong data-start=\"962\" data-end=\"975\">style.css</strong></p>\r\n                    <ul data-start=\"981\" data-end=\"1055\">\r\n                        <li data-start=\"981\" data-end=\"1052\">\r\n                            <p data-start=\"983\" data-end=\"1052\">Provide basic styling for the page, header, content area, and button.</p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"1056\" data-end=\"1348\">\r\n                    <p data-start=\"1059\" data-end=\"1074\"><strong data-start=\"1059\" data-end=\"1072\">script.js</strong></p>\r\n                    <ul data-start=\"1078\" data-end=\"1348\">\r\n                        <li data-start=\"1078\" data-end=\"1121\">\r\n                            <p data-start=\"1080\" data-end=\"1121\">Attach an event listener to the button.</p>\r\n                        </li>\r\n                        <li data-start=\"1125\" data-end=\"1274\">\r\n                            <p data-start=\"1127\" data-end=\"1274\">When the button is clicked, create a new HTML element (such as a paragraph) with the text “New Content Added!” and append it to the content area.</p>\r\n                        </li>\r\n                        <li data-start=\"1278\" data-end=\"1348\">\r\n                            <p data-start=\"1280\" data-end=\"1348\">Add an optional animation effect (e.g., fade in) to the new element.</p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"1350\" data-end=\"1586\">\r\n                    <p data-start=\"1353\" data-end=\"1379\"><strong data-start=\"1353\" data-end=\"1377\">Testing &amp; Deployment</strong></p>\r\n                    <ul data-start=\"1383\" data-end=\"1586\">\r\n                        <li data-start=\"1383\" data-end=\"1483\"><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">Use FileZilla to deploy the project folder to the designated FTP server and verify the live site.</span></li>\r\n                    </ul>\r\n                </li>\r\n            </ol><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">\r\n                <ul>\r\n                    <li data-start=\"0\" data-end=\"99\">\r\n                        <p data-start=\"3\" data-end=\"99\">Change the document title in the HTML file to a unique name that reflects your personal project.</p>\r\n                    </li>\r\n                    <li data-start=\"100\" data-end=\"183\">\r\n                        <p data-start=\"103\" data-end=\"183\">Replace the default header text in the HTML file with your custom project title.</p>\r\n                    </li>\r\n                    <li data-start=\"184\" data-end=\"284\">\r\n                        <p data-start=\"187\" data-end=\"284\">Modify the introductory paragraph within the main content area to include personalized messaging.</p>\r\n                    </li>\r\n                    <li data-start=\"285\" data-end=\"385\">\r\n                        <p data-start=\"288\" data-end=\"385\">Update the button label in the HTML file to a custom call-to-action that fits your project theme.</p>\r\n                    </li>\r\n                    <li data-start=\"386\" data-end=\"548\">\r\n                        <p data-start=\"389\" data-end=\"548\">In the CSS file, adjust the overall color scheme, including the background colors, font choices, and text colors for the header, main content area, and button.</p>\r\n                    </li>\r\n                    <li data-start=\"549\" data-end=\"671\">\r\n                        <p data-start=\"552\" data-end=\"671\">In the JavaScript file, change the text that is dynamically added when the button is clicked to a personalized message.</p>\r\n                    </li>\r\n                    <li data-start=\"672\" data-end=\"801\">\r\n                        <p data-start=\"675\" data-end=\"801\">Adjust the transition duration for the dynamic fade-in effect in the JavaScript file to a custom value that suits your design.</p>\r\n                    </li>\r\n                </ul><br><br>Submit your web URL only to the text box below your link, which shows the following\r\n            </span><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; white-space-collapse: preserve;\">. Fill in the &lt;&gt; with your data. Test your link in your browser. If your page does not load, I cannot grade it, and you will receive a 0 for this assignment.</span>\r\n            <p data-start=\"2642\" data-end=\"2683\" style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\"></p><span style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">https://ccuresearch.coastal.edu/</span><strong style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">&lt;yourCCUuserName&gt;/</strong><span style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">CSCI120/Module3/</span>\r\n            <p></p>\r\n            <p></p>\r\n        </div>\r\n\r\n    </div>\r\n    <!-- End block -->\r\n\r\n</div>\r\n<!-- close Background -->",
+                    "introformat": 1,
+                    "introfiles": [],
+                    "introattachments": [],
+                    "timelimit": 0,
+                    "submissionattachments": 0
+                },
+                {
+                    "id": 54111,
+                    "cmid": 435541,
+                    "course": 8186,
+                    "name": "Module 4",
+                    "nosubmissions": 0,
+                    "submissiondrafts": 0,
+                    "sendnotifications": 0,
+                    "sendlatenotifications": 0,
+                    "sendstudentnotifications": 1,
+                    "duedate": 1761623940,
+                    "allowsubmissionsfromdate": 0,
+                    "grade": 100,
+                    "timemodified": 1746193741,
+                    "completionsubmit": 1,
+                    "cutoffdate": 0,
+                    "gradingduedate": 0,
+                    "teamsubmission": 0,
+                    "requireallteammemberssubmit": 0,
+                    "teamsubmissiongroupingid": 0,
+                    "blindmarking": 0,
+                    "hidegrader": 0,
+                    "revealidentities": 0,
+                    "attemptreopenmethod": "none",
+                    "maxattempts": -1,
+                    "markingworkflow": 0,
+                    "markingallocation": 0,
+                    "requiresubmissionstatement": 0,
+                    "preventsubmissionnotingroup": 0,
+                    "configs": [
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimit",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimitenabled",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "commentinline",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "editpdf",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        }
+                    ],
+                    "intro": "<div>\r\n\r\n    <!-- begin block -->\r\n\r\n    <div style=\"padding: 5px;\">\r\n        <div onmouseover=\"this.style.boxShadow = '10px 2px 20px #adebeb'\" onmouseout=\"this.style.boxShadow = 'none'\" style=\"padding: 5px; box-shadow: none; background: linear-gradient(rgb(221, 221, 221) 0%, rgb(255, 255, 255) 50%, rgb(221, 221, 221) 100%), linear-gradient(rgba(0, 0, 0, 0.02) 50%, rgba(255, 255, 255, 0.02) 61%, rgba(0, 0, 0, 0.02) 73%), linear-gradient(33deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%); background-blend-mode: normal, color-burn; border: 2px solid rgb(0, 102, 102); border-radius: 10px; display: table;\">\r\n            <p><span style=\"font-size: 22.5px;\"><strong></strong></span></p>\r\n            <p data-start=\"278\" data-end=\"336\"><strong><strong data-start=\"278\" data-end=\"336\"></strong></strong></p>\r\n            <h3 data-start=\"392\" data-end=\"429\"><span style=\"font-size: 1.64062rem; background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\"><br>Assignment: Multi‑Page Website Publishing</span></h3>\r\n            <h4 data-start=\"344\" data-end=\"359\">Objectives</h4>\r\n            <ul data-start=\"1383\" data-end=\"1586\" style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">\r\n                <li data-start=\"360\" data-end=\"457\">\r\n                    <p data-start=\"362\" data-end=\"457\">Create three HTML pages (Home, About, Contact) sharing a common header, navigation, and footer.</p>\r\n                </li>\r\n                <li data-start=\"458\" data-end=\"510\">\r\n                    <p data-start=\"460\" data-end=\"510\">Use a single external CSS file to style all pages.</p>\r\n                </li>\r\n                <li data-start=\"511\" data-end=\"563\">\r\n                    <p data-start=\"513\" data-end=\"563\">Include a simple contact form on the Contact page.</p>\r\n                </li>\r\n            </ul>\r\n            <p data-start=\"0\" data-end=\"89\"></p><span data-start=\"1353\" data-end=\"1377\" style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">\r\n                <ul style=\"\">\r\n                    <li data-start=\"0\" data-end=\"111\" style=\"\">\r\n                        <p data-start=\"3\" data-end=\"111\" style=\"\">Change each page’s title to include your custom site name and modify any metadata to reflect your project.</p>\r\n                    </li>\r\n                    <li data-start=\"112\" data-end=\"192\" style=\"\">\r\n                        <p data-start=\"115\" data-end=\"192\">In every HTML file, replace the header text with your unique website title.</p>\r\n                    </li>\r\n                    <li data-start=\"193\" data-end=\"309\" style=\"\">\r\n                        <p data-start=\"196\" data-end=\"309\">Update the navigation menu labels to match your custom sections, ensuring the links point to the correct pages.</p>\r\n                    </li>\r\n                    <li data-start=\"310\" data-end=\"423\" style=\"\">\r\n                        <p data-start=\"313\" data-end=\"423\">For the Home page, personalize the welcome message by modifying the main section heading and paragraph text.</p>\r\n                    </li>\r\n                    <li data-start=\"424\" data-end=\"539\" style=\"\">\r\n                        <p data-start=\"427\" data-end=\"539\">On the About page, update the section heading and description to include your biography or project background.</p>\r\n                    </li>\r\n                    <li data-start=\"540\" data-end=\"744\" style=\"\">\r\n                        <p data-start=\"543\" data-end=\"744\">On the Contact page, change the section heading to a personalized call-to-action and adjust the form labels to suit your design (for example, modify the text for the name, email, and message fields).</p>\r\n                    </li>\r\n                    <li data-start=\"745\" data-end=\"847\" style=\"\">\r\n                        <p data-start=\"748\" data-end=\"847\">Revise the footer across all pages to display your custom copyright details and the current year.</p>\r\n                    </li>\r\n                    <li data-start=\"848\" data-end=\"1038\" style=\"\">\r\n                        <p data-start=\"851\" data-end=\"1038\" style=\"\">In the CSS file, alter the visual styles by updating colors, fonts, spacing, and layout properties for the header, navigation, main content, and footer to reflect your design preferences.</p>\r\n                    </li>\r\n                </ul><br><strong>Testing &amp; Deployment</strong>\r\n            </span>\r\n            <ul data-start=\"1383\" data-end=\"1586\" style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">\r\n                <li data-start=\"1383\" data-end=\"1483\"><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">Use FileZilla to deploy the project folder to the designated FTP server and verify the live site.</span></li>\r\n            </ul><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">Submit your web URL only to the text box below your link, which shows the following</span><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; white-space-collapse: preserve;\">. Fill in the &lt;&gt; with your data. Test your link in your browser. If your page does not load, I cannot grade it, and you will receive a 0 for this assignment.</span>\r\n            <p data-start=\"2642\" data-end=\"2683\" style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\"></p><span style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">https://ccuresearch.coastal.edu/</span><strong style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">&lt;yourCCUuserName&gt;/</strong><span style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">CSCI120/Module4/</span>\r\n            <p></p>\r\n            <p></p>\r\n        </div>\r\n\r\n    </div>\r\n    <!-- End block -->\r\n\r\n</div>\r\n<!-- close Background -->",
+                    "introformat": 1,
+                    "introfiles": [],
+                    "introattachments": [],
+                    "timelimit": 0,
+                    "submissionattachments": 0
+                },
+                {
+                    "id": 54112,
+                    "cmid": 435549,
+                    "course": 8186,
+                    "name": "Module 5",
+                    "nosubmissions": 0,
+                    "submissiondrafts": 0,
+                    "sendnotifications": 0,
+                    "sendlatenotifications": 0,
+                    "sendstudentnotifications": 1,
+                    "duedate": 1762837140,
+                    "allowsubmissionsfromdate": 0,
+                    "grade": 100,
+                    "timemodified": 1746193919,
+                    "completionsubmit": 1,
+                    "cutoffdate": 0,
+                    "gradingduedate": 0,
+                    "teamsubmission": 0,
+                    "requireallteammemberssubmit": 0,
+                    "teamsubmissiongroupingid": 0,
+                    "blindmarking": 0,
+                    "hidegrader": 0,
+                    "revealidentities": 0,
+                    "attemptreopenmethod": "none",
+                    "maxattempts": -1,
+                    "markingworkflow": 0,
+                    "markingallocation": 0,
+                    "requiresubmissionstatement": 0,
+                    "preventsubmissionnotingroup": 0,
+                    "configs": [
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimitenabled",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimit",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "commentinline",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "editpdf",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        }
+                    ],
+                    "intro": "<div>\r\n\r\n    <!-- begin block -->\r\n\r\n    <div style=\"padding: 5px;\">\r\n        <div onmouseover=\"this.style.boxShadow = '10px 2px 20px #adebeb'\" onmouseout=\"this.style.boxShadow = 'none'\" style=\"padding: 5px; box-shadow: none; background: linear-gradient(rgb(221, 221, 221) 0%, rgb(255, 255, 255) 50%, rgb(221, 221, 221) 100%), linear-gradient(rgba(0, 0, 0, 0.02) 50%, rgba(255, 255, 255, 0.02) 61%, rgba(0, 0, 0, 0.02) 73%), linear-gradient(33deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%); background-blend-mode: normal, color-burn; border: 2px solid rgb(0, 102, 102); border-radius: 10px; display: table;\">\r\n            <p><span style=\"font-size: 22.5px;\"><strong></strong></span></p>\r\n            <p data-start=\"278\" data-end=\"336\"><strong><strong data-start=\"278\" data-end=\"336\"></strong></strong></p>\r\n            <h3 data-start=\"392\" data-end=\"429\"><span style=\"font-size: 1.64062rem; background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">Assignment: Responsive Design with Media Queries</span></h3>\r\n            <h4 data-start=\"278\" data-end=\"295\">Requirements</h4>\r\n            <ol data-start=\"297\" data-end=\"1611\">\r\n                <li data-start=\"297\" data-end=\"447\">\r\n                    <p data-start=\"300\" data-end=\"319\"><strong data-start=\"300\" data-end=\"317\">Project Setup</strong></p>\r\n                    <ul data-start=\"323\" data-end=\"447\">\r\n                        <li data-start=\"323\" data-end=\"374\">\r\n                            <p data-start=\"325\" data-end=\"374\">Create a project folder (e.g., <code data-start=\"356\" data-end=\"372\">Module5</code>).</p>\r\n                        </li>\r\n                        <li data-start=\"378\" data-end=\"447\">\r\n                            <p data-start=\"380\" data-end=\"408\">Include the following files:</p>\r\n                            <ul data-start=\"414\" data-end=\"447\">\r\n                                <li data-start=\"414\" data-end=\"428\">\r\n                                    <p data-start=\"416\" data-end=\"428\"><code data-start=\"416\" data-end=\"428\">index.html</code></p>\r\n                                </li>\r\n                                <li data-start=\"434\" data-end=\"447\">\r\n                                    <p data-start=\"436\" data-end=\"447\"><code data-start=\"436\" data-end=\"447\">style.css</code></p>\r\n                                </li>\r\n                            </ul>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"449\" data-end=\"1246\">\r\n                    <p data-start=\"452\" data-end=\"478\"><strong data-start=\"452\" data-end=\"476\">Responsive Structure</strong></p>\r\n                    <ul data-start=\"482\" data-end=\"1246\">\r\n                        <li data-start=\"482\" data-end=\"821\">\r\n                            <p data-start=\"484\" data-end=\"501\"><strong data-start=\"484\" data-end=\"499\">index.html:</strong></p>\r\n                            <ul data-start=\"507\" data-end=\"821\">\r\n                                <li data-start=\"507\" data-end=\"590\">\r\n                                    <p data-start=\"509\" data-end=\"590\">Build a complete HTML5 page with a <code data-start=\"544\" data-end=\"554\">&lt;header&gt;</code>, <code data-start=\"556\" data-end=\"563\">&lt;nav&gt;</code>, <code data-start=\"565\" data-end=\"573\">&lt;main&gt;</code>, and <code data-start=\"579\" data-end=\"589\">&lt;footer&gt;</code>.</p>\r\n                                </li>\r\n                                <li data-start=\"596\" data-end=\"758\">\r\n                                    <p data-start=\"598\" data-end=\"758\">In <code data-start=\"601\" data-end=\"609\">&lt;main&gt;</code>, include three content sections (use <code data-start=\"647\" data-end=\"658\">&lt;section&gt;</code> elements) that will display side by side on larger screens and stack vertically on smaller screens.</p>\r\n                                </li>\r\n                                <li data-start=\"764\" data-end=\"821\">\r\n                                    <p data-start=\"766\" data-end=\"821\">Ensure the <code data-start=\"777\" data-end=\"805\">&lt;meta name=\"viewport\" ...&gt;</code> tag is present.</p>\r\n                                </li>\r\n                            </ul>\r\n                        </li>\r\n                        <li data-start=\"825\" data-end=\"1246\">\r\n                            <p data-start=\"827\" data-end=\"843\"><strong data-start=\"827\" data-end=\"841\">style.css:</strong></p>\r\n                            <ul data-start=\"849\" data-end=\"1246\">\r\n                                <li data-start=\"849\" data-end=\"919\">\r\n                                    <p data-start=\"851\" data-end=\"919\">Write basic styles for header, navigation, main content, and footer.</p>\r\n                                </li>\r\n                                <li data-start=\"925\" data-end=\"1000\">\r\n                                    <p data-start=\"927\" data-end=\"1000\">Use a flexible layout (using Flexbox) for the three sections in <code data-start=\"991\" data-end=\"999\">&lt;main&gt;</code>.</p>\r\n                                </li>\r\n                                <li data-start=\"1006\" data-end=\"1192\">\r\n                                    <p data-start=\"1008\" data-end=\"1042\">Create at least one media query:</p>\r\n                                    <ul data-start=\"1050\" data-end=\"1192\">\r\n                                        <li data-start=\"1050\" data-end=\"1117\">\r\n                                            <p data-start=\"1052\" data-end=\"1117\">For screen widths 768px and above, display the sections in a row.</p>\r\n                                        </li>\r\n                                        <li data-start=\"1125\" data-end=\"1192\">\r\n                                            <p data-start=\"1127\" data-end=\"1192\">For screen widths less than 768px, stack the sections vertically.</p>\r\n                                        </li>\r\n                                    </ul>\r\n                                </li>\r\n                                <li data-start=\"1198\" data-end=\"1246\">\r\n                                    <p data-start=\"1200\" data-end=\"1246\">Ensure any images or text scale appropriately.</p>\r\n                                </li>\r\n                            </ul>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n            </ol>\r\n            <ul>\r\n                <li data-start=\"0\" data-end=\"79\">\r\n                    <p data-start=\"3\" data-end=\"79\">Change the page title in the document head to include your custom site name.</p>\r\n                </li>\r\n                <li data-start=\"80\" data-end=\"140\">\r\n                    <p data-start=\"83\" data-end=\"140\">Replace the header text with your own site name or brand.</p>\r\n                </li>\r\n                <li data-start=\"141\" data-end=\"225\">\r\n                    <p data-start=\"144\" data-end=\"225\">Modify the navigation menu labels to reflect your custom page titles or sections.</p>\r\n                </li>\r\n                <li data-start=\"226\" data-end=\"353\">\r\n                    <p data-start=\"229\" data-end=\"353\">Update the main content sections by replacing the default section headers and paragraph text with your personalized content.</p>\r\n                </li>\r\n                <li data-start=\"354\" data-end=\"426\">\r\n                    <p data-start=\"357\" data-end=\"426\">Revise the footer text to show your custom copyright or site details.</p>\r\n                </li>\r\n                <li data-start=\"427\" data-end=\"535\">\r\n                    <p data-start=\"430\" data-end=\"535\">In the stylesheet, adjust the overall background color and font family for the body to match your design.</p>\r\n                </li>\r\n                <li data-start=\"536\" data-end=\"625\">\r\n                    <p data-start=\"539\" data-end=\"625\">Change the header and footer background colors and text colors to your chosen palette.</p>\r\n                </li>\r\n                <li data-start=\"626\" data-end=\"743\">\r\n                    <p data-start=\"629\" data-end=\"743\">Modify the spacing, borders, and padding in the main content area to create a layout that fits your design vision.</p>\r\n                </li>\r\n                <li data-start=\"744\" data-end=\"958\">\r\n                    <p data-start=\"747\" data-end=\"958\">In the media query settings, review the breakpoint for screens under 768 pixels wide and adjust the flex direction or other layout properties if necessary to ensure proper stacking of content on smaller devices.</p>\r\n                </li>\r\n                <li data-start=\"959\" data-end=\"1099\">\r\n                    <p data-start=\"963\" data-end=\"1099\">Ensure that all visual elements, such as colors, spacing, and typography, are consistent with your custom design throughout the project.</p>\r\n                </li>\r\n            </ul><br><strong data-start=\"1353\" data-end=\"1377\" style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">Testing &amp; Deployment</strong>\r\n            <ul data-start=\"1383\" data-end=\"1586\" style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">\r\n                <li data-start=\"1383\" data-end=\"1483\"><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">Use FileZilla to deploy the project folder to the designated FTP server and verify the live site.</span></li>\r\n            </ul><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">Submit your web URL only to the text box below your link, which shows the following</span><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; white-space-collapse: preserve;\">. Fill in the &lt;&gt; with your data. Test your link in your browser. If your page does not load, I cannot grade it, and you will receive a 0 for this assignment.</span>\r\n            <p data-start=\"2642\" data-end=\"2683\" style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\"></p><span style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">https://ccuresearch.coastal.edu/</span><strong style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">&lt;yourCCUuserName&gt;/</strong><span style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">CSCI120/Module5/</span>\r\n            <p></p>\r\n            <p></p>\r\n        </div>\r\n\r\n    </div>\r\n    <!-- End block -->\r\n\r\n</div>\r\n<!-- close Background -->",
+                    "introformat": 1,
+                    "introfiles": [],
+                    "introattachments": [],
+                    "timelimit": 0,
+                    "submissionattachments": 0
+                },
+                {
+                    "id": 54113,
+                    "cmid": 435553,
+                    "course": 8186,
+                    "name": "Final Project",
+                    "nosubmissions": 0,
+                    "submissiondrafts": 0,
+                    "sendnotifications": 0,
+                    "sendlatenotifications": 0,
+                    "sendstudentnotifications": 1,
+                    "duedate": 1765256340,
+                    "allowsubmissionsfromdate": 0,
+                    "grade": 100,
+                    "timemodified": 1746193960,
+                    "completionsubmit": 1,
+                    "cutoffdate": 0,
+                    "gradingduedate": 0,
+                    "teamsubmission": 0,
+                    "requireallteammemberssubmit": 0,
+                    "teamsubmissiongroupingid": 0,
+                    "blindmarking": 0,
+                    "hidegrader": 0,
+                    "revealidentities": 0,
+                    "attemptreopenmethod": "none",
+                    "maxattempts": -1,
+                    "markingworkflow": 0,
+                    "markingallocation": 0,
+                    "requiresubmissionstatement": 0,
+                    "preventsubmissionnotingroup": 0,
+                    "configs": [
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimit",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "onlinetext",
+                            "subtype": "assignsubmission",
+                            "name": "wordlimitenabled",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignsubmission",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        },
+                        {
+                            "plugin": "comments",
+                            "subtype": "assignfeedback",
+                            "name": "commentinline",
+                            "value": "0"
+                        },
+                        {
+                            "plugin": "editpdf",
+                            "subtype": "assignfeedback",
+                            "name": "enabled",
+                            "value": "1"
+                        }
+                    ],
+                    "intro": "<div>\r\n\r\n    <!-- begin block -->\r\n\r\n    <div style=\"padding: 5px;\">\r\n        <div onmouseover=\"this.style.boxShadow = '10px 2px 20px #adebeb'\" onmouseout=\"this.style.boxShadow = 'none'\" style=\"padding: 5px; box-shadow: none; background: linear-gradient(rgb(221, 221, 221) 0%, rgb(255, 255, 255) 50%, rgb(221, 221, 221) 100%), linear-gradient(rgba(0, 0, 0, 0.02) 50%, rgba(255, 255, 255, 0.02) 61%, rgba(0, 0, 0, 0.02) 73%), linear-gradient(33deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%); background-blend-mode: normal, color-burn; border: 2px solid rgb(0, 102, 102); border-radius: 10px; display: table;\">\r\n            <p><span style=\"font-size: 22.5px;\"><strong></strong></span></p>\r\n            <p data-start=\"278\" data-end=\"336\"><strong><strong data-start=\"278\" data-end=\"336\"></strong></strong></p>\r\n            <h3 data-start=\"392\" data-end=\"429\"><span style=\"font-size: 1.64062rem; background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\"></span></h3>\r\n            <p data-start=\"0\" data-end=\"45\"><strong data-start=\"0\" data-end=\"45\">Final Project: Personal Portfolio Website</strong></p>\r\n            <p data-start=\"47\" data-end=\"169\">Create a multi-page website that demonstrates all core concepts covered in the course. Follow these detailed instructions:</p>\r\n            <ol data-start=\"171\" data-end=\"3327\">\r\n                <li data-start=\"171\" data-end=\"467\">\r\n                    <p data-start=\"174\" data-end=\"200\"><strong data-start=\"174\" data-end=\"198\">Multi-Page Structure</strong></p>\r\n                    <ul data-start=\"204\" data-end=\"467\">\r\n                        <li data-start=\"204\" data-end=\"270\">\r\n                            <p data-start=\"206\" data-end=\"270\">Build four separate pages: Home, About, Projects, and Contact.</p>\r\n                        </li>\r\n                        <li data-start=\"274\" data-end=\"359\">\r\n                            <p data-start=\"276\" data-end=\"359\">Use consistent HTML5 semantic elements (header, nav, main, footer) on every page.</p>\r\n                        </li>\r\n                        <li data-start=\"363\" data-end=\"467\">\r\n                            <p data-start=\"365\" data-end=\"467\">Ensure that navigation links are uniform across all pages and correctly point to each respective page.</p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"469\" data-end=\"767\">\r\n                    <p data-start=\"472\" data-end=\"502\"><strong data-start=\"472\" data-end=\"500\">HTML and Semantic Markup</strong></p>\r\n                    <ul data-start=\"506\" data-end=\"767\">\r\n                        <li data-start=\"506\" data-end=\"556\">\r\n                            <p data-start=\"508\" data-end=\"556\">Construct valid HTML5 documents for each page.</p>\r\n                        </li>\r\n                        <li data-start=\"560\" data-end=\"672\">\r\n                            <p data-start=\"562\" data-end=\"672\">Include necessary meta tags (character set, viewport, and description) in the head section of each document.</p>\r\n                        </li>\r\n                        <li data-start=\"676\" data-end=\"767\">\r\n                            <p data-start=\"678\" data-end=\"767\">Structure your content using semantic elements to enhance accessibility and organization.</p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"769\" data-end=\"1249\">\r\n                    <p data-start=\"772\" data-end=\"800\"><strong data-start=\"772\" data-end=\"798\">CSS Styling and Layout</strong></p>\r\n                    <ul data-start=\"804\" data-end=\"1249\">\r\n                        <li data-start=\"804\" data-end=\"869\">\r\n                            <p data-start=\"806\" data-end=\"869\">Create one external CSS file to style all pages consistently.</p>\r\n                        </li>\r\n                        <li data-start=\"873\" data-end=\"971\">\r\n                            <p data-start=\"875\" data-end=\"971\">Develop a clear visual design by choosing a consistent color palette, typography, and spacing.</p>\r\n                        </li>\r\n                        <li data-start=\"975\" data-end=\"1116\">\r\n                            <p data-start=\"977\" data-end=\"1116\">Implement two layout techniques within your CSS: one section should utilize a float-based layout and another should use a flexbox layout.</p>\r\n                        </li>\r\n                        <li data-start=\"1120\" data-end=\"1249\">\r\n                            <p data-start=\"1122\" data-end=\"1249\">Customize styles for individual components (headers, navigation menus, content sections, footers) to match your personal brand.</p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"1251\" data-end=\"1621\">\r\n                    <p data-start=\"1254\" data-end=\"1296\"><strong data-start=\"1254\" data-end=\"1294\">Responsive Design with Media Queries</strong></p>\r\n                    <ul data-start=\"1300\" data-end=\"1621\">\r\n                        <li data-start=\"1300\" data-end=\"1383\">\r\n                            <p data-start=\"1302\" data-end=\"1383\">Incorporate media queries to ensure the website adapts to various screen sizes.</p>\r\n                        </li>\r\n                        <li data-start=\"1387\" data-end=\"1532\">\r\n                            <p data-start=\"1389\" data-end=\"1532\">Design the layout so that on larger screens, content is displayed in a row (using flexbox) and on smaller screens, content stacks vertically.</p>\r\n                        </li>\r\n                        <li data-start=\"1536\" data-end=\"1621\">\r\n                            <p data-start=\"1538\" data-end=\"1621\">Establish clear breakpoints to maintain usability and visual appeal across devices.</p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"1623\" data-end=\"2009\">\r\n                    <p data-start=\"1626\" data-end=\"1655\"><strong data-start=\"1626\" data-end=\"1653\">Dynamic Web Interaction</strong></p>\r\n                    <ul data-start=\"1659\" data-end=\"2009\">\r\n                        <li data-start=\"1659\" data-end=\"1735\">\r\n                            <p data-start=\"1661\" data-end=\"1735\">Integrate a JavaScript feature that interacts dynamically with the user.</p>\r\n                        </li>\r\n                        <li data-start=\"1739\" data-end=\"1909\">\r\n                            <p data-start=\"1741\" data-end=\"1909\">Include an interactive element (such as a button) that, when activated, adds or modifies content on the page (for example, inserting a new element into the document).</p>\r\n                        </li>\r\n                        <li data-start=\"1913\" data-end=\"2009\">\r\n                            <p data-start=\"1915\" data-end=\"2009\">Implement a transition or animation effect for the dynamic element to enhance user experience.</p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"2011\" data-end=\"2264\">\r\n                    <p data-start=\"2014\" data-end=\"2060\"><strong data-start=\"2014\" data-end=\"2058\">Navigation Consistency and Customization</strong></p>\r\n                    <ul data-start=\"2064\" data-end=\"2264\">\r\n                        <li data-start=\"2064\" data-end=\"2154\">\r\n                            <p data-start=\"2066\" data-end=\"2154\">Update page titles, header text, and navigation labels to reflect your personal brand.</p>\r\n                        </li>\r\n                        <li data-start=\"2158\" data-end=\"2264\">\r\n                            <p data-start=\"2160\" data-end=\"2264\">Ensure that each page’s navigation menu is consistent and clearly indicates the current page or section.</p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"2266\" data-end=\"2644\">\r\n                    <p data-start=\"2269\" data-end=\"2301\"><strong data-start=\"2269\" data-end=\"2299\">FTP Deployment Preparation</strong></p>\r\n                    <ul data-start=\"2305\" data-end=\"2644\">\r\n                        <li data-start=\"2305\" data-end=\"2434\">\r\n                            <p data-start=\"2307\" data-end=\"2434\">Organize your project folder with separate subfolders for HTML files, CSS, JavaScript, and assets (such as images and fonts).</p>\r\n                        </li>\r\n                        <li data-start=\"2438\" data-end=\"2522\">\r\n                            <p data-start=\"2440\" data-end=\"2522\">Verify that all file paths are relative and correctly structured for deployment.</p>\r\n                        </li>\r\n                        <li data-start=\"2526\" data-end=\"2644\">\r\n                            <p data-start=\"2528\" data-end=\"2644\">Prepare your project folder for FTP deployment by ensuring all necessary files are included and logically organized.</p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"2646\" data-end=\"2992\">\r\n                    <p data-start=\"2649\" data-end=\"2684\"><strong data-start=\"2649\" data-end=\"2682\">Code Quality and Organization</strong></p>\r\n                    <ul data-start=\"2688\" data-end=\"2992\">\r\n                        <li data-start=\"2688\" data-end=\"2787\">\r\n                            <p data-start=\"2690\" data-end=\"2787\">Write clean, well-indented, and properly commented code in all HTML, CSS, and JavaScript files.</p>\r\n                        </li>\r\n                        <li data-start=\"2791\" data-end=\"2885\">\r\n                            <p data-start=\"2793\" data-end=\"2885\">Use meaningful file names and maintain a logical folder structure throughout your project.</p>\r\n                        </li>\r\n                        <li data-start=\"2889\" data-end=\"2992\">\r\n                            <p data-start=\"2891\" data-end=\"2992\">Ensure your code follows best practices and is easy to navigate for future maintenance or evaluation.</p>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li data-start=\"2994\" data-end=\"3327\">\r\n                    <p data-start=\"2997\" data-end=\"3026\"><strong data-start=\"2997\" data-end=\"3024\">Submission Instructions</strong></p>\r\n                    <ul data-start=\"3030\" data-end=\"3327\">\r\n                        <li data-start=\"3030\" data-end=\"3118\"><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">Deploy your final project folder using FileZilla to the designated FTP server.</span></li>\r\n                        <li data-start=\"3122\" data-end=\"3204\">Verify that the deployed site is accessible via its public URL and that all pages, styles, and scripts load properly.</li>\r\n                    </ul>\r\n                </li>\r\n            </ol><span style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">Follow these steps carefully to create a comprehensive final project that fully incorporates and demonstrates everything learned in the course.</span>\r\n            <p data-start=\"3329\" data-end=\"3472\"></p><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;\">Submit your web URL only to the text box below your link, which shows the following</span><span style=\"background-color: initial; font-size: 0.9375rem; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; white-space-collapse: preserve;\">. Fill in the &lt;&gt; with your data. Test your link in your browser. If your page does not load, I cannot grade it, and you will receive a 0 for this assignment.</span>\r\n            <p data-start=\"2642\" data-end=\"2683\" style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\"></p><span style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">https://ccuresearch.coastal.edu/</span><strong style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">&lt;yourCCUuserName&gt;/</strong><span style=\"background-color: initial; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; font-size: 0.9375rem;\">CSCI120/FinalProject/</span>\r\n            <p></p>\r\n            <p></p>\r\n        </div>\r\n\r\n    </div>\r\n    <!-- End block -->\r\n\r\n</div>\r\n<!-- close Background -->",
+                    "introformat": 1,
+                    "introfiles": [],
+                    "introattachments": [],
+                    "timelimit": 0,
+                    "submissionattachments": 0
+                }
+            ]
+        },
+        {
+            "id": 7997,
+            "fullname": "CBAD*201*D1-D2 Financial Accounting - 25/FA",
+            "shortname": "CBAD*201*D1_25/FA",
+            "timemodified": 1754670576,
+            "assignments": []
+        }
+    ],
+    "warnings": [
+        {
+            "item": "module",
+            "itemid": 493883,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 493891,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 493893,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 494486,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 494559,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 494672,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 494676,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 494991,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 495661,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 495665,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 495667,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 495672,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 497834,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 497836,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 497838,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 497841,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 497843,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 497846,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 497847,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 497850,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 497853,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 497855,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        },
+        {
+            "item": "module",
+            "itemid": 497858,
+            "warningcode": "1",
+            "message": "No access rights in module context"
+        }
+    ]
+}

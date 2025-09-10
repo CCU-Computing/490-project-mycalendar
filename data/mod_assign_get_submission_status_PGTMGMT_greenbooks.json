@@ -1,0 +1,72 @@
+{
+    "lastattempt": {
+        "submission": {
+            "id": 947099,
+            "userid": 8408,
+            "attemptnumber": 0,
+            "timecreated": 1756399790,
+            "timemodified": 1756434663,
+            "timestarted": null,
+            "status": "submitted",
+            "groupid": 0,
+            "assignment": 60890,
+            "latest": 1,
+            "plugins": [
+                {
+                    "type": "onlinetext",
+                    "name": "Online text",
+                    "fileareas": [
+                        {
+                            "area": "submissions_onlinetext",
+                            "files": []
+                        }
+                    ],
+                    "editorfields": [
+                        {
+                            "name": "onlinetext",
+                            "description": "Online text submissions",
+                            "text": "<p dir=\"ltr\" style=\"text-align:left;\"><strong></strong></p><ol><li dir=\"ltr\"><p dir=\"ltr\"><span id=\"docs-internal-guid-e88c7c8e-7fff-8d99-0970-5fd04d2e1f3f\">Global Green Books Publishing struggled because they scaled quickly without basic project management. Part time hires were not used effectively, schedules slipped, quality issues caused rework, costs were not controlled so the third year was not profitable, estimates were poor, and constant surprises kept happening as a result from having no clear plans, tools, or processes for scheduling, estimating, budgeting, risk, or quality.</span></p></li><li dir=\"ltr\"><p dir=\"ltr\"><span>Samantha put formal project management processes in place, wrote a simple manual, and trained the team. She added proactive risk analysis with response plans and improved communication with stakeholders. As a result, projects met their schedules and the quality process held up.</span></p></li><li dir=\"ltr\"><p dir=\"ltr\"><span>I would start every job with a short charter and a baseline for scope, schedule, and cost. I would use simple scheduling and estimation tools, track progress against the plan, and hold short, regular check ins. I would add basic quality checkpoints before delivery, keep a live risk list with owners and responses, define clear roles so part time staff know what to deliver and when, and close each project with lessons learned to improve future estimates.</span></p></li><li dir=\"ltr\"><p dir=\"ltr\"><span>Yes. Many startups hit the same problems when they hire fast and take on too much. The ones that improve add light structure, a shared backlog of items to complete, clear owners, due dates, visible schedules, and routine customer updates. Even modest project management reduces rework, limits surprises, and protects profit.</span></p></li><li dir=\"ltr\"><p dir=\"ltr\"><span>Yes, she can succeed by focusing on planning, communication, risk management, and team coordination. In a technical shop, a project manager can lean on technical leads for deep decisions while driving clarity on scope, schedule, risks, and quality. If she keeps partnering with subject matter experts and refining these basic practices, she can remain effective.</span></p></li></ol><span></span><br /><p></p>",
+                            "format": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "comments",
+                    "name": "Submission comments"
+                }
+            ]
+        },
+        "submissiongroupmemberswhoneedtosubmit": [],
+        "submissionsenabled": true,
+        "locked": false,
+        "graded": false,
+        "canedit": true,
+        "caneditowner": true,
+        "cansubmit": false,
+        "extensionduedate": null,
+        "timelimit": 0,
+        "blindmarking": false,
+        "gradingstatus": "notgraded",
+        "usergroups": []
+    },
+    "assignmentdata": {
+        "attachments": {
+            "intro": [
+                {
+                    "filename": "mini-case-1-global-green-books.pdf",
+                    "filepath": "/",
+                    "filesize": 137188,
+                    "fileurl": "https://moodle24-26.coastal.edu/webservice/pluginfile.php/1293244/mod_assign/introattachment/0/mini-case-1-global-green-books.pdf",
+                    "timemodified": 1754697769,
+                    "mimetype": "application/pdf",
+                    "isexternalfile": true,
+                    "repositorytype": "local"
+                }
+            ],
+            "activity": []
+        },
+        "activity": "<p dir=\"ltr\" style=\"text-align:left;\"></p><p><a name=\"docs-internal-guid-a370a80a-80df-7e7a-e30e-35e3925a0d96\"></a><a name=\"intro\"></a>\r\n</p><div><div></div></div><div>Read the <em>Mini Case 1: Project Management at Global Green Books Publishing</em> at <a href=\"https://moodle24-26.coastal.edu/mod/resource/view.php?id=543937\" target=\"_blank\" rel=\"noreferrer noopener\">https://moodle24-26.coastal.edu/mod/resource/view.php?id=543937</a> Answer the five questions at the end of the case (a-e).</div><br /><div>Submit your answers as text entered directly into the assignment submission screen. I encourage you to work offline, creating and saving your work in a separate offline document, and then copying and pasting the entire final version into the assignment submission screen. Before submitting, be sure that the pasting did not introduce unwanted formatting or other input errors.</div><br /><div>No late submissions will be graded.</div><br /><br /><p></p>",
+        "activityformat": 1
+    },
+    "warnings": []
+}
