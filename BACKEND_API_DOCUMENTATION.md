@@ -384,3 +384,140 @@ const allWork = courses.flatMap(course => [
   ...course.quizzes
 ]).sort((a, b) => (a.dueAt || 0) - (b.dueAt || 0));
 ```
+
+---
+
+## Contributor Guide: Where to Add Things
+
+### Server-side (Node/Express, CommonJS)
+
+- **Routes (HTTP endpoints)**: add or update handlers in `src/routes/api.js`.
+  - If a feature grows large, create a new router file under `src/routes/` and mount it in `server/server.js`.
+  - Keep routes thin; push business logic to services.
+
+- **Services (business logic, aggregation, transformations)**: add modules in `src/services/`.
+  - Example: `src/services/aggregator.js` composes Moodle calls into consolidated responses.
+  - Each new feature should expose clear service functions that routes call into.
+
+- **Moodle integration (external API calls)**: use `src/moodle/api.js` and `src/lib/moodleClient.js`.
+  - Put low-level HTTP and endpoint-specific request/response mapping here.
+  - Keep it stateless; cache in services or sessions if needed.
+
+- **Middleware (cross-cutting concerns)**: add to `src/middleware/` and mount in `server/server.js` or per-route.
+  - Example: `sessionAuth.js` ensures an authenticated session exists.
+
+- **Preferences (user-specific settings)**: extend `src/prefs/store.js` and expose small helpers.
+  - Current shape: `{ version, users: { [userid]: { calendar: { courseColors, eventOverrides }, ui: { ... } } } }`.
+  - Prefer helpers like `getUserPrefs`, `setCourseColor`, `setEventOverride`.
+
+### Client-side (vanilla JS + Tailwind)
+
+- **Reusable UI components**: add modules in `client/components/`.
+  - Example: `client/components/ClassList.js` exports `mountClassList(...)` and owns its modal DOM.
+  - Component guidelines:
+    - Accept `{ containerId }` or a DOM node to mount into
+    - Fetch their own data via `client/js/apiClient.js`
+    - Render UI and wire events internally
+    - Avoid globals; optionally return `{ reload }`
+
+- **Page scripts**: put page-specific glue in `client/js/` and load from `client/pages/*.html` with `<script type="module">`.
+  - Keep pages thin: import and mount components, handle page-only logic.
+
+- **Shared API client**: add endpoint wrappers in `client/js/apiClient.js`.
+  - Always return parsed JSON; handle 401 by redirecting to `login.html`.
+
+---
+
+## Conventions and Best Practices
+
+### Modules
+- Server uses CommonJS (`"type": "commonjs"`). Use `require(...)`/`module.exports`.
+- Client uses ES modules in the browser. Use `export`/`import` and `<script type="module">`.
+
+### Error shape
+- Return `{ "error": "message" }` with correct HTTP status codes.
+- Map Moodle errors to concise user-facing messages.
+
+### Route pattern
+Keep route handlers minimal and defer to services.
+```javascript
+// src/routes/api.js
+router.get('/feature', requireSession, async (req, res) => {
+  try {
+    const data = await myService.getFeature(req.session);
+    res.json({ data });
+  } catch (e) {
+    res.status(500).json({ error: e.message || 'Failed to load feature' });
+  }
+});
+```
+
+### Service pattern
+Compose Moodle calls and normalize outputs.
+```javascript
+// src/services/myFeature.js
+const moodle = require('../moodle/api');
+
+async function getFeature(session) {
+  const [a, b] = await Promise.all([
+    moodle.fetchA(session),
+    moodle.fetchB(session),
+  ]);
+  return { a: transformA(a), b: transformB(b) };
+}
+
+module.exports = { getFeature };
+```
+
+### Preferences example (class colors)
+- Client reads prefs on mount: `api.prefs.get()`.
+- `ClassList` already reads `prefs.calendar.courseColors` and sets per-course card borders.
+- To update a class color from settings, call `PUT /api/prefs/courseColor` with `{ courseId, color }`.
+```javascript
+// Read prefs
+const { prefs } = await api.prefs.get();
+const courseColors = prefs?.calendar?.courseColors || {};
+
+// Save color
+await api.prefs.setCourseColor(courseId, '#4F46E5');
+```
+
+---
+
+## Adding a New Feature: Checklist
+
+1) Define the user story and response shape.
+2) Add a service in `src/services/` that calls Moodle (via `src/moodle/api.js`) and transforms data.
+3) Add a route in `src/routes/api.js` that validates inputs and returns JSON.
+4) If you need user settings, extend `src/prefs/store.js` and add a `PUT` endpoint in `src/routes/prefs.js`.
+5) On the client, add a reusable component in `client/components/` and mount it from a page script in `client/js/`.
+6) Update this documentation with endpoints and usage snippets.
+
+---
+
+## Local Testing Tips
+
+### Quick endpoint checks
+```bash
+curl -i http://localhost:3000/api/me
+curl -i http://localhost:3000/api/courses
+curl -i http://localhost:3000/api/work
+curl -i http://localhost:3000/api/prefs
+```
+
+### Simulate color updates
+```bash
+curl -i -X PUT http://localhost:3000/api/prefs/courseColor \
+  -H 'Content-Type: application/json' \
+  -d '{"courseId":"9267","color":"#16A34A"}'
+```
+
+Note: Session-required endpoints need a valid session cookie. Log in via the UI, then call endpoints from the browser or tools that reuse cookies.
+
+---
+
+## What’s Already Wired
+
+- `ClassList` (client) reads preferences on load and applies `prefs.calendar.courseColors`. If none exist, it shows a sample color for the first class to aid user stories.
+- Preferences API supports `GET /api/prefs`, `PUT /api/prefs/courseColor`, and `PUT /api/prefs/eventOverride`.
+- Calendar/work endpoints are available; you can color events by course ID using the same prefs map.
