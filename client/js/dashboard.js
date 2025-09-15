@@ -1,4 +1,6 @@
 import { mountClassList } from "../components/ClassList.js";
+import { mountCalendar } from "../components/Calendar.js";
+import { api } from "./apiClient.js";
 
 (function () {
   const userName = sessionStorage.getItem("mc_userName");
@@ -16,6 +18,19 @@ import { mountClassList } from "../components/ClassList.js";
 
   document.addEventListener("DOMContentLoaded", function () {
     mountClassList({ containerId: "semesterClasses" });
+
+    const calendar = mountCalendar({
+      containerId: "calendar",
+      initialView: "dayGridMonth",
+      prefsEnabled: true,
+      fetchEvents: async () => {
+        // this is where you would hook to /api/calendar to build out the calendar
+      },
+    });
+
+    document.getElementById("refreshCalendar")?.addEventListener("click", () => {
+      calendar.reload();
+    });
   });
 })();
 // add more here for user stories related to the dashboard, like the calendar, mini action task items, etc. create branches for them, so we can do the code reviews and eventually merge all.

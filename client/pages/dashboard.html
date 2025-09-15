@@ -134,33 +134,7 @@
       </div>
     </div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const chip = document.getElementById("userChip");
-        if (chip) {
-          const n = sessionStorage.getItem("mc_userName");
-          chip.textContent = n ? `Hi, ${n}` : "";
-        }
-
-        const calEl = document.getElementById("calendar");
-        if (calEl && window.FullCalendar) {
-          const cal = new FullCalendar.Calendar(calEl, {
-            initialView: "dayGridMonth",
-            height: "auto",
-            headerToolbar: {
-              left: "prev,next today",
-              center: "title",
-              right: "dayGridMonth,timeGridWeek,listWeek"
-            },
-            events: [] 
-          });
-          cal.render();
-          document.getElementById("refreshCalendar")?.addEventListener("click", () => {
-            // placeholder: hook to /api/calendar if desired
-          });
-        }
-      });
-    </script>
+    
 
     <script type="module" src="../js/partials.js"></script>
     <script type="module" src="../js/dashboard.js"></script>
