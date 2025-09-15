@@ -71,6 +71,69 @@
       </section>
     </main>
 
+    <!-- Class Details Modal -->
+    <div id="classModal" class="fixed inset-0 z-50 hidden">
+      <div id="modalBackdrop" class="absolute inset-0 bg-black bg-opacity-50"></div>
+      <div class="relative flex min-h-full items-center justify-center p-4">
+        <div class="relative w-full max-w-2xl rounded-2xl bg-white shadow-xl">
+          <!-- Modal Header -->
+          <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+            <h3 id="mTitle" class="text-lg font-semibold text-slate-900">Course Details</h3>
+            <button id="mClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Modal Content -->
+          <div class="px-6 py-6">
+            <div class="flex items-start gap-4">
+              <img id="mImg" src="" alt="Course image" class="h-16 w-16 rounded-lg object-cover ring-1 ring-slate-200 bg-slate-100">
+              <div class="flex-1 min-w-0">
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span class="font-medium text-slate-900">Category:</span>
+                    <span id="mCat" class="ml-2 text-slate-600">—</span>
+                  </div>
+                  <div>
+                    <span class="font-medium text-slate-900">Progress:</span>
+                    <span id="mProg" class="ml-2 text-slate-600">—</span>
+                  </div>
+                  <div>
+                    <span class="font-medium text-slate-900">Grade:</span>
+                    <span id="mGrade" class="ml-2 text-slate-600">—</span>
+                  </div>
+                  <div>
+                    <span class="font-medium text-slate-900">Next Due:</span>
+                    <span id="mNext" class="ml-2 text-slate-600">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upcoming Assignments -->
+            <div class="mt-6">
+              <h4 class="text-sm font-semibold text-slate-900 mb-3">Upcoming Assignments</h4>
+              <ul id="mUpcoming" class="space-y-2">
+                <!-- Dynamic content will be inserted here -->
+              </ul>
+            </div>
+
+            <!-- View Course Button -->
+            <div class="mt-6 flex justify-end">
+              <a id="mViewCourse" href="#" class="hidden inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+                View Course
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const chip = document.getElementById("userChip");
@@ -100,5 +163,6 @@
     </script>
 
     <script type="module" src="../js/partials.js"></script>
+    <script type="module" src="../js/dashboard.js"></script>
   </body>
 </html>

@@ -1,3 +1,5 @@
+import { mountClassList } from "../components/ClassList.js";
+
 (function () {
   const userName = sessionStorage.getItem("mc_userName");
   const userChip = document.getElementById("userChip");
@@ -11,6 +13,10 @@
   if (userChip) {
     userChip.textContent = "Hi, " + userName;
   }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    mountClassList({ containerId: "semesterClasses" });
+  });
 })();
 // add more here for user stories related to the dashboard, like the calendar, mini action task items, etc. create branches for them, so we can do the code reviews and eventually merge all.
 // remember, this is just beginner demo stuff, once we move on to using the actual endpoints, the js will operate differently

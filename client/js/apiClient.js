@@ -29,4 +29,20 @@ export const api = {
       .then(handle),
 
   calendar: () => fetch("/api/calendar").then(handle),
+
+  prefs: {
+    get: () => fetch("/api/prefs").then(handle),
+    setCourseColor: (courseId, color) =>
+      fetch("/api/prefs/courseColor", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courseId, color }),
+      }).then(handle),
+    setEventOverride: (id, patch) =>
+      fetch("/api/prefs/eventOverride", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, ...patch }),
+      }).then(handle),
+  },
 };

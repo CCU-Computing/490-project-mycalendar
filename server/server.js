@@ -2,6 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const path = require("path");
 const apiRouter = require("../src/routes/api");
+const prefsRouter = require("../src/routes/prefs");
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(
 );
 
 app.use("/api", apiRouter);
+app.use("/api/prefs", prefsRouter);
 
 app.use(express.static(path.join(__dirname, "../client")));
 
