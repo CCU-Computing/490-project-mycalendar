@@ -343,29 +343,6 @@ Individual events can be customized:
 
 ---
 
-## Development Setup
-
-### Prerequisites
-- Node.js
-- Moodle LMS access with web service token
-- Express.js server running on port 3000
-
-### Environment Variables
-```bash
-MOODLE_BASE_URL=https://your-moodle-site.com/webservice/rest/server.php
-SESSION_SECRET=your-secret-key
-PORT=3000
-```
-
-### Running the Server
-```bash
-npm run dev
-# or
-npm start
-```
-
----
-
 ## Example Frontend Integration
 
 ### Fetching Course Data
@@ -407,5 +384,3 @@ const allWork = courses.flatMap(course => [
   ...course.quizzes
 ]).sort((a, b) => (a.dueAt || 0) - (b.dueAt || 0));
 ```
-
-This documentation provides everything your teammates need to understand the backend structure and create effective user stories for calendar, to-do, and other educational applications.
