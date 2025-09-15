@@ -1,32 +1,104 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Dashboard — MyCalendar</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../js/dashboard.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
   </head>
+
   <body class="min-h-screen bg-slate-50 text-slate-900">
+    <div data-partial="../partials/nav.html"></div>
+
     <header class="border-b border-slate-200 bg-white">
       <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-700">📅</span>
           <span class="font-semibold tracking-tight">MyCalendar</span>
         </div>
-
         <div class="flex items-center gap-3">
-          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700">
-          </span>
+          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700"></span>
           <a href="../index.html" class="text-sm text-indigo-700 hover:underline">Landing Page</a>
         </div>
       </div>
     </header>
 
-    <main class="mx-auto max-w-6xl px-4 py-8">
-      <h1 class="text-2xl font-semibold tracking-tight">Dashboard</h1>
-      <p class="mt-2 text-slate-600">Calendar and course data will appear here.</p>
-      <!-- build out later -->
+    <main class="mx-auto max-w-6xl px-4 py-8 space-y-8">
+
+      <section class="rounded-2xl border border-slate-200 bg-white shadow-sm min-h-[35vh]">
+        <div class="px-5 py-4 border-b border-slate-200">
+          <h2 class="text-lg font-semibold tracking-tight">User Story Area: This Semester’s Classes</h2>
+          <p class="text-sm text-slate-500 mt-1">
+            Add class cards here (e.g., name, progress, overall grade).
+          </p>
+        </div>
+        <div class="p-5">
+          <div id="semesterClasses" class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
+            <div class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+              No classes rendered yet. User Story Area: Class cards grid.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-6 min-h-[60vh]">
+        <!-- Calendar pane -->
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm flex flex-col">
+          <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+            <h2 class="text-lg font-semibold tracking-tight">Calendar</h2>
+            <button id="refreshCalendar" class="text-sm text-indigo-700 hover:underline">Refresh</button>
+          </div>
+          <div id="calendar" class="m-2 rounded-xl border border-slate-200 bg-white p-2 shadow-sm flex-1 min-h-[52vh]"></div>
+        </div>
+
+        <!-- Right-side vertical column: Upcoming Assignments -->
+        <aside class="rounded-2xl border border-slate-200 bg-white shadow-sm flex flex-col">
+          <div class="px-5 py-4 border-b border-slate-200">
+            <h2 class="text-lg font-semibold tracking-tight">User Story Area: Upcoming Assignments</h2>
+            <p class="text-sm text-slate-500 mt-1">
+              Show upcoming due items alongside the calendar.
+            </p>
+          </div>
+          <div class="p-5 overflow-y-auto">
+            <ul id="upcomingAssignments" class="space-y-2">
+              <li class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+                No items yet. User Story Area: Upcoming assignments list.
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </section>
     </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const chip = document.getElementById("userChip");
+        if (chip) {
+          const n = sessionStorage.getItem("mc_userName");
+          chip.textContent = n ? `Hi, ${n}` : "";
+        }
+
+        const calEl = document.getElementById("calendar");
+        if (calEl && window.FullCalendar) {
+          const cal = new FullCalendar.Calendar(calEl, {
+            initialView: "dayGridMonth",
+            height: "auto",
+            headerToolbar: {
+              left: "prev,next today",
+              center: "title",
+              right: "dayGridMonth,timeGridWeek,listWeek"
+            },
+            events: [] 
+          });
+          cal.render();
+          document.getElementById("refreshCalendar")?.addEventListener("click", () => {
+            // placeholder: hook to /api/calendar if desired
+          });
+        }
+      });
+    </script>
+
+    <script type="module" src="../js/partials.js"></script>
   </body>
 </html>

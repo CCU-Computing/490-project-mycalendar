@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "users": {
+    "8408": {
+      "calendar": {
+        "courseColors": {
+          "9267": "#4F46E5",
+          "8186": "#16A34A",
+          "7302": "#DB2777",
+          "7101": "#0891B2",
+          "7050": "#D97706",
+          "6999": "#8B5CF6",
+          "6888": "#EA580C"
+        },
+        "eventOverrides": {
+          "assign:60890": { "color": "#2563EB", "textColor": "#FFFFFF" },
+          "quiz:29431":   { "color": "#CA8A04", "textColor": "#111827" }
+        }
+      },
+      "ui": {
+        "defaultView": "dayGridMonth",
+        "showPastEvents": true
+      },
+      "notes": "Demo seed. Replace courseIds with real ones returned by /api/courses."
+    }
+  }
+}

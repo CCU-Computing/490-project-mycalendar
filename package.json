@@ -1,10 +1,14 @@
 {
   "name": "my-calander",
   "private": true,
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "node server/server.js",
     "start": "node server/server.js"
   },
-  "dependencies": { "express": "^4.19.2" }
+  "dependencies": {
+    "express": "^4.21.2",
+    "express-session": "^1.18.2",
+    "tailwindcss": "^4.1.13"
+  }
 }
