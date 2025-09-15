@@ -101,6 +101,7 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
   let courseList = [];
   let nextByCourse = {};
   let gradeByCourse = {};
+  let courseColors = {};
 
   // Modal refs (now guaranteed to exist)
   const modal = $("classModal");
@@ -161,6 +162,7 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
     courseList.forEach(function (c) {
       const next = nextByCourse[c.id]?.next;
       const grade = gradeByCourse[c.id];
+      const color = courseColors[String(c.id)] || "";
       const card = document.createElement("button");
       card.type = "button";
       card.className = [
@@ -168,6 +170,9 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
         "hover:shadow-md hover:border-slate-300 transition",
         "cursor-pointer"
       ].join(" ");
+      if (color) {
+        card.style.borderColor = color;
+      }
       const img = document.createElement("img");
       img.src = c.image || "";
       img.alt = c.shortname || "Course image";
@@ -203,9 +208,14 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
 
   async function reload() {
     try {
-      const [coursesRes, workRes] = await Promise.allSettled([api.courses(), api.work()]);
+      const [coursesRes, workRes, prefsRes] = await Promise.allSettled([
+        api.courses(),
+        api.work(),
+        api.prefs.get()
+      ]);
       const coursesData = coursesRes.status === "fulfilled" ? coursesRes.value : null;
       const workData = workRes.status === "fulfilled" ? workRes.value : null;
+      const prefsData = prefsRes.status === "fulfilled" ? prefsRes.value : null;
       if (coursesData && coursesData.courses) {
         courseList = coursesData.courses;
         courseList.forEach(course => {
@@ -214,6 +224,14 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
         });
       }
       if (workData) nextByCourse = buildNextMap(workData);
+      courseColors = (prefsData && prefsData.prefs && prefsData.prefs.calendar && prefsData.prefs.calendar.courseColors) || {};
+      // Example fallback: if empty, color the first course so storytellers can see it
+      if (!courseColors || Object.keys(courseColors).length === 0) {
+        if (courseList && courseList.length > 0) {
+          const firstId = String(courseList[0].id);
+          courseColors = { [firstId]: "#4F46E5" }; // Indigo sample
+        }
+      }
       renderCourses();
     } catch (e) {
       container.innerHTML = `
