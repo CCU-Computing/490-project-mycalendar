@@ -20,7 +20,6 @@
         fetch('/api/prefs').then(r => r.json())
     ]);
     const courseColors = prefs?.calendar?.courseColors || {};
-    console.log(courses)
     
     let cardDeck = document.getElementById("cardDeck");
     
@@ -68,7 +67,51 @@
 
         colorInput.value = courseColors[String(course.id)] || '#4F46E5';
     });
-    
+
+
+    // EXPORT FUNCTION
+    let icsButton = document.getElementById("exportICS");
+    // ICS
+
+    icsButton.addEventListener("click", () => {
+        window.alert("Downloading...");
+
+        // OUTLINE FOR EACH EVENT
+        const icsCONTENT = `
+            BEGIN:VCALENDAR
+            VERSION:2.0
+            CALSCALE:GREGORIAN
+            METHOD:PUBLISH
+
+            BEGIN:VEVENT
+            UID:${Date.now()}@example.com
+            DTSTAMP:${formatDate(new Date())}
+            SUMMARY:My Custom Event
+            DESCRIPTION:This is an example event
+            DTSTART:20250915T090000Z
+            DTEND:20250915T100000Z
+            LOCATION:Online
+            END:VEVENT
+
+            END:VCALENDAR`;
+
+        // helper to format dates into iCalendar UTC format
+        function formatDate(date) {
+        return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+        }
+
+        // Place download file into button
+        const blob = new Blob([icsCONTENT], {type:"text/calendar;charset=utf-8"})
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "sample.ics";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    })
 })();
 
 
