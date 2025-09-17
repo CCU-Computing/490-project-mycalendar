@@ -19,18 +19,103 @@ import { api } from "./apiClient.js";
   document.addEventListener("DOMContentLoaded", function () {
     mountClassList({ containerId: "semesterClasses" });
 
+    // array to hold all events and courses
+    let allEvents = [];
+    let allCourses = [];
+
+    // get filter by course select element
+    const filterByCourseSelect = document.getElementById("filterByCourseSelect");
+
+    // calendar setup and options
     const calendar = mountCalendar({
       containerId: "calendar",
       initialView: "dayGridMonth",
       prefsEnabled: true,
       fetchEvents: async () => {
-        // this is where you would hook to /api/calendar to build out the calendar
+
+        // get events and courses
+        await getEventsAndCourses();
+
+        // iterate over every event and convert the date
+        return allEvents.map(ev => ({
+          ...ev,
+          start: new Date(ev.dueAt * 1000),
+          allDay: true
+        }));
       },
     });
 
-    document.getElementById("refreshCalendar")?.addEventListener("click", () => {
+    // load calendar events immediately
+    calendar.reload();
+
+    // get events and courses function with filter by course select creation 
+    async function getEventsAndCourses() {
+
+      // get events and courses
+      const { events } = await api.calendar();
+      const { courses } = await api.courses();
+
+      // update all events and courses
+      allEvents = events;
+      allCourses = courses;
+
+      // create all courses option
+      const allCoursesOption = document.createElement("option");
+      allCoursesOption.value = "allCourses";
+      allCoursesOption.textContent = "All Courses";
+      filterByCourseSelect.appendChild(allCoursesOption);
+
+      // iterate through all courses
+      allCourses.forEach(course => {
+
+        // create course option
+        const option = document.createElement("option");
+        option.value = course.id;
+        option.textContent = course.name;
+        filterByCourseSelect.appendChild(option);
+      });
+    }
+
+    // event listener for refreshing calendar
+    document.getElementById("refreshCalendar").addEventListener("click", () => {
+
+      // reset filter by course select to all courses option
+      filterByCourseSelect.value = "allCourses";
+
+      // remove all options
+      filterByCourseSelect.options.length = 0;
+
+      // reload calendar
       calendar.reload();
     });
+
+    // event listener for filter by courses
+    document.getElementById("filterByCourseSelect").addEventListener("change", () => {
+
+      // get calendar instance
+      const calendarInstance = calendar.getInstance();
+
+      // get the dropdown value
+      const filterByCourseSelectValue = filterByCourseSelect.value;
+
+      // remove all events from calendar
+      calendarInstance.removeAllEvents();
+
+      // iterate through all events
+      allEvents.forEach(ev => {
+
+        // determine if current event matches the filter or if all courses is selected
+        if (ev.courseId == Number(filterByCourseSelectValue) || filterByCourseSelectValue == "allCourses") {
+
+          // add event to calendar
+          calendarInstance.addEvent({
+            ...ev,
+            start: new Date(ev.dueAt * 1000),
+            allDay: true
+          });
+        }
+      });
+    })
   });
 })();
 // add more here for user stories related to the dashboard, like the calendar, mini action task items, etc. create branches for them, so we can do the code reviews and eventually merge all.
