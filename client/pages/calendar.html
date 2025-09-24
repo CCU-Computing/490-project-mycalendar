@@ -1,1 +1,268 @@
-<!-- upcoming page for just the calendar/related stuff to the calendar -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - MyCalendar</title>
+    
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .btn-primary {
+            background: #667eea;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #48bb78;
+        }
+
+        .btn-secondary:hover {
+            background: #38a169;
+        }
+
+        .calendar-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            min-height: 600px;
+            position: relative;
+        }
+
+        /* Calendar customizations */
+        #calendar {
+            height: 100%;
+            min-height: 500px;
+        }
+
+        .info-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .time-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-left: auto;
+        }
+
+        .time-icon {
+            width: 4px;
+            height: 16px;
+            background: #e74c3c;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .legend {
+                justify-content: center;
+            }
+
+            .time-info {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><span>📅</span> MyCalendar</h1>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="refreshCalendar()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <a href="dashboard.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- Info Panel with Legend -->
+        <div class="info-panel">
+            <div class="legend">
+                <h3 style="margin-right: 20px;">Holiday Legend:</h3>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #dc3545;"></div>
+                    <span>Federal Holidays</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #198754;"></div>
+                    <span>Christmas & Religious</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #fd7e14;"></div>
+                    <span>Seasonal/Cultural</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #6f42c1;"></div>
+                    <span>Observance Days</span>
+                </div>
+                <div class="time-info">
+                    <div class="time-icon"></div>
+                    <span>Red line shows current time</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Container -->
+        <div class="calendar-container">
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+    
+    <script type="module">
+        import { mountCalendar } from '../components/Calendar.js';
+        
+        let calendar;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            calendar = mountCalendar({
+                containerId: 'calendar',
+                initialView: 'dayGridMonth',
+                fetchEvents: async () => {
+                    // This is where you would fetch user events from your API
+                    // For now, return empty array so only holidays show
+                    return [];
+                },
+                options: {
+                    height: 'auto',
+                    aspectRatio: 1.35,
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    buttonText: {
+                        today: 'Today',
+                        month: 'Month',
+                        week: 'Week',
+                        day: 'Day'
+                    },
+                    // Event click handler
+                    eventClick: function(info) {
+                        if (info.event.extendedProps.type === 'holiday') {
+                            alert(`${info.event.title}\n\n${info.event.extendedProps.description}`);
+                        }
+                    },
+                    // Date click handler
+                    dateClick: function(info) {
+                        const clickedDate = info.dateStr;
+                        console.log('Date clicked:', clickedDate);
+                        // You can add functionality here for adding events
+                    }
+                }
+            });
+        });
+        
+        // Global refresh function
+        window.refreshCalendar = function() {
+            if (calendar) {
+                calendar.reload();
+            }
+        };
+    </script>
+</body>
+</html>
