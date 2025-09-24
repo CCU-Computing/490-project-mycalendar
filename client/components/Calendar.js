@@ -128,9 +128,26 @@ export function mountCalendar({
   
   calendar.render();
 
-  // Start real-time updates
-  let timeUpdateInterval = null;
-  startRealTimeUpdates();
+  // As a user I want to be able to add a new assignment/ event to my calendar
+  var eventForm = document.getElementById('eventForm');
+  eventForm.addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent the form from submitting normally
+
+      // Get form values
+      var title = document.getElementById('eventTitle').value;
+      var start = document.getElementById('eventStart').value;
+      var end = document.getElementById('eventEnd').value;
+
+      // Add the new event to the calendar
+      calendar.addEvent({
+          title: title,
+          start: start,
+          end: end || null // Use null if no end date is provided
+      });
+
+      // Clear the form fields
+      eventForm.reset();
+  });
 
   async function reload() {
     if (typeof fetchEvents === "function") {
