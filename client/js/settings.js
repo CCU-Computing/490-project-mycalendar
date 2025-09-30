@@ -16,15 +16,31 @@
 
     // COLOR PICKER
     // API Calls
-    // Get Courses and Database(JSON)
     try {
-        const [{ courses }, { prefs }] = await Promise.all([
+        // API Calls
+        const [{ courses }, { prefs }, { events }] = await Promise.all([
             fetch('/api/courses').then(r => r.json()),
-            fetch('/api/prefs').then(r => r.json())
+            fetch('/api/prefs').then(r => r.json()),
+            fetch('/api/calendar').then(r => r.json())
         ]);
 
+
+        // Get colors
         const courseColors = prefs?.calendar?.courseColors || {};
         
+        // Set up Coloris with basic colors
+        Coloris({
+            alpha: false,
+            swatches: [
+                "#FF0000",
+                "#FF9900",
+                "#00FF00",
+                "#0000FF",
+                "#9900FF",
+                "#FF00FF"
+            ],
+        });
+
         let cardDeck = document.getElementById("cardDeck");
         
         // Go through and populate course settings
@@ -41,17 +57,18 @@
             courseName.innerHTML = course.name;
             courseName.className = "pr-2 text-sm text-slate-500 mt-1";
 
+            // NEW COLOR PICKER
             let colorInput = document.createElement("input");
             colorInput.id = "colorInput";
-            colorInput.type = "color";
-            colorInput.className = "w-10 aspect-square rounded-full border-2 border-gray-300 appearance-none cursor-pointer color-picker shrink-0";
-
-            // Update local state (visual only)
-            colorInput.addEventListener("change", (e) => {
-                colorInput.value = e.target.value;
-            });
+            colorInput.type = "text";
+            colorInput.setAttribute("data-coloris", "")
+            colorInput.className = "w-8 aspect-square rounded-full border-2 border-gray-300 appearance-none cursor-pointer color-picker shrink-0";
+            colorInput.style.color = "transparent";
+            colorInput.style.textShadow = "none";
+            colorInput.style.background = courseColors[String(course.id)] || '#4F46E5';
 
             colorInput.addEventListener("input", (e) => {
+                colorInput.style.background = e.target.value;
                 courseCard.style.borderColor = e.target.value;
             });
 
@@ -75,22 +92,40 @@
 
             colorInput.value = courseColors[String(course.id)] || '#4F46E5';
             courseCard.style.borderColor = colorInput.value;
+
+            // END OF COLOR PICKER
+
         });
-    } catch (error) {
-        console.error(error);
-    }
 
-    // EXPORT FUNCTION
-    try {
-        // API Calls
-        const [{ courses }, { prefs }, { events }] = await Promise.all([
-            fetch('/api/courses').then(r => r.json()),
-            fetch('/api/prefs').then(r => r.json()),
-            fetch('/api/calendar').then(r => r.json())
-        ]);
+        // EXPORT FUNCTIONS
+        // Function to create "safe" colors for other applications
+        function adjustHexCode(hexCode) {
+            // Safe colors that are commonly seen
+            const palette = [
+                {name:"Red", hex:"FF0000"},
+                {name:"Orange", hex:"FF9900"},
+                {name:"Yellow", hex:"FFFF00"},
+                {name:"Green", hex:"00FF00"},
+                {name:"Blue", hex:"0000FF"},
+                {name:"Purple", hex:"9900FF"},
+                {name:"Pink", hex:"FF00FF"},
+            ];
 
-        // Get Colors from Database (JSON)
-        const courseColors = prefs?.calendar?.courseColors || {};
+            // Using Euclidearn distance in RGB find the closest value
+            // Then reset hexcode to it for ICS
+            const rgb = hexCode.match(/\w\w/g).map(c => parseInt(c, 16));
+            let closest = palette[0], minDist = Infinity;
+            for (let color of palette) {
+                const prgb = color.hex.match(/\w\w/g).map(c => parseInt(c, 16));
+                const dist = Math.sqrt(
+                    (rgb[0]-prgb[0])**2 + 
+                    (rgb[1]-prgb[1])**2 + 
+                    (rgb[2]-prgb[2])**2
+                );
+                if (dist < minDist) { minDist = dist; closest = color; }
+            }
+            return closest.hex;
+        }
 
         // ICS
         let icsButton = document.getElementById("exportICS");
@@ -109,9 +144,17 @@ CALSCALE:GREGORIAN
         let icsContainer = ""; 
         
 
-        // Format date to ICS (UTC)
+        // Format date to UTC
         function toICSDate(date) {
-        return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+            return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+        }
+
+        // Format date as is
+        function toICSAllDayLocal(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth()+1).padStart(2,'0');
+            const day = String(date.getDate()).padStart(2,'0');
+            return `${year}${month}${day}`;
         }
 
         // Go thorugh each Course Event
@@ -128,32 +171,36 @@ CALSCALE:GREGORIAN
                 let assignmentType = event.type;
                 let assignmentName = event.title;
                 let assignmentDue = new Date(event.dueAt * 1000);
-                let assignmentLocation = "Moodle"
+                let assignmentLocation = "Moodle";
                 let courseColor = courseColors[String(course.id)] || '#4F46E5';
+                
+                // ICS color format
+                let icsColor = adjustHexCode(courseColor.replace("#", ""));
                 
                 
                 // Check to see if courseId matches with assignmentCourseId
                 if (courseId ===  assignmentCourseId) {
-                    // Set convert UNIX to UTC
+                    // Set convert UNIX to UTC for Stamp
                     let dtpStamp = toICSDate(new Date());
-                    let dtpStart = toICSDate(assignmentDue);
-                    let dtpEnd = toICSDate(new Date(assignmentDue.getTime() + 30*60*1000));
+
+                    // Set other due dates as is
+                    let dtpStart = toICSAllDayLocal(assignmentDue);
+                    let dtpEnd = toICSAllDayLocal(new Date(assignmentDue.getTime() + 24*60*60*1000));
 
                     // Each event will follow this structure. (No spaces/tabs)
                     // I know it looks weird, but it works :)
                     let icsBody = `BEGIN:VEVENT
 UID:${assignmentId}@mycalendar
 DTSTAMP:${dtpStamp}
-DTSTART:${dtpStart}
-DTEND:${dtpEnd}
+DTSTART;VALUE=DATE:${dtpStart}
+DTEND;VALUE=DATE:${dtpEnd}
 SUMMARY:${assignmentName}
 DESCRIPTION:This is a ${assignmentType} for ${courseName}.
 LOCATION:${assignmentLocation}
-COLOR:${courseColor}
-X-APPLE-CALENDAR-COLOR:${courseColor}
+COLOR:${icsColor}
+X-APPLE-CALENDAR-COLOR:${icsColor}
 END:VEVENT
 `;
-
                     // Append to container
                     icsContainer += icsBody;
                 }
@@ -163,8 +210,6 @@ END:VEVENT
         // Assemble file
         let icsContent = icsHeader +  icsContainer + icsFooter;   
         
-        console.log(JSON.stringify(icsContent));
-
         icsButton.addEventListener("click", () => {
             // Place download file into button
             const blob = new Blob([icsContent], {type:"text/calendar;charset=utf-8"})
@@ -182,6 +227,7 @@ END:VEVENT
     } catch (error) {
         console.error(error);
     }
+
     
 })();
 

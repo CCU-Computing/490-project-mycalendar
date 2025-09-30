@@ -7,6 +7,9 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
     <title>Settings — MyCalendar</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Coloris Color Picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
  </head>
     <body class="min-h-screen bg-slate-50 text-slate-900">
         <div data-partial="../partials/nav.html"></div>
@@ -68,12 +71,25 @@
                     <div class="px-1 py-2 border-slate-200">
                         <h2 class="text-lg font-semibold tracking-tight">Export Calendar</h2>
                         <p class="text-sm text-slate-500 mt-1">
-                            Want to take your calender on the go? Export them! 
+                            Want to take your calender on the go? Export them!
                         </p>
                     </div>
-
-                    <div class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
-                        <input id="exportICS" type="button" value="Export as ICS" class="w-min flex justify-between items-center rounded-xl border border-b border-slate-300 bg-slate-50 p-4 text-sm text-slate-500 mt-1 cursor-pointer">
+                    <div class="px-1 py-2 border-slate-200">
+                        <h3 class="text-l font-semibold tracking-tight">ICalendar</h3>
+                        <!-- <p class="text-sm text-slate-500 mt-1">
+                            <b>URL:</b> Events are Automatically synced to other calendars.
+                        </p> -->
+                        <p class="text-sm text-slate-500 mt-1">
+                            <b>File:</b> Events are Downloaded to a file for offline access.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-4">
+                        <!-- <div>
+                            <input id="exportICSURL" type="button" value="Export as ICS URL" class="w-min flex justify-between items-center rounded-xl border border-b border-slate-300 bg-slate-50 p-4 text-sm text-slate-500 mt-1 cursor-pointer">
+                        </div> -->
+                        <div>
+                            <input id="exportICS" type="button" value="Export as ICS File" class="w-min flex justify-between items-center rounded-xl border border-b border-slate-300 bg-slate-50 p-4 text-sm text-slate-500 mt-1 cursor-pointer">
+                        </div>
                     </div>
                 </div>
                 

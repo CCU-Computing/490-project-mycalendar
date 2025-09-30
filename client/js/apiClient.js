@@ -45,4 +45,7 @@ export const api = {
         body: JSON.stringify({ id, ...patch }),
       }).then(handle),
   },
+
+  // Pull from JSON 
+  colors: () => fetch("/api/prefs").then(handle),
 };

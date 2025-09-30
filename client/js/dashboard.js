@@ -22,7 +22,8 @@ import { api } from "./apiClient.js";
     // array to hold all events and courses
     let allEvents = [];
     let allCourses = [];
-
+    let allColors = [];
+    
     // get filter by course select element
     const filterByCourseSelect = document.getElementById("filterByCourseSelect");
 
@@ -36,11 +37,19 @@ import { api } from "./apiClient.js";
         // get events and courses
         await getEventsAndCourses();
 
+        // get colors
+        await getColors();
+
         // iterate over every event and convert the date
         return allEvents.map(ev => ({
           ...ev,
           start: new Date(ev.dueAt * 1000),
-          allDay: true
+          allDay: true,
+          color: allColors[ev.courseId] || "#170ce9",
+          extendedProps: {
+            type: ev.type,
+            description: ev.title
+          }
         }));
       },
     });
@@ -74,6 +83,15 @@ import { api } from "./apiClient.js";
         option.textContent = course.name;
         filterByCourseSelect.appendChild(option);
       });
+    }
+
+    // get course colors for events
+    async function getColors() {
+      // get colors
+      const { prefs } = await api.colors();
+      
+      // update all colors
+      allColors = prefs.calendar.courseColors;
     }
 
     // event listener for refreshing calendar
@@ -111,7 +129,8 @@ import { api } from "./apiClient.js";
           calendarInstance.addEvent({
             ...ev,
             start: new Date(ev.dueAt * 1000),
-            allDay: true
+            allDay: true,
+            color: allColors[ev.courseId] || "#170ce9"
           });
         }
       });
