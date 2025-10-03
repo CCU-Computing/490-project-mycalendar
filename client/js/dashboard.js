@@ -36,12 +36,50 @@ import { api } from "./apiClient.js";
         // get events and courses
         await getEventsAndCourses();
 
-        // iterate over every event and convert the date
-        return allEvents.map(ev => ({
-          ...ev,
-          start: new Date(ev.dueAt * 1000),
-          allDay: true
-        }));
+        // get study blocks from custom events
+        let studyBlocks = [];
+        try {
+          const { events: studyBlockEvents } = await api.studyBlocks.getAll();
+          studyBlocks = (studyBlockEvents || []).map(sb => {
+            const startDate = new Date(sb.start_time);
+            const endDate = sb.end_time ? new Date(sb.end_time) : null;
+
+            return {
+              id: sb.id,
+              title: sb.title,
+              start: startDate.toISOString(),
+              end: endDate ? endDate.toISOString() : null,
+              allDay: false,
+              color: sb.color || '#4F46E5',
+              extendedProps: {
+                type: 'study_block',
+                assignmentId: sb.moodle_assignment_id,
+                description: sb.description
+              }
+            };
+          });
+        } catch (e) {
+          console.error('Error loading study blocks:', e);
+        }
+
+        // iterate over every moodle event and convert the date
+        const moodleEvents = allEvents.map(ev => {
+          // Find the course name for this event
+          const course = allCourses.find(c => c.id === ev.courseId);
+
+          return {
+            ...ev,
+            start: new Date(ev.dueAt * 1000),
+            allDay: true,
+            extendedProps: {
+              type: ev.type || 'assign',
+              courseName: course?.name || 'Unknown Course'
+            }
+          };
+        });
+
+        // combine moodle events and study blocks
+        return [...moodleEvents, ...studyBlocks];
       },
     });
 
@@ -90,7 +128,7 @@ import { api } from "./apiClient.js";
     });
 
     // event listener for filter by courses
-    document.getElementById("filterByCourseSelect").addEventListener("change", () => {
+    document.getElementById("filterByCourseSelect").addEventListener("change", async () => {
 
       // get calendar instance
       const calendarInstance = calendar.getInstance();
@@ -101,19 +139,55 @@ import { api } from "./apiClient.js";
       // remove all events from calendar
       calendarInstance.removeAllEvents();
 
-      // iterate through all events
+      // get study blocks
+      let studyBlocks = [];
+      try {
+        const { events: studyBlockEvents } = await api.studyBlocks.getAll();
+        studyBlocks = studyBlockEvents || [];
+      } catch (e) {
+        console.error('Error loading study blocks for filter:', e);
+      }
+
+      // iterate through all moodle events
       allEvents.forEach(ev => {
 
         // determine if current event matches the filter or if all courses is selected
         if (ev.courseId == Number(filterByCourseSelectValue) || filterByCourseSelectValue == "allCourses") {
 
+          // Find the course name for this event
+          const course = allCourses.find(c => c.id === ev.courseId);
+
           // add event to calendar
           calendarInstance.addEvent({
             ...ev,
             start: new Date(ev.dueAt * 1000),
-            allDay: true
+            allDay: true,
+            extendedProps: {
+              type: ev.type || 'assign',
+              courseName: course?.name || 'Unknown Course'
+            }
           });
         }
+      });
+
+      // add study blocks (always show all study blocks for now, or filter by course if needed)
+      studyBlocks.forEach(sb => {
+        const startDate = new Date(sb.start_time);
+        const endDate = sb.end_time ? new Date(sb.end_time) : null;
+
+        calendarInstance.addEvent({
+          id: sb.id,
+          title: sb.title,
+          start: startDate.toISOString(),
+          end: endDate ? endDate.toISOString() : null,
+          allDay: false,
+          color: sb.color || '#4F46E5',
+          extendedProps: {
+            type: 'study_block',
+            assignmentId: sb.moodle_assignment_id,
+            description: sb.description
+          }
+        });
       });
     })
   });

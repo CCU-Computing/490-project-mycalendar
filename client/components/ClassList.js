@@ -102,6 +102,7 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
   let nextByCourse = {};
   let gradeByCourse = {};
   let courseColors = {};
+  let courseMetadata = {};
 
   // Modal refs (now guaranteed to exist)
   const modal = $("classModal");
@@ -119,7 +120,9 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
   function openModal(course) {
     if (!modal) return;
     mTitle.textContent = course.fullname || course.fullnamedisplay || course.name || course.shortname || "Course";
-    mImg.src = course.image || course.courseimage || "";
+    // Use custom image URL if available, otherwise fall back to Moodle image
+    const metadata = courseMetadata[String(course.id)];
+    mImg.src = (metadata && metadata.custom_image_url) || course.image || course.courseimage || "";
     mImg.alt = course.shortname || "Course image";
     mCat.textContent = course.coursecategory || "—";
     mProg.textContent = (typeof course.progress === "number") ? (course.progress + "%") : "—";
@@ -166,15 +169,18 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
       const card = document.createElement("button");
       card.type = "button";
       card.className = [
-        "group relative flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 text-left shadow-sm",
-        "hover:shadow-md hover:border-slate-300 transition",
+        "group relative flex items-center gap-3 rounded-xl border-3 border-slate-200 bg-white p-3 text-left shadow-sm",
+        "hover:shadow-md hover:border-slate-400 transition",
         "cursor-pointer"
       ].join(" ");
       if (color) {
         card.style.borderColor = color;
+        card.style.borderWidth = "3px";
       }
       const img = document.createElement("img");
-      img.src = c.image || "";
+      // Use custom image URL if available, otherwise fall back to Moodle image
+      const metadata = courseMetadata[String(c.id)];
+      img.src = (metadata && metadata.custom_image_url) || c.image || "";
       img.alt = c.shortname || "Course image";
       img.className = "h-12 w-12 rounded-lg object-cover ring-1 ring-slate-200 bg-slate-100";
       const content = document.createElement("div");
@@ -208,14 +214,17 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
 
   async function reload() {
     try {
-      const [coursesRes, workRes, prefsRes] = await Promise.allSettled([
+      const [coursesRes, workRes, prefsRes, metadataRes] = await Promise.allSettled([
         api.courses(),
         api.work(),
-        api.prefs.get()
+        api.prefs.get(),
+        api.courseMetadata.getAll()
       ]);
       const coursesData = coursesRes.status === "fulfilled" ? coursesRes.value : null;
       const workData = workRes.status === "fulfilled" ? workRes.value : null;
       const prefsData = prefsRes.status === "fulfilled" ? prefsRes.value : null;
+      const metadataData = metadataRes.status === "fulfilled" ? metadataRes.value : null;
+
       if (coursesData && coursesData.courses) {
         courseList = coursesData.courses;
         courseList.forEach(course => {
@@ -225,6 +234,15 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
       }
       if (workData) nextByCourse = buildNextMap(workData);
       courseColors = (prefsData && prefsData.prefs && prefsData.prefs.calendar && prefsData.prefs.calendar.courseColors) || {};
+
+      // Build metadata map by course_id
+      if (metadataData && metadataData.metadata) {
+        courseMetadata = {};
+        metadataData.metadata.forEach(meta => {
+          courseMetadata[meta.course_id] = meta;
+        });
+      }
+
       // Example fallback: if empty, color the first course so storytellers can see it
       if (!courseColors || Object.keys(courseColors).length === 0) {
         if (courseList && courseList.length > 0) {

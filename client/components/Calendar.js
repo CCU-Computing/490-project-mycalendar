@@ -4,6 +4,9 @@
 // const cal = mountCalendar({ containerId: "calendar" });
 // cal.reload();
 
+import { openAssignmentDetailsModal } from "./AssignmentDetailsModal.js";
+import { openStudyBlockDetailsModal } from "./StudyBlockDetailsModal.js";
+
 function getElement(containerId) {
   if (!containerId) return null;
   try { return document.getElementById(containerId); } catch (_) { return null; }
@@ -49,6 +52,7 @@ export function mountCalendar({
   fetchEvents,          // async () => [{ id, title, start, ... }]
   prefsEnabled = false, // when true, implement prefs-based coloring in the future
   options = {},         // additional FullCalendar options
+  onEventClick = null,  // optional custom event click handler
 } = {}) {
   const el = getElement(containerId);
   if (!el) {
@@ -97,12 +101,73 @@ export function mountCalendar({
     events: holidayEvents, // Start with holidays
     nowIndicator: true, // Show current time line
     now: new Date(), // Current date/time
+    slotMinTime: "00:00:00", // Show full 24 hours
+    slotMaxTime: "24:00:00", // Show full 24 hours
+    allDaySlot: true, // Show all-day events slot
     
     // Event rendering
     eventDidMount: function(info) {
       // Add tooltips to holiday events
       if (info.event.extendedProps.type === 'holiday') {
         info.el.setAttribute('title', info.event.extendedProps.description);
+      }
+
+      // Add click cursor for assignment and study block events
+      if (info.event.extendedProps.type === 'assign' ||
+          info.event.extendedProps.type === 'quiz' ||
+          info.event.extendedProps.type === 'study_block') {
+        info.el.style.cursor = 'pointer';
+      }
+    },
+
+    // Event click handler
+    eventClick: function(info) {
+      const eventType = info.event.extendedProps.type;
+
+      // Holiday click - show alert
+      if (eventType === 'holiday') {
+        alert(`${info.event.title}\n\n${info.event.extendedProps.description}`);
+        return;
+      }
+
+      // Assignment/Quiz click - open assignment details modal
+      if (eventType === 'assign' || eventType === 'quiz') {
+        const assignmentData = {
+          id: info.event.id,
+          title: info.event.title,
+          type: eventType,
+          start: info.event.start,
+          courseName: info.event.extendedProps?.courseName || null
+        };
+
+        // Call custom handler if provided, otherwise use default
+        if (typeof onEventClick === 'function') {
+          onEventClick(assignmentData, calendar);
+        } else {
+          openAssignmentDetailsModal(assignmentData, () => {
+            // Reload calendar after creating study block
+            reload();
+          });
+        }
+        return;
+      }
+
+      // Study block click - open study block details modal
+      if (eventType === 'study_block') {
+        const studyBlockData = {
+          id: info.event.id,
+          title: info.event.title,
+          start: info.event.start,
+          end: info.event.end,
+          color: info.event.backgroundColor || info.event.color,
+          extendedProps: info.event.extendedProps
+        };
+
+        openStudyBlockDetailsModal(studyBlockData, () => {
+          // Reload calendar after deleting study block
+          reload();
+        });
+        return;
       }
     },
     
@@ -122,32 +187,11 @@ export function mountCalendar({
   };
 
   const calendar = new window.FullCalendar.Calendar(el, { ...baseOptions, ...options });
-  
+
   // Add custom styles for holidays and time indicator
   addCustomStyles();
-  
+
   calendar.render();
-
-  // As a user I want to be able to add a new assignment/ event to my calendar
-  var eventForm = document.getElementById('eventForm');
-  eventForm.addEventListener('submit', function(e) {
-      e.preventDefault(); // Prevent the form from submitting normally
-
-      // Get form values
-      var title = document.getElementById('eventTitle').value;
-      var start = document.getElementById('eventStart').value;
-      var end = document.getElementById('eventEnd').value;
-
-      // Add the new event to the calendar
-      calendar.addEvent({
-          title: title,
-          start: start,
-          end: end || null // Use null if no end date is provided
-      });
-
-      // Clear the form fields
-      eventForm.reset();
-  });
 
   async function reload() {
     if (typeof fetchEvents === "function") {
