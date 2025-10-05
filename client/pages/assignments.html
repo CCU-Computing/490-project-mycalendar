@@ -1,1 +1,107 @@
-<!-- page for assignments, i imagine this as a page with sections for upcoming, past due, completed, and maybe starred assignments (user story, it would persist at the top since it is the favorite) -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Assignments — MyCalendar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+    <div data-partial="../partials/nav.html"></div>
+
+    <header class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-700">📅</span>
+          <span class="font-semibold tracking-tight">MyCalendar</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700"></span>
+          <a href="../index.html" class="text-sm text-indigo-700 hover:underline">Landing Page</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-6xl px-4 py-8 space-y-8">
+
+      <!-- Starred Assignments Section (User Story Area) -->
+      <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200">
+          <h2 class="text-lg font-semibold tracking-tight">User Story Area: Starred Assignments</h2>
+          <p class="text-sm text-slate-500 mt-1">
+            Display user's favorite/starred assignments here for quick access
+          </p>
+        </div>
+        <div class="p-5">
+          <div id="starredAssignments" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+              No starred assignments yet. User Story Area: Starred assignment cards will appear here.
+            </div>
+            <div class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+              Placeholder for starred assignment card 2
+            </div>
+            <div class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+              Placeholder for starred assignment card 3
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Next 3 Upcoming Assignments Section -->
+      <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200">
+          <h2 class="text-lg font-semibold tracking-tight">Next 3 Upcoming Assignments</h2>
+          <p class="text-sm text-slate-500 mt-1">
+            The next three assignments due, sorted by due date
+          </p>
+        </div>
+        <div class="p-5">
+          <ul id="upcomingAssignments" class="space-y-3">
+            <!-- Assignment 1 Placeholder -->
+            <li class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h3 class="text-sm font-medium text-slate-700">Assignment Title Placeholder 1</h3>
+                  <p class="text-xs text-slate-500 mt-1">Course Name • Due: [Date & Time]</p>
+                </div>
+                <span class="inline-flex items-center gap-1 rounded-lg bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-700">
+                  Upcoming
+                </span>
+              </div>
+            </li>
+
+            <!-- Assignment 2 Placeholder -->
+            <li class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h3 class="text-sm font-medium text-slate-700">Assignment Title Placeholder 2</h3>
+                  <p class="text-xs text-slate-500 mt-1">Course Name • Due: [Date & Time]</p>
+                </div>
+                <span class="inline-flex items-center gap-1 rounded-lg bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-700">
+                  Upcoming
+                </span>
+              </div>
+            </li>
+
+            <!-- Assignment 3 Placeholder -->
+            <li class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h3 class="text-sm font-medium text-slate-700">Assignment Title Placeholder 3</h3>
+                  <p class="text-xs text-slate-500 mt-1">Course Name • Due: [Date & Time]</p>
+                </div>
+                <span class="inline-flex items-center gap-1 rounded-lg bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-700">
+                  Upcoming
+                </span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+
+    <script type="module" src="../js/partials.js"></script>
+  </body>
+</html>

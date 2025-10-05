@@ -89,4 +89,20 @@ export const api = {
         method: "DELETE",
       }).then(handle),
   },
+
+  starredAssignments: {
+    getAll: () => fetch("/api/starred-assignments").then(handle),
+    star: (moodleAssignmentId) =>
+      fetch("/api/starred-assignments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ moodleAssignmentId }),
+      }).then(handle),
+    unstar: (moodleAssignmentId) =>
+      fetch(`/api/starred-assignments/${encodeURIComponent(moodleAssignmentId)}`, {
+        method: "DELETE",
+      }).then(handle),
+    check: (moodleAssignmentId) =>
+      fetch(`/api/starred-assignments/check/${encodeURIComponent(moodleAssignmentId)}`).then(handle),
+  },
 };

@@ -11,6 +11,7 @@ const customEventsRouter = require("../src/routes/customEvents");
 const userAssignmentsRouter = require("../src/routes/userAssignments");
 const courseMetadataRouter = require("../src/routes/courseMetadata");
 const timeBlocksRouter = require("../src/routes/timeBlocks");
+const starredAssignmentsRouter = require("../src/routes/starredAssignments");
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use("/api/custom-events", customEventsRouter);
 app.use("/api/user-assignments", userAssignmentsRouter);
 app.use("/api/course-metadata", courseMetadataRouter);
 app.use("/api/time-blocks", timeBlocksRouter);
+app.use("/api/starred-assignments", starredAssignmentsRouter);
 
 // static files
 app.use(express.static(path.join(__dirname, "../client")));

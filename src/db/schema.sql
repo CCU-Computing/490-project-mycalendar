@@ -138,6 +138,16 @@ CREATE TABLE IF NOT EXISTS time_blocks (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+-- starred assignments (user favorites for quick access)
+CREATE TABLE IF NOT EXISTS starred_assignments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  moodle_assignment_id TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  UNIQUE(user_id, moodle_assignment_id)
+);
+
 -- indexes for performance
 CREATE INDEX IF NOT EXISTS idx_user_preferences_user ON user_preferences(user_id);
 CREATE INDEX IF NOT EXISTS idx_course_colors_user ON course_colors(user_id);
@@ -147,6 +157,7 @@ CREATE INDEX IF NOT EXISTS idx_custom_events_user_date ON custom_events(user_id,
 CREATE INDEX IF NOT EXISTS idx_user_assignments_user_due ON user_assignments(user_id, due_date);
 CREATE INDEX IF NOT EXISTS idx_course_metadata_user ON course_metadata(user_id);
 CREATE INDEX IF NOT EXISTS idx_time_blocks_user_day ON time_blocks(user_id, day_of_week);
+CREATE INDEX IF NOT EXISTS idx_starred_assignments_user ON starred_assignments(user_id);
 
 -- schema version tracking
 PRAGMA user_version = 1;
