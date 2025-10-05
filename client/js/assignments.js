@@ -1,4 +1,5 @@
 // assignments.js - Assignment tracking and notification system
+import { api } from './apiClient.js';
 
 class AssignmentManager {
     constructor() {
@@ -6,11 +7,13 @@ class AssignmentManager {
         this.filteredAssignments = [];
         this.courses = new Set();
         this.notificationSettings = this.loadNotificationSettings();
+        this.starredAssignmentIds = []; // Array of starred assignment IDs
         this.init();
     }
 
     async init() {
         await this.loadAssignments();
+        await this.loadStarredAssignments();
         this.setupEventListeners();
         this.checkForUpcomingDeadlines();
         this.startNotificationTimer();
@@ -53,6 +56,71 @@ class AssignmentManager {
             this.updateStatistics();
             this.renderAssignments();
             this.populateCourseFilter();
+        }
+    }
+
+    // Load starred assignments from API
+    async loadStarredAssignments() {
+        try {
+            // Get starred assignments
+            const { starred } = await api.starredAssignments.getAll();
+            this.starredAssignmentIds = starred.map(s => String(s.moodle_assignment_id));
+            
+            // Render starred section
+            this.renderStarredAssignments();
+        } catch (error) {
+            console.error('Error loading starred assignments:', error);
+            this.starredAssignmentIds = [];
+            this.renderStarredAssignments();
+        }
+    }
+
+    // Render starred assignments section
+    renderStarredAssignments() {
+        const container = document.getElementById('starredAssignmentsContainer');
+        if (!container) return;
+
+        const starredAssignments = this.assignments.filter(assignment =>
+            this.starredAssignmentIds.includes(String(assignment.id))
+        );
+
+        if (starredAssignments.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-star"></i>
+                    <h3>No Starred Assignments</h3>
+                    <p>Star assignments to see them here for quick access.</p>
+                </div>
+            `;
+        } else {
+            container.innerHTML = starredAssignments
+                .map(assignment => this.renderAssignmentCard(assignment))
+                .join('');
+        }
+    }
+
+    // Toggle star status for an assignment
+    async toggleStar(assignmentId) {
+        const assignmentIdStr = String(assignmentId);
+        const isStarred = this.starredAssignmentIds.includes(assignmentIdStr);
+        
+        try {
+            if (isStarred) {
+                await api.starredAssignments.unstar(assignmentIdStr);
+                this.starredAssignmentIds = this.starredAssignmentIds.filter(id => id !== assignmentIdStr);
+                this.showNotification('success', 'Assignment unstarred');
+            } else {
+                await api.starredAssignments.star(assignmentIdStr);
+                this.starredAssignmentIds.push(assignmentIdStr);
+                this.showNotification('success', 'Assignment starred!');
+            }
+
+            // Re-render both sections
+            this.renderStarredAssignments();
+            this.renderAssignments();
+        } catch (error) {
+            console.error('Error toggling star:', error);
+            this.showNotification('warning', 'Failed to update star status');
         }
     }
 
@@ -192,16 +260,34 @@ class AssignmentManager {
             return;
         }
 
-        container.innerHTML = this.filteredAssignments.map(assignment => `
+        container.innerHTML = this.filteredAssignments
+            .map(assignment => this.renderAssignmentCard(assignment))
+            .join('');
+    }
+
+    // Render individual assignment card with star button
+    renderAssignmentCard(assignment) {
+        const isStarred = this.starredAssignmentIds.includes(String(assignment.id));
+        
+        return `
             <div class="assignment-card" data-id="${assignment.id}">
                 <div class="assignment-header">
                     <div>
                         <div class="assignment-title">${assignment.title}</div>
                         <div class="assignment-course">${assignment.course} - ${assignment.courseName}</div>
                     </div>
-                    <span class="assignment-status status-${assignment.status}">
-                        ${assignment.status.charAt(0).toUpperCase() + assignment.status.slice(1)}
-                    </span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button 
+                            class="star-button ${isStarred ? 'starred' : ''}" 
+                            onclick="assignmentManager.toggleStar(${assignment.id})"
+                            title="${isStarred ? 'Unstar' : 'Star'} assignment"
+                        >
+                            ${isStarred ? '⭐' : '☆'}
+                        </button>
+                        <span class="assignment-status status-${assignment.status}">
+                            ${assignment.status.charAt(0).toUpperCase() + assignment.status.slice(1)}
+                        </span>
+                    </div>
                 </div>
                 
                 <div class="assignment-details">
@@ -246,7 +332,7 @@ class AssignmentManager {
                     </button>
                 </div>
             </div>
-        `).join('');
+        `;
     }
 
     // Update statistics
@@ -469,6 +555,7 @@ class AssignmentManager {
                     this.processAssignments();
                     this.updateStatistics();
                     this.renderAssignments();
+                    this.renderStarredAssignments();
                     this.showNotification('success', `Successfully submitted "${assignment.title}"!`);
                 }
             } catch (error) {
@@ -479,6 +566,7 @@ class AssignmentManager {
                 this.processAssignments();
                 this.updateStatistics();
                 this.renderAssignments();
+                this.renderStarredAssignments();
                 this.showNotification('success', `Successfully submitted "${assignment.title}"!`);
             }
         }
@@ -586,6 +674,7 @@ let assignmentManager;
 
 function refreshAssignments() {
     assignmentManager.loadAssignments();
+    assignmentManager.loadStarredAssignments();
 }
 
 function filterAssignments() {
@@ -661,6 +750,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 transform: translateX(100%);
                 opacity: 0;
             }
+        }
+
+        .star-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.2s ease;
+            line-height: 1;
+        }
+
+        .star-button:hover {
+            transform: scale(1.2);
+        }
+
+        .star-button.starred {
+            animation: starPulse 0.3s ease;
+        }
+
+        @keyframes starPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
         }
     `;
     document.head.appendChild(style);
