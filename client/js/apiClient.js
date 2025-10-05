@@ -44,5 +44,65 @@ export const api = {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, ...patch }),
       }).then(handle),
+    setAssignmentTypeColor: (assignmentType, color) =>
+      fetch("/api/prefs/assignmentTypeColor", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ assignmentType, color }),
+      }).then(handle),
+  },
+
+  studyBlocks: {
+    create: (data) =>
+      fetch("/api/custom-events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }).then(handle),
+    getAll: () => fetch("/api/custom-events").then(handle),
+    getForAssignment: (assignmentId) =>
+      fetch(`/api/custom-events?moodleAssignmentId=${encodeURIComponent(assignmentId)}`)
+        .then(handle),
+    update: (id, data) =>
+      fetch(`/api/custom-events/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }).then(handle),
+    delete: (id) =>
+      fetch(`/api/custom-events/${id}`, {
+        method: "DELETE",
+      }).then(handle),
+  },
+
+  courseMetadata: {
+    getAll: () => fetch("/api/course-metadata").then(handle),
+    get: (courseId) => fetch(`/api/course-metadata/${encodeURIComponent(courseId)}`).then(handle),
+    update: (courseId, data) =>
+      fetch(`/api/course-metadata/${encodeURIComponent(courseId)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }).then(handle),
+    delete: (courseId) =>
+      fetch(`/api/course-metadata/${encodeURIComponent(courseId)}`, {
+        method: "DELETE",
+      }).then(handle),
+  },
+
+  starredAssignments: {
+    getAll: () => fetch("/api/starred-assignments").then(handle),
+    star: (moodleAssignmentId) =>
+      fetch("/api/starred-assignments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ moodleAssignmentId }),
+      }).then(handle),
+    unstar: (moodleAssignmentId) =>
+      fetch(`/api/starred-assignments/${encodeURIComponent(moodleAssignmentId)}`, {
+        method: "DELETE",
+      }).then(handle),
+    check: (moodleAssignmentId) =>
+      fetch(`/api/starred-assignments/check/${encodeURIComponent(moodleAssignmentId)}`).then(handle),
   },
 };
