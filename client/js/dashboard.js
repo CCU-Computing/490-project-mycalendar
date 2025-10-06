@@ -19,9 +19,10 @@ import { api } from "./apiClient.js";
   document.addEventListener("DOMContentLoaded", function () {
     mountClassList({ containerId: "semesterClasses" });
 
-    // array to hold all events and courses
+    // array to hold all events, courses, colors
     let allEvents = [];
     let allCourses = [];
+    let allColors = {};
 
     // get filter by course select element
     const filterByCourseSelect = document.getElementById("filterByCourseSelect");
@@ -35,6 +36,9 @@ import { api } from "./apiClient.js";
 
         // get events and courses
         await getEventsAndCourses();
+
+        // get colors
+        await getColors();
 
         // get study blocks from custom events
         let studyBlocks = [];
@@ -66,11 +70,16 @@ import { api } from "./apiClient.js";
         const moodleEvents = allEvents.map(ev => {
           // Find the course name for this event
           const course = allCourses.find(c => c.id === ev.courseId);
+          // Based on current course set color course/type
+          const courseColor = allColors[ev.courseId];
+          const typeColor = allColors[ev.type];
 
           return {
             ...ev,
             start: new Date(ev.dueAt * 1000),
             allDay: true,
+            color: typeColor,
+            borderColor: courseColor,
             extendedProps: {
               type: ev.type || 'assign',
               courseName: course?.name || 'Unknown Course'
@@ -112,6 +121,18 @@ import { api } from "./apiClient.js";
         option.textContent = course.name;
         filterByCourseSelect.appendChild(option);
       });
+    }
+
+    // Get colors 
+    async function getColors() {
+      // Get Colors
+      const { prefs } = await api.prefs.get();
+      const courseColors = prefs.calendar.courseColors;
+      const typeColors = prefs.calendar.assignmentTypeColors;
+
+      // Course/Type
+      allColors = {...courseColors, ...typeColors};
+  
     }
 
     // event listener for refreshing calendar
