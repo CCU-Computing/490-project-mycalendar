@@ -19,12 +19,10 @@ import { api } from "./apiClient.js";
   document.addEventListener("DOMContentLoaded", function () {
     mountClassList({ containerId: "semesterClasses" });
 
-    // array to hold all events and courses
+    // array to hold events, courses, and assignment types
     let allEvents = [];
     let allCourses = [];
-
-    // get filter by course select element
-    const filterByCourseSelect = document.getElementById("filterByCourseSelect");
+    let assignmentTypes = [];
 
     // calendar setup and options
     const calendar = mountCalendar({
@@ -93,7 +91,7 @@ import { api } from "./apiClient.js";
       const { events } = await api.calendar();
       const { courses } = await api.courses();
 
-      // update all events, temp events, and courses
+      // update all events and courses
       allEvents = events;
       allCourses = courses;
 
@@ -118,6 +116,42 @@ import { api } from "./apiClient.js";
                 </span>
               </span>
               <span class="truncate">${course.name}</span>
+            </label>
+          `
+        )
+      });
+
+      // get assignment type toggles container
+      const assignmentTypeToggles = document.getElementById("assignmentTypeToggles");
+
+      // iterate through all events
+      allEvents.forEach(ev => {
+
+        // determine if event id is valid
+        if (!ev.type) return;
+
+        // determine if type already exists in array
+        if (!assignmentTypes.includes(ev.type)) assignmentTypes.push(ev.type);
+      })
+
+      // iterate through each assignment type
+      assignmentTypes.forEach(type => {
+
+        // add each course to the container
+        assignmentTypeToggles.insertAdjacentHTML('beforeend',
+          `
+            <label class="w-full flex items-center px-4 py-3 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 transition rounded-lg select-none">
+              <span class="pr-2">
+                <input type="checkbox" id="${type}" class="peer sr-only" checked />
+                <span class="[&_path]:fill-none [&_path]:stroke-current
+                  peer-checked:[&_path]:fill-current">
+                  <svg viewBox="0 0 24 24" class="size-5 text-slate-900" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 5.25 16.5v-9Z" />
+                  </svg>
+                </span>
+              </span>
+              <span class="truncate">${type[0].toUpperCase() + type.slice(1)}</span>
             </label>
           `
         )
@@ -146,7 +180,6 @@ import { api } from "./apiClient.js";
             ev.remove();
           }
         })
-
       } else {
 
         // iterate through all events array
@@ -208,15 +241,66 @@ import { api } from "./apiClient.js";
       */
     })
 
+    // event listener for assignment type toggle checkbox(es)
+    document.getElementById("assignmentTypeToggles").addEventListener("change", async(e) => {
+
+      // get calendar instance
+      const calendarInstance = calendar.getInstance();
+
+      // determine if checkbox is checked
+      if (!e.target.checked) {
+
+        // get all calendar events
+        const calendarEvents = calendarInstance.getEvents();
+
+        // iterate through all calendar events
+        calendarEvents.forEach(ev => {
+
+          // determine if event assignment type id matches the checkbox id type
+          if (ev.extendedProps.type === e.target.id) {
+
+            // remove event from the calendar
+            ev.remove();
+          }
+        })
+      } else {
+
+        // iterate through all events array
+        allEvents.forEach(ev => {
+
+          // determine if event matches the id in the checkbox which was checked
+          if (ev.type === e.target.id) {
+
+            // find the course name for this event
+            const course = allCourses.find(c => c.id === ev.courseId);
+
+            // add event to calendar
+            calendarInstance.addEvent({
+              ...ev,
+              start: new Date(ev.dueAt * 1000),
+              allDay: true,
+              extendedProps: {
+                type: ev.type || 'assign',
+                courseName: course?.name || 'Unknown Course'
+              }
+            });
+          }
+        })
+      }
+    })
+
     // event listener for refreshing calendar
     document.getElementById("refreshCalendar").addEventListener("click", () => {
 
-      // get course toggles element
+      // get course and assignment type toggles element
       const courseToggles = document.getElementById("courseToggles");
+      const assignmentTypeToggles = document.getElementById("assignmentTypeToggles");
 
-      // reset data in course toggles and hide the element
+      // reset data and hide the elements
       courseToggles.innerHTML = '';
       courseToggles.classList.add("hidden");
+      assignmentTypeToggles.innerHTML = '';
+      assignmentTypeToggles.classList.add("hidden");
 
       // reload calendar
       calendar.reload();
@@ -238,7 +322,25 @@ import { api } from "./apiClient.js";
 
       // unhide course toggles element
       courseToggles.classList.remove("hidden");
-    })
+    });
+
+    // event listener for filter by assignment type
+    document.getElementById("filterByAssignmentTypeToggle").addEventListener("click", () => {
+
+      // get assignment type toggles element
+      const assignmentTypeToggles = document.getElementById("assignmentTypeToggles");
+
+      // determine if dropdown is already open
+      if (!assignmentTypeToggles.classList.contains("hidden")) {
+
+        // hide assignment type toggles element and return
+        assignmentTypeToggles.classList.add("hidden");
+        return;
+      }
+
+      // unhide assignment type toggles element
+      assignmentTypeToggles.classList.remove("hidden");
+    });
   });
 })();
 // add more here for user stories related to the dashboard, like the calendar, mini action task items, etc. create branches for them, so we can do the code reviews and eventually merge all.
