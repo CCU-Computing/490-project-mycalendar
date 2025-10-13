@@ -105,4 +105,38 @@ export const api = {
     check: (moodleAssignmentId) =>
       fetch(`/api/starred-assignments/check/${encodeURIComponent(moodleAssignmentId)}`).then(handle),
   },
+
+  focusMode: {
+    getToday: () => fetch("/api/focus-mode/today").then(handle),
+    getItem: (id, type) =>
+      fetch(`/api/focus-mode/item?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`).then(handle),
+
+    notes: {
+      get: (id, type) =>
+        fetch(`/api/focus-mode/notes?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`).then(handle),
+      save: (id, type, notes) =>
+        fetch("/api/focus-mode/notes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, type, notes }),
+        }).then(handle),
+    },
+
+    sessions: {
+      create: (id, type, sessionType, targetDuration) =>
+        fetch("/api/focus-mode/sessions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, type, sessionType, targetDuration }),
+        }).then(handle),
+      end: (sessionId, actualDuration, completed) =>
+        fetch(`/api/focus-mode/sessions/${sessionId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ actualDuration, completed }),
+        }).then(handle),
+      getHistory: (id, type) =>
+        fetch(`/api/focus-mode/sessions?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`).then(handle),
+    },
+  },
 };

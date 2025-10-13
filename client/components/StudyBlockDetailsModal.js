@@ -75,6 +75,13 @@ function ensureStudyBlockDetailsModalDOM() {
               <div class="flex gap-3">
                 <button
                   type="button"
+                  id="sbdFocusMode"
+                  class="px-4 py-2 text-sm font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition"
+                >
+                  🎯 Focus Mode
+                </button>
+                <button
+                  type="button"
                   id="sbdClose2"
                   class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition"
                 >
@@ -102,11 +109,29 @@ function ensureStudyBlockDetailsModalDOM() {
   closeBtn2?.addEventListener("click", closeStudyBlockDetailsModal);
   deleteBtn?.addEventListener("click", handleDeleteStudyBlock);
 
+  const focusModeBtn = $("sbdFocusMode");
+  focusModeBtn?.addEventListener("click", handleFocusModeClick);
+
   document.addEventListener("keydown", function(e) {
     if (e.key === "Escape" && modal && !modal.classList.contains("hidden")) {
       closeStudyBlockDetailsModal();
     }
   });
+}
+
+/**
+ * Handle Focus Mode button click
+ */
+function handleFocusModeClick() {
+  console.log("[StudyBlockDetailsModal] Focus Mode clicked", currentStudyBlock);
+
+  if (!currentStudyBlock) {
+    console.error("[StudyBlockDetailsModal] No study block data available");
+    return;
+  }
+
+  // Navigate to focus mode page with study block ID
+  window.location.href = `./focusMode.html?id=${encodeURIComponent(currentStudyBlock.id)}&type=study-block`;
 }
 
 /**

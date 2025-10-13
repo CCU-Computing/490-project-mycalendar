@@ -21,11 +21,16 @@ function ensureAssignmentDetailsModalDOM() {
           <!-- Modal Header -->
           <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
             <h3 class="text-lg font-semibold text-slate-900">Assignment Details</h3>
-            <button id="adClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
-              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <div class="flex items-center gap-2">
+              <button id="adStarButton" class="text-2xl hover:scale-110 transition-transform cursor-pointer p-2" title="Star assignment">
+                ⭐
+              </button>
+              <button id="adClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           <!-- Modal Content -->
@@ -65,21 +70,30 @@ function ensureAssignmentDetailsModalDOM() {
             </div>
 
             <!-- Actions -->
-            <div class="flex justify-end gap-3 pt-4 border-t border-slate-200">
+            <div class="flex justify-between gap-3 pt-4 border-t border-slate-200">
               <button
                 type="button"
-                id="adCancel"
-                class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition"
+                id="adFocusMode"
+                class="px-4 py-2 text-sm font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition"
               >
-                Close
+                🎯 Focus Mode
               </button>
-              <button
-                type="button"
-                id="adScheduleStudyTime"
-                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition"
-              >
-                📅 Schedule Study Time
-              </button>
+              <div class="flex gap-3">
+                <button
+                  type="button"
+                  id="adCancel"
+                  class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  id="adScheduleStudyTime"
+                  class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition"
+                >
+                  📅 Schedule Study Time
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -101,11 +115,109 @@ function ensureAssignmentDetailsModalDOM() {
   cancelBtn?.addEventListener("click", closeAssignmentDetailsModal);
   scheduleBtn?.addEventListener("click", handleScheduleStudyTime);
 
+  const focusModeBtn = $("adFocusMode");
+  focusModeBtn?.addEventListener("click", handleFocusModeClick);
+
+  const starBtn = $("adStarButton");
+  starBtn?.addEventListener("click", handleStarToggle);
+
   document.addEventListener("keydown", function(e) {
     if (e.key === "Escape" && modal && !modal.classList.contains("hidden")) {
       closeAssignmentDetailsModal();
     }
   });
+}
+
+/**
+ * Handle star button toggle
+ */
+async function handleStarToggle() {
+  if (!currentAssignmentData) {
+    console.error("[AssignmentDetailsModal] No assignment data available");
+    return;
+  }
+
+  const assignmentId = currentAssignmentData.id;
+  const starBtn = $("adStarButton");
+
+  try {
+    // Check current star status
+    const { isStarred } = await api.starredAssignments.check(assignmentId);
+
+    if (isStarred) {
+      // Confirm before unstarring
+      const assignmentName = currentAssignmentData.title || 'this assignment';
+      const confirmed = confirm(`Are you sure you want to unstar "${assignmentName}"?`);
+
+      if (!confirmed) {
+        return; // User cancelled
+      }
+
+      // Unstar the assignment
+      await api.starredAssignments.unstar(assignmentId);
+
+      // Update star button to hollow/transparent
+      if (starBtn) {
+        starBtn.textContent = '☆';
+        starBtn.title = 'Star assignment';
+      }
+
+      showNotification('Assignment unstarred');
+    } else {
+      // Star the assignment
+      await api.starredAssignments.star(assignmentId);
+
+      // Update star button to filled
+      if (starBtn) {
+        starBtn.textContent = '⭐';
+        starBtn.title = 'Unstar assignment';
+      }
+
+      showNotification('Assignment starred!');
+    }
+
+    // If there's a callback (e.g., to refresh calendar), call it
+    if (typeof onCloseCallback === "function") {
+      onCloseCallback();
+    }
+  } catch (error) {
+    console.error('Error toggling star:', error);
+    showNotification('Failed to update star status');
+  }
+}
+
+/**
+ * Show a notification message
+ */
+function showNotification(message) {
+  const notification = document.createElement('div');
+  notification.className = 'fixed top-4 right-4 px-4 py-3 rounded-lg bg-indigo-600 text-white shadow-lg z-50 transition-opacity';
+  notification.textContent = message;
+
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.style.opacity = '0';
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+/**
+ * Handle the "Focus Mode" button click
+ */
+function handleFocusModeClick() {
+  console.log("[AssignmentDetailsModal] Focus Mode clicked", currentAssignmentData);
+
+  if (!currentAssignmentData) {
+    console.error("[AssignmentDetailsModal] No assignment data available");
+    return;
+  }
+
+  // Navigate to focus mode page with assignment ID and type
+  const assignmentId = currentAssignmentData.id;
+  const assignmentType = currentAssignmentData.type || 'assignment';
+
+  window.location.href = `./focusMode.html?id=${encodeURIComponent(assignmentId)}&type=${encodeURIComponent(assignmentType)}`;
 }
 
 /**
@@ -158,8 +270,25 @@ export async function openAssignmentDetailsModal(assignmentData, callback) {
   const studyBlockCountEl = $("adStudyBlockCount");
   const existingStudyBlocksSection = $("adExistingStudyBlocks");
   const studyBlocksList = $("adStudyBlocksList");
+  const starBtn = $("adStarButton");
 
   if (!modal) return;
+
+  // Check and set star status
+  try {
+    const { isStarred } = await api.starredAssignments.check(assignmentData.id);
+    if (starBtn) {
+      starBtn.textContent = isStarred ? '⭐' : '☆';
+      starBtn.title = isStarred ? 'Unstar assignment' : 'Star assignment';
+    }
+  } catch (error) {
+    console.error('Error checking star status:', error);
+    // Default to unstarred on error
+    if (starBtn) {
+      starBtn.textContent = '☆';
+      starBtn.title = 'Star assignment';
+    }
+  }
 
   // Set assignment title
   if (titleEl) {
