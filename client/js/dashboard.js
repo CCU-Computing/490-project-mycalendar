@@ -24,6 +24,10 @@ import { api } from "./apiClient.js";
     let allCourses = [];
     let assignmentTypes = [];
 
+    // objects to hold color preferences
+    let courseColors = {};
+    let typeColors = {};
+
     // calendar setup and options
     const calendar = mountCalendar({
       containerId: "calendar",
@@ -45,13 +49,19 @@ import { api } from "./apiClient.js";
             const startDate = new Date(sb.start_time);
             const endDate = sb.end_time ? new Date(sb.end_time) : null;
 
+            // For custom events: border = custom color set on creation, background = "custom" type color
+            const borderColor = sb.color || '#4F46E5'; // custom color from creation
+            const baseCustomTypeColor = typeColors['custom'] || '#8b5cf6'; // "custom" assignment type color
+            const backgroundColor = baseCustomTypeColor + '66'; // Add alpha channel (40% opacity)
+
             return {
               id: sb.id,
               title: sb.title,
               start: startDate.toISOString(),
               end: endDate ? endDate.toISOString() : null,
               allDay: false,
-              color: sb.color || '#4F46E5',
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
               extendedProps: {
                 type: 'study_block',
                 assignmentId: sb.moodle_assignment_id,
@@ -67,19 +77,24 @@ import { api } from "./apiClient.js";
         const moodleEvents = allEvents.map(ev => {
           // Find the course name for this event
           const course = allCourses.find(c => c.id === ev.courseId);
-          // Based on current course set color course/type
-          const courseColor = allColors[ev.courseId];
-          const typeColor = allColors[ev.type];
+
+          // Get colors: border = course color, background = type color
+          const borderColor = courseColors[ev.courseId] || '#6366f1'; // default indigo
+          const baseTypeColor = typeColors[ev.type] || '#8b5cf6'; // default purple
+
+          // Make type color slightly transparent for background
+          const backgroundColor = baseTypeColor + '66'; // Add alpha channel (40% opacity)
 
           return {
             ...ev,
             start: new Date(ev.dueAt * 1000),
             allDay: true,
-            color: typeColor,
-            borderColor: courseColor,
+            backgroundColor: backgroundColor,
+            borderColor: borderColor,
             extendedProps: {
               type: ev.type || 'assign',
-              courseName: course?.name || 'Unknown Course'
+              courseName: course?.name || 'Unknown Course',
+              courseId: ev.courseId
             }
           };
         });
@@ -92,7 +107,23 @@ import { api } from "./apiClient.js";
     // load calendar events immediately
     calendar.reload();
 
-    // get events and courses function with filter by course select creation 
+    // get colors from prefs for calendar events
+    async function getColors() {
+      try {
+        const { prefs } = await api.prefs.get();
+
+        // get assignment type colors and course colors from prefs
+        typeColors = prefs.calendar.assignmentTypeColors || {};
+        courseColors = prefs.calendar.courseColors || {};
+      } catch (e) {
+        console.error('Error loading color preferences:', e);
+        // Use empty objects as fallback
+        typeColors = {};
+        courseColors = {};
+      }
+    }
+
+    // get events and courses function with filter by course select creation
     async function getEventsAndCourses() {
 
       // get events and courses
@@ -199,14 +230,22 @@ import { api } from "./apiClient.js";
             // find the course name for this event
             const course = allCourses.find(c => c.id === ev.courseId);
 
+            // Get colors: border = course color, background = type color
+            const borderColor = courseColors[ev.courseId] || '#6366f1';
+            const baseTypeColor = typeColors[ev.type] || '#8b5cf6';
+            const backgroundColor = baseTypeColor + '66';
+
             // add event to calendar
             calendarInstance.addEvent({
               ...ev,
               start: new Date(ev.dueAt * 1000),
               allDay: true,
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
               extendedProps: {
                 type: ev.type || 'assign',
-                courseName: course?.name || 'Unknown Course'
+                courseName: course?.name || 'Unknown Course',
+                courseId: ev.courseId
               }
             });
           }
@@ -282,14 +321,22 @@ import { api } from "./apiClient.js";
             // find the course name for this event
             const course = allCourses.find(c => c.id === ev.courseId);
 
+            // Get colors: border = course color, background = type color
+            const borderColor = courseColors[ev.courseId] || '#6366f1';
+            const baseTypeColor = typeColors[ev.type] || '#8b5cf6';
+            const backgroundColor = baseTypeColor + '66';
+
             // add event to calendar
             calendarInstance.addEvent({
               ...ev,
               start: new Date(ev.dueAt * 1000),
               allDay: true,
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
               extendedProps: {
                 type: ev.type || 'assign',
-                courseName: course?.name || 'Unknown Course'
+                courseName: course?.name || 'Unknown Course',
+                courseId: ev.courseId
               }
             });
           }

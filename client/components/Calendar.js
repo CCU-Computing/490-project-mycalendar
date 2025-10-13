@@ -362,7 +362,7 @@ function addCustomStyles() {
     .fc-event {
       border-radius: 4px !important;
       /* COURSE TYPE STYLE TEST */
-      border-width: 2px;
+      border-width: 3px !important;
     }
     
     /* Holiday specific gradient styling */

@@ -85,6 +85,36 @@ function buildNextMap(workData) {
   return map;
 }
 
+function calculateProgressFromWork(workData) {
+  const progressMap = {};
+  if (!workData || !Array.isArray(workData.courses)) return progressMap;
+
+  const nowSec = Math.floor(Date.now() / 1000);
+
+  workData.courses.forEach(function (c) {
+    const allWork = [
+      ...(c.assignments || []),
+      ...(c.quizzes || [])
+    ];
+
+    if (allWork.length === 0) {
+      // No work items, can't calculate progress
+      progressMap[c.courseId] = null;
+      return;
+    }
+
+    // Count completed (past due date) vs total
+    const completed = allWork.filter(item => item.dueAt && item.dueAt < nowSec).length;
+    const total = allWork.length;
+
+    // Calculate percentage (rounded to nearest integer)
+    const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+    progressMap[c.courseId] = progress;
+  });
+
+  return progressMap;
+}
+
 function extractCourseGrade(course) {
   if (!course || typeof course.grade !== "string") return null;
   const match = course.grade.match(/[\d.]+/);
@@ -103,6 +133,7 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
   let gradeByCourse = {};
   let courseColors = {};
   let courseMetadata = {};
+  let calculatedProgress = {};
 
   // Modal refs (now guaranteed to exist)
   const modal = $("classModal");
@@ -125,7 +156,13 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
     mImg.src = (metadata && metadata.custom_image_url) || course.image || course.courseimage || "";
     mImg.alt = course.shortname || "Course image";
     mCat.textContent = course.coursecategory || "—";
-    mProg.textContent = (typeof course.progress === "number") ? (course.progress + "%") : "—";
+
+    // Use Moodle progress if available, otherwise use calculated progress
+    const progress = (typeof course.progress === "number")
+      ? course.progress
+      : calculatedProgress[course.id];
+    mProg.textContent = (typeof progress === "number") ? (progress + "%") : "—";
+
     const g = gradeByCourse[course.id];
     mGrade.textContent = g ? (g.percentText || (g.percentNum + "%")) : "—";
     const next = nextByCourse[course.id]?.next;
@@ -188,6 +225,11 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
       const title = document.createElement("div");
       title.className = "truncate text-sm font-semibold";
       title.textContent = c.name || "Course";
+      // Use Moodle progress if available, otherwise use calculated progress
+      const progress = (typeof c.progress === "number")
+        ? c.progress
+        : calculatedProgress[c.id];
+
       const stats = document.createElement("div");
       stats.className = "mt-1 grid grid-cols-3 gap-2 text-[11px] text-slate-600";
       stats.innerHTML =
@@ -196,7 +238,7 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
           "<div class='uppercase tracking-wide'>Grade</div>" +
         "</div>" +
         "<div class='rounded-lg bg-slate-50 px-2 py-1 border border-slate-200'>" +
-          "<div class='font-medium text-slate-900 text-xs'>" + (typeof c.progress === "number" ? (c.progress + "%") : "—") + "</div>" +
+          "<div class='font-medium text-slate-900 text-xs'>" + (typeof progress === "number" ? (progress + "%") : "—") + "</div>" +
           "<div class='uppercase tracking-wide'>Progress</div>" +
         "</div>" +
         "<div class='rounded-lg bg-slate-50 px-2 py-1 border border-slate-200'>" +
@@ -232,7 +274,10 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
           if (g) gradeByCourse[course.id] = g;
         });
       }
-      if (workData) nextByCourse = buildNextMap(workData);
+      if (workData) {
+        nextByCourse = buildNextMap(workData);
+        calculatedProgress = calculateProgressFromWork(workData);
+      }
       courseColors = (prefsData && prefsData.prefs && prefsData.prefs.calendar && prefsData.prefs.calendar.courseColors) || {};
 
       // Build metadata map by course_id

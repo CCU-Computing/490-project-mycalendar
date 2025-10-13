@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Focus Mode — MyCalendar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+    <div data-partial="../partials/nav.html"></div>
+
+    <header class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-700">🎯</span>
+          <span class="font-semibold tracking-tight">Focus Mode</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700"></span>
+          <a href="./dashboard.html" class="text-sm text-indigo-700 hover:underline">Back to Dashboard</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-5xl px-4 py-8">
+
+      <!-- TODAY'S FOCUS HUB (shows when no ?id param) -->
+      <div id="focusHub" class="hidden">
+        <header class="mb-8 text-center">
+          <h1 class="text-4xl font-bold text-slate-900 mb-2">🎯 Focus on Today</h1>
+          <p class="text-lg text-slate-600">Select an item to start a focused study session</p>
+        </header>
+
+        <div id="focusHubContent" class="space-y-8">
+          <!-- Assignments Due Today -->
+          <section id="assignmentsSection" class="hidden">
+            <h2 class="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <span>📝</span> Assignments Due Today
+            </h2>
+            <div id="assignmentsList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+          </section>
+
+          <!-- Quizzes Due Today -->
+          <section id="quizzesSection" class="hidden">
+            <h2 class="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <span>📊</span> Quizzes Due Today
+            </h2>
+            <div id="quizzesList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+          </section>
+
+          <!-- Study Blocks Scheduled Today -->
+          <section id="studyBlocksSection" class="hidden">
+            <h2 class="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <span>📚</span> Study Blocks Scheduled Today
+            </h2>
+            <div id="studyBlocksList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+          </section>
+
+          <!-- Empty State -->
+          <div id="emptyState" class="hidden text-center py-16">
+            <div class="text-6xl mb-4">🎉</div>
+            <h3 class="text-2xl font-semibold text-slate-900 mb-2">All Clear!</h3>
+            <p class="text-slate-600">You have nothing due today. Great job staying on top of things!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- INDIVIDUAL FOCUS SESSION (shows when ?id=XXX&type=YYY) -->
+      <div id="focusSession" class="hidden space-y-6">
+
+        <!-- Item Details Section -->
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
+          <div id="itemDetails" class="space-y-4">
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <h1 id="itemTitle" class="text-2xl font-bold text-slate-900 mb-2"></h1>
+                <div id="itemMeta" class="flex flex-wrap items-center gap-3 text-sm text-slate-600"></div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button id="itemStarButton" class="hidden text-2xl hover:scale-110 transition-transform cursor-pointer p-2" title="Star assignment">
+                  ⭐
+                </button>
+                <span id="itemTypeBadge" class="inline-flex items-center gap-1 rounded-lg px-3 py-1 text-sm font-medium"></span>
+              </div>
+            </div>
+            <div id="itemDescription" class="text-slate-700 hidden"></div>
+          </div>
+        </div>
+
+        <!-- Timer/Stopwatch Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <!-- Countdown Timer -->
+          <div class="rounded-xl border border-slate-200 bg-white shadow-sm p-3">
+            <h3 class="text-sm font-semibold text-slate-900 mb-2 flex items-center gap-1.5">
+              <span class="text-base">⏱️</span> Countdown Timer
+            </h3>
+            <div id="countdownTimerComponent" class="min-h-[100px] flex items-center justify-center border-2 border-dashed border-slate-300 rounded-lg bg-slate-50">
+              <div class="text-center p-3">
+                <div class="text-2xl mb-1">⏱️</div>
+                <p class="text-xs text-slate-600 font-medium">Countdown</p>
+                <p class="text-xs text-slate-500">25/50 min</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stopwatch -->
+          <div class="rounded-xl border border-slate-200 bg-white shadow-sm p-3">
+            <h3 class="text-sm font-semibold text-slate-900 mb-2 flex items-center gap-1.5">
+              <span class="text-base">⏲️</span> Stopwatch
+            </h3>
+            <div id="stopwatchComponent" class="min-h-[100px] flex items-center justify-center border-2 border-dashed border-slate-300 rounded-lg bg-slate-50">
+              <div class="text-center p-3">
+                <div class="text-2xl mb-1">⏲️</div>
+                <p class="text-xs text-slate-600 font-medium">Stopwatch</p>
+                <p class="text-xs text-slate-500">Count up</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-lg font-semibold text-slate-900 flex items-center gap-2">
+              <span>📝</span> Session Notes
+            </h2>
+            <button
+              id="togglePreviewBtn"
+              class="px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 border border-slate-300 rounded-lg hover:bg-slate-200 transition"
+            >
+              👁️ Preview
+            </button>
+          </div>
+
+          <div id="notesComponent">
+            <!-- Edit Mode -->
+            <div id="notesEditMode">
+              <!-- Markdown Toolbar -->
+              <div class="flex items-center gap-1 mb-2 pb-2 border-b border-slate-200">
+                <button
+                  id="mdBold"
+                  title="Bold (Ctrl+B)"
+                  class="p-1.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded transition"
+                >
+                  <strong>B</strong>
+                </button>
+                <button
+                  id="mdItalic"
+                  title="Italic (Ctrl+I)"
+                  class="p-1.5 text-xs italic text-slate-600 hover:bg-slate-100 rounded transition"
+                >
+                  <em>I</em>
+                </button>
+                <button
+                  id="mdHeading"
+                  title="Heading"
+                  class="px-2 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded transition"
+                >
+                  H
+                </button>
+                <div class="w-px h-5 bg-slate-300 mx-1"></div>
+                <button
+                  id="mdList"
+                  title="Bullet List"
+                  class="p-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded transition"
+                >
+                  •
+                </button>
+                <button
+                  id="mdNumberList"
+                  title="Numbered List"
+                  class="px-2 py-1 text-xs text-slate-600 hover:bg-slate-100 rounded transition"
+                >
+                  1.
+                </button>
+                <button
+                  id="mdCode"
+                  title="Code"
+                  class="px-2 py-1 text-xs font-mono text-slate-600 hover:bg-slate-100 rounded transition"
+                >
+                  &lt;/&gt;
+                </button>
+                <button
+                  id="mdLink"
+                  title="Link"
+                  class="p-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded transition"
+                >
+                  🔗
+                </button>
+                <div class="ml-auto text-xs text-slate-400">
+                  Markdown enabled
+                </div>
+              </div>
+
+              <textarea
+                id="notesTextarea"
+                placeholder="Take notes during your focus session... (auto-saves every 30 seconds)"
+                class="w-full h-[400px] max-h-[600px] rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y font-mono overflow-y-auto"
+              ></textarea>
+            </div>
+
+            <!-- Preview Mode -->
+            <div id="notesPreviewMode" class="hidden">
+              <div
+                id="notesPreview"
+                class="w-full h-[400px] max-h-[600px] overflow-y-auto rounded-lg border border-slate-300 px-4 py-3 text-sm bg-slate-50 prose prose-slate prose-sm max-w-none"
+              >
+                <p class="text-slate-400 italic">No notes yet. Start typing to see your markdown rendered here!</p>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-3">
+              <span id="notesStatus" class="text-xs text-slate-500">Notes will auto-save</span>
+              <button
+                id="saveNotesBtn"
+                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition"
+              >
+                Save Notes
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Session History Section -->
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
+          <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+            <span>📊</span> Session History
+          </h2>
+          <div id="sessionHistory">
+            <div id="sessionsList" class="space-y-2"></div>
+            <div id="noSessionsMsg" class="text-sm text-slate-500 text-center py-4">
+              No previous sessions yet. Start a timer to begin tracking!
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <script type="module" src="../js/partials.js"></script>
+    <script type="module" src="../js/focusMode.js"></script>
+  </body>
+</html>
