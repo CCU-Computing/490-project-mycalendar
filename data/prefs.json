@@ -4,11 +4,21 @@
     "8408": {
       "calendar": {
         "courseColors": {
-          "9267": "#4F46E5"
+          "7997": "#ff9500",
+          "8186": "#170ce9",
+          "9267": "#07a259",
+          "9268": "#b30909",
+          "9603": "#ac00db"
         },
         "eventOverrides": {
-          "assign:60890": { "color": "#2563EB", "textColor": "#FFFFFF" },
-          "quiz:29431":   { "color": "#CA8A04", "textColor": "#111827" }
+          "assign:60890": {
+            "color": "#2563EB",
+            "textColor": "#FFFFFF"
+          },
+          "quiz:29431": {
+            "color": "#CA8A04",
+            "textColor": "#111827"
+          }
         }
       },
       "ui": {

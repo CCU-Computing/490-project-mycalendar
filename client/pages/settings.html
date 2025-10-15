@@ -1,1 +1,135 @@
 <!-- page for settings like color for classes, etc -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+    <title>Settings — MyCalendar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Coloris Color Picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
+ </head>
+    <body class="min-h-screen bg-slate-50 text-slate-900">
+        <div data-partial="../partials/nav.html"></div>
+
+        <header class="border-b border-slate-200 bg-white">
+        <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-700">📅</span>
+                <span class="font-semibold tracking-tight">MyCalendar</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700"></span>
+                <a href="../index.html" class="text-sm text-indigo-700 hover:underline">Landing Page</a>
+            </div>
+        </div>
+        </header>
+
+        <main class="mx-auto max-w-6xl px-4 py-8 space-y-8">
+
+            <section class="rounded-2xl border border-slate-200 bg-white shadow-sm min-h-[35vh]">
+                <div class="px-5 py-4 border-b border-slate-200">
+                    <h2 class="text-lg font-semibold tracking-tight">Settings</h2>
+                    <p class="text-sm text-slate-500 mt-1">
+                        Modify the style of classes, export your calender, etc.
+                    </p>
+                </div>
+                <div class="p-5">
+                    <div class="px-1 py-2 border-slate-200">
+                        <h2 class="text-lg font-semibold tracking-tight">Calendar Layout</h2>
+                    </div>
+                    <section>
+                        <div class="px-1 py-2 border-slate-200">
+                            <h3 class="text-l font-semibold tracking-tight">Calendar Color Picker</h3>
+                        </div>
+                        <!-- V grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] V -->
+                        <div id="calendarColorDeck" class="flex flex-wrap gap-3">
+                            
+                        </div>
+                    </section>
+                </div>
+                <div class="p-5">
+                    <div class="px-1 py-2 border-slate-200">
+                        <h2 class="text-lg font-semibold tracking-tight">Course Layout</h2>
+                    </div>
+                    <section>
+                        <div class="px-1 py-2 border-slate-200">
+                            <h3 class="text-l font-semibold tracking-tight">Course Image Cover</h3>
+                        </div>
+                        <div id="class" class="w-max rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+                            Coming Soon...
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="px-1 py-2 border-slate-200">
+                            <h3 class="text-l font-semibold tracking-tight">Course Color Picker</h3>
+                        </div>
+                        <div id="courseColorDeck" class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
+                            
+                            <!-- Keeping for styling -->
+                            <!-- <div id="courseCard" data-courseId="val" class="flex justify-between items-center rounded-xl border border-b border-slate-300 bg-slate-50 p-4 text-sm">
+                                <span id="courseName">CSCI*490*01 Software Engineering II - 25/FA</span>
+                                <input id="colorInput" type="color" class="w-10 h-8 rounded-full border-2 border-gray-300 appearance-none cursor-pointer color-picker" onchange="updateCourseColor()">
+                            </div> -->
+
+                            <!-- <div id="class" class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+                                No classes.
+                            </div> -->
+                        </div>
+                    </section>
+                </div>
+                <div class="p-5">
+                    <div class="px-1 py-2 border-slate-200">
+                        <h2 class="text-lg font-semibold tracking-tight">Export Calendar</h2>
+                        <p class="text-sm text-slate-500 mt-1">
+                            Want to take your calender on the go? Export them!
+                        </p>
+                    </div>
+                    <div class="px-1 py-2 border-slate-200">
+                        <h3 class="text-l font-semibold tracking-tight">ICalendar</h3>
+                        <!-- <p class="text-sm text-slate-500 mt-1">
+                            <b>URL:</b> Events are Automatically synced to other calendars.
+                        </p> -->
+                        <p class="text-sm text-slate-500 mt-1">
+                            <b>File:</b> Events are Downloaded to a file for offline access.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-4">
+                        <!-- <div>
+                            <input id="exportICSURL" type="button" value="Export as ICS URL" class="w-min flex justify-between items-center rounded-xl border border-b border-slate-300 bg-slate-50 p-4 text-sm text-slate-500 mt-1 cursor-pointer">
+                        </div> -->
+                        <div>
+                            <input id="exportICS" type="button" value="Export as ICS File" class="w-min flex justify-between items-center rounded-xl border border-b border-slate-300 bg-slate-50 p-4 text-sm text-slate-500 mt-1 cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+                
+            </section>
+
+        </main>
+
+        <style>
+            /* Remove default browser color square */
+            input[type="color"].color-picker::-webkit-color-swatch-wrapper {
+                padding: 0;
+                border-radius: 9999px; /* full round */
+            }
+
+            input[type="color"].color-picker::-webkit-color-swatch {
+                border: none;
+                border-radius: 9999px; /* round the swatch */
+            }
+
+            input[type="color"].color-picker::-moz-color-swatch {
+                border: none;
+                border-radius: 9999px;
+            }
+        </style>
+        
+        <script type="module" src="../js/partials.js"></script>
+        <script type="module" src="../js/settings.js"></script>
+    </body>
+ </html>

@@ -85,6 +85,36 @@ function buildNextMap(workData) {
   return map;
 }
 
+function calculateProgressFromWork(workData) {
+  const progressMap = {};
+  if (!workData || !Array.isArray(workData.courses)) return progressMap;
+
+  const nowSec = Math.floor(Date.now() / 1000);
+
+  workData.courses.forEach(function (c) {
+    const allWork = [
+      ...(c.assignments || []),
+      ...(c.quizzes || [])
+    ];
+
+    if (allWork.length === 0) {
+      // No work items, can't calculate progress
+      progressMap[c.courseId] = null;
+      return;
+    }
+
+    // Count completed (past due date) vs total
+    const completed = allWork.filter(item => item.dueAt && item.dueAt < nowSec).length;
+    const total = allWork.length;
+
+    // Calculate percentage (rounded to nearest integer)
+    const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+    progressMap[c.courseId] = progress;
+  });
+
+  return progressMap;
+}
+
 function extractCourseGrade(course) {
   if (!course || typeof course.grade !== "string") return null;
   const match = course.grade.match(/[\d.]+/);
@@ -102,6 +132,8 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
   let nextByCourse = {};
   let gradeByCourse = {};
   let courseColors = {};
+  let courseMetadata = {};
+  let calculatedProgress = {};
 
   // Modal refs (now guaranteed to exist)
   const modal = $("classModal");
@@ -119,10 +151,18 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
   function openModal(course) {
     if (!modal) return;
     mTitle.textContent = course.fullname || course.fullnamedisplay || course.name || course.shortname || "Course";
-    mImg.src = course.image || course.courseimage || "";
+    // Use custom image URL if available, otherwise fall back to Moodle image
+    const metadata = courseMetadata[String(course.id)];
+    mImg.src = (metadata && metadata.custom_image_url) || course.image || course.courseimage || "";
     mImg.alt = course.shortname || "Course image";
     mCat.textContent = course.coursecategory || "—";
-    mProg.textContent = (typeof course.progress === "number") ? (course.progress + "%") : "—";
+
+    // Use Moodle progress if available, otherwise use calculated progress
+    const progress = (typeof course.progress === "number")
+      ? course.progress
+      : calculatedProgress[course.id];
+    mProg.textContent = (typeof progress === "number") ? (progress + "%") : "—";
+
     const g = gradeByCourse[course.id];
     mGrade.textContent = g ? (g.percentText || (g.percentNum + "%")) : "—";
     const next = nextByCourse[course.id]?.next;
@@ -166,15 +206,18 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
       const card = document.createElement("button");
       card.type = "button";
       card.className = [
-        "group relative flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 text-left shadow-sm",
-        "hover:shadow-md hover:border-slate-300 transition",
+        "group relative flex items-center gap-3 rounded-xl border-3 border-slate-200 bg-white p-3 text-left shadow-sm",
+        "hover:shadow-md hover:border-slate-400 transition",
         "cursor-pointer"
       ].join(" ");
       if (color) {
         card.style.borderColor = color;
+        card.style.borderWidth = "3px";
       }
       const img = document.createElement("img");
-      img.src = c.image || "";
+      // Use custom image URL if available, otherwise fall back to Moodle image
+      const metadata = courseMetadata[String(c.id)];
+      img.src = (metadata && metadata.custom_image_url) || c.image || "";
       img.alt = c.shortname || "Course image";
       img.className = "h-12 w-12 rounded-lg object-cover ring-1 ring-slate-200 bg-slate-100";
       const content = document.createElement("div");
@@ -182,6 +225,11 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
       const title = document.createElement("div");
       title.className = "truncate text-sm font-semibold";
       title.textContent = c.name || "Course";
+      // Use Moodle progress if available, otherwise use calculated progress
+      const progress = (typeof c.progress === "number")
+        ? c.progress
+        : calculatedProgress[c.id];
+
       const stats = document.createElement("div");
       stats.className = "mt-1 grid grid-cols-3 gap-2 text-[11px] text-slate-600";
       stats.innerHTML =
@@ -190,7 +238,7 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
           "<div class='uppercase tracking-wide'>Grade</div>" +
         "</div>" +
         "<div class='rounded-lg bg-slate-50 px-2 py-1 border border-slate-200'>" +
-          "<div class='font-medium text-slate-900 text-xs'>" + (typeof c.progress === "number" ? (c.progress + "%") : "—") + "</div>" +
+          "<div class='font-medium text-slate-900 text-xs'>" + (typeof progress === "number" ? (progress + "%") : "—") + "</div>" +
           "<div class='uppercase tracking-wide'>Progress</div>" +
         "</div>" +
         "<div class='rounded-lg bg-slate-50 px-2 py-1 border border-slate-200'>" +
@@ -208,14 +256,17 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
 
   async function reload() {
     try {
-      const [coursesRes, workRes, prefsRes] = await Promise.allSettled([
+      const [coursesRes, workRes, prefsRes, metadataRes] = await Promise.allSettled([
         api.courses(),
         api.work(),
-        api.prefs.get()
+        api.prefs.get(),
+        api.courseMetadata.getAll()
       ]);
       const coursesData = coursesRes.status === "fulfilled" ? coursesRes.value : null;
       const workData = workRes.status === "fulfilled" ? workRes.value : null;
       const prefsData = prefsRes.status === "fulfilled" ? prefsRes.value : null;
+      const metadataData = metadataRes.status === "fulfilled" ? metadataRes.value : null;
+
       if (coursesData && coursesData.courses) {
         courseList = coursesData.courses;
         courseList.forEach(course => {
@@ -223,8 +274,20 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
           if (g) gradeByCourse[course.id] = g;
         });
       }
-      if (workData) nextByCourse = buildNextMap(workData);
+      if (workData) {
+        nextByCourse = buildNextMap(workData);
+        calculatedProgress = calculateProgressFromWork(workData);
+      }
       courseColors = (prefsData && prefsData.prefs && prefsData.prefs.calendar && prefsData.prefs.calendar.courseColors) || {};
+
+      // Build metadata map by course_id
+      if (metadataData && metadataData.metadata) {
+        courseMetadata = {};
+        metadataData.metadata.forEach(meta => {
+          courseMetadata[meta.course_id] = meta;
+        });
+      }
+
       // Example fallback: if empty, color the first course so storytellers can see it
       if (!courseColors || Object.keys(courseColors).length === 0) {
         if (courseList && courseList.length > 0) {
