@@ -7,18 +7,19 @@
     <meta name="description" content="A simple calendar built from your own Moodle data." />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./js/util/tailwind-config.js"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="./js/app.js" defer></script>
   </head>
-  <body class="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-indigo-200/60">
+  <body class="transition-colors duration-300 min-h-screen bg-slate-50 dark:bg-neutral-800 text-slate-900 dark:text-slate-200 antialiased selection:bg-indigo-200/60">
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 bg-white rounded-md px-3 py-2 shadow">
       Skip to content
     </a>
 
     <div id="root"></div>
 
-    <header class="border-b border-slate-200 bg-white/80 backdrop-blur">
+    <header class="border-b border-slate-200 dark:border-neutral-600 bg-white/80 dark:bg-neutral-900 backdrop-blur">
       <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-700">📅</span>
@@ -46,7 +47,7 @@
               <h1 class="text-3xl md:text-5xl font-semibold tracking-tight leading-tight">
                 Your semester, organized in one <span class="text-indigo-700">calendar</span>
               </h1>
-              <p class="mt-4 text-slate-600 max-w-prose">
+              <p class="mt-4 text-slate-600 dark:text-slate-400 max-w-prose">
                 MyCalendar pulls your current classes and assignments from your own Moodle account
                 and builds a clean schedule view with class days, due dates, times, completion
                 status, and grades. It's a school project demo, simple by design.
@@ -55,24 +56,24 @@
                 <button id="loginBtnHero" class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2">
                   <span>Login with Moodle</span>
                 </button>
-                <a href="#how" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 hover:bg-slate-50">
+                <a href="#how" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 px-5 py-3 hover:bg-slate-50 dark:hover:bg-neutral-950">
                   Learn more
                 </a>
               </div>
-              <p class="mt-3 text-xs text-slate-500">
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">
                 Placeholder......................................................................
               </p>
             </div>
             <div class="relative">
-              <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-4">
-                <div class="h-48 rounded-xl bg-gradient-to-br from-indigo-50 to-slate-50 flex items-center justify-center">
+              <div class="rounded-2xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-neutral-900 shadow-sm p-4">
+                <div class="h-48 rounded-xl bg-gradient-to-br from-indigo-50 dark:from-slate-600 to-slate-50 dark:to-slate-700 flex items-center justify-center">
                   <div class="text-center">
                     <div class="text-xl font-medium">Calendar Preview (Mock)</div>
-                    <div class="mt-2 text-sm text-slate-500">Class meetings • Due dates • Status</div>
+                    <div class="mt-2 text-sm text-slate-500 dark:text-slate-400">Class meetings • Due dates • Status</div>
                   </div>
                 </div>
-                <ul class="mt-4 text-sm text-slate-700 space-y-2">
-                  <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-indigo-600"></span> CS 330 - M/W/F 9:00</li>
+                <ul class="mt-4 text-sm text-slate-700 dark:text-slate-400 space-y-2">
+                  <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-indigo-600 "></span> CS 330 - M/W/F 9:00</li>
                   <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-emerald-600"></span> Assign: Project proposal - Sep 5, 11:59 PM</li>
                   <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-amber-500"></span> Quiz 2 - Sep 7, 2:00 PM</li>
                 </ul>
@@ -82,27 +83,27 @@
         </div>
       </section>
 
-      <section id="about" class="bg-white border-y border-slate-200">
+      <section id="about" class="bg-white dark:bg-neutral-900 border-y border-slate-200 dark:border-neutral-600">
         <div class="mx-auto max-w-6xl px-4 py-16">
           <h2 class="text-2xl font-semibold tracking-tight">What this does</h2>
-          <p class="mt-2 text-slate-600">Easily import Moodle classes into one calendar view.</p>
+          <p class="mt-2 text-slate-600 dark:text-slate-400">Easily import Moodle classes into one calendar view.</p>
 
           <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <article class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-800 p-5 shadow-sm">
               <h3 class="font-medium">Uses your Moodle data</h3>
-              <p class="mt-2 text-sm text-slate-600">
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
                 Pulls classes and assignments for the current term from your own account.
               </p>
             </article>
-            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <article class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-800 p-5 shadow-sm">
               <h3 class="font-medium">Puts it on a calendar</h3>
-              <p class="mt-2 text-sm text-slate-600">
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
                 Features coming soon...
               </p>
             </article>
-            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <article class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-800 p-5 shadow-sm">
               <h3 class="font-medium">Placeholder</h3>
-              <p class="mt-2 text-sm text-slate-600">
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
                 Placeholder.....
               </p>
             </article>
@@ -114,33 +115,29 @@
         <div class="mx-auto max-w-6xl px-4 py-16">
           <h2 class="text-2xl font-semibold tracking-tight">How it works</h2>
           <ol class="mt-6 grid md:grid-cols-3 gap-6">
-            <li class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div class="text-sm font-medium text-slate-500">Step 1</div>
+            <li class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 p-5 shadow-sm">
+              <div class="text-sm font-medium text-slate-500 dark:text-slate-400">Step 1</div>
               <div class="mt-1 font-medium">Login with Moodle</div>
-              <p class="mt-2 text-sm text-slate-600">Authenticate securely, no password storage.</p>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-500">Authenticate securely, no password storage.</p>
             </li>
-            <li class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div class="text-sm font-medium text-slate-500">Step 2</div>
+            <li class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 p-5 shadow-sm">
+              <div class="text-sm font-medium text-slate-500 dark:text-slate-400">Step 2</div>
               <div class="mt-1 font-medium">Import classes & assignments</div>
-              <p class="mt-2 text-sm text-slate-600">We fetch your current term data via endpoints.</p>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-500">We fetch your current term data via endpoints.</p>
             </li>
-            <li class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div class="text-sm font-medium text-slate-500">Step 3</div>
+            <li class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 p-5 shadow-sm">
+              <div class="text-sm font-medium text-slate-500 dark:text-slate-400">Step 3</div>
               <div class="mt-1 font-medium">View your calendar</div>
-              <p class="mt-2 text-sm text-slate-600">Everything displays in a clean schedule view.</p>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-500">Everything displays in a clean schedule view.</p>
             </li>
           </ol>
         </div>
       </section>
     </main>
 
-    <footer class="border-t border-slate-200 bg-white">
-      <div class="mx-auto max-w-6xl px-4 py-6 text-sm text-slate-500 flex items-center justify-between">
-        <span>© <span id="year"></span> MyCalendar • Demo</span>
-        <span>Built for class use only</span>
-      </div>
-    </footer>
-
+    <div data-partial="../partials/footer.html"></div>
+    <script type="module" src="../js/partials.js"></script>
+    
     <noscript>
       <div class="mx-auto max-w-6xl px-4 py-4 text-sm text-red-700">
         JavaScript is disabled. The demo login button will not work.

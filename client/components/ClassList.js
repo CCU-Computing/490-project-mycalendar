@@ -1,4 +1,5 @@
 import { api } from "../js/apiClient.js";
+import { courseProgressBar } from "./CourseProgressBar.js";
 
 function $(id) { return document.getElementById(id); }
 
@@ -247,6 +248,7 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
         "</div>";
       content.appendChild(title);
       content.appendChild(stats);
+      content.appendChild(courseProgressBar(progress));
       card.appendChild(img);
       card.appendChild(content);
       card.addEventListener("click", function () { openModal(c); });
