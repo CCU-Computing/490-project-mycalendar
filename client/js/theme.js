@@ -1,15 +1,11 @@
+import { getUserTheme } from "../js/util/theme-tools.js"
+
 // Set Light/Dark Mode for website
 (function () {
     try {
         // Get the HTML Element (Like a data-... to get Dark)
         const ROOT = document.documentElement;
 
-        // Get Theme (From HTML data-... or User's Device Theme)
-        let storedTheme = localStorage.getItem('theme');
-        let userDefaultTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        // Check to see if there is a dark value (true), otherwise its light (false)
-        let isDark = storedTheme === 'dark' || (!storedTheme && userDefaultTheme);
 
         // Get IDs
         let lightSwitch = document.getElementById('lightSwitch');
@@ -24,7 +20,7 @@
         const INACTIVE = "p-2";
         
         // Set Switch based on boolean
-        if (isDark) {
+        if (getUserTheme()) {
             darkIcon.className = ACTIVE;
             lightIcon.className = INACTIVE;
         } else {
@@ -35,7 +31,6 @@
         // Manual toggle
         lightSwitch.addEventListener('click', () => {
             ROOT.classList.toggle('dark');
-            console.log(lightSwitch);
             localStorage.setItem(
                 'theme',
                 ROOT.classList.contains('dark') ? 'dark' : 'light'

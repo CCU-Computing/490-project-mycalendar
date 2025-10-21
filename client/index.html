@@ -8,11 +8,12 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="./js/util/tailwind-config.js"></script>
+    <script src="../js/util/handle-theme-flash.js"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="./js/app.js" defer></script>
   </head>
-  <body class="transition-colors duration-300 min-h-screen bg-slate-50 dark:bg-neutral-800 text-slate-900 dark:text-slate-200 antialiased selection:bg-indigo-200/60">
+  <body class="flex flex-col transition-colors duration-300 min-h-screen bg-slate-50 dark:bg-neutral-800 text-slate-900 dark:text-slate-200 antialiased selection:bg-indigo-200/60">
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 bg-white rounded-md px-3 py-2 shadow">
       Skip to content
     </a>
@@ -39,7 +40,7 @@
       </div>
     </header>
 
-    <main id="main">
+    <main id="main" class="grow">
       <section class="relative overflow-hidden">
         <div class="mx-auto max-w-6xl px-4 py-20">
           <div class="grid md:grid-cols-2 gap-10 items-center">
@@ -65,7 +66,7 @@
               </p>
             </div>
             <div class="relative">
-              <div class="rounded-2xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-neutral-900 shadow-sm p-4">
+              <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-4">
                 <div class="h-48 rounded-xl bg-gradient-to-br from-indigo-50 dark:from-slate-600 to-slate-50 dark:to-slate-700 flex items-center justify-center">
                   <div class="text-center">
                     <div class="text-xl font-medium">Calendar Preview (Mock)</div>

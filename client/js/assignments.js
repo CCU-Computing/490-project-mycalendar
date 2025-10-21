@@ -124,10 +124,10 @@ class AssignmentManager {
 
         if (starredAssignments.length === 0) {
             container.innerHTML = `
-                <div class="col-span-full rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+                <div class="col-span-full rounded-xl border border-dashed border-slate-300 dark:border-neutral-600 bg-slate-50 dark:bg-neutral-800 p-8 text-center">
                     <div class="text-4xl mb-3">⭐</div>
-                    <h3 class="text-base font-medium text-slate-700 mb-1">No Starred Assignments</h3>
-                    <p class="text-sm text-slate-500">Star assignments to see them here for quick access.</p>
+                    <h3 class="text-base font-medium text-slate-700 dark:text-slate-200 mb-1">No Starred Assignments</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Star assignments to see them here for quick access.</p>
                 </div>
             `;
         } else {
@@ -181,16 +181,16 @@ class AssignmentManager {
         const typeLabel = assignment.type === 'quiz' ? '📝 Quiz' : '📄 Assignment';
 
         return `
-            <div class="rounded-xl border border-slate-200 bg-white p-4 hover:shadow-md transition-shadow cursor-pointer"
+            <div class="rounded-xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 p-4 dark:shadow-neutral-200 hover:shadow-md transition-shadow cursor-pointer"
                  data-id="${assignment.id}"
                  onclick="assignmentManager.openModal('${assignment.id}')">
                 <div class="flex items-start justify-between mb-3">
                     <div class="flex-1">
                         <div class="flex items-center gap-2 mb-1">
                             <span class="text-sm">${typeLabel}</span>
-                            <h3 class="text-base font-semibold text-slate-900">${assignment.title}</h3>
+                            <h3 class="text-base font-semibold text-slate-900 dark:text-slate-200">${assignment.title}</h3>
                         </div>
-                        <p class="text-sm text-slate-600">${assignment.course} - ${assignment.courseName}</p>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">${assignment.course} - ${assignment.courseName}</p>
                     </div>
                     <div class="flex items-center gap-2 ml-3">
                         <button
@@ -209,16 +209,16 @@ class AssignmentManager {
                 <div class="grid grid-cols-2 gap-3 text-sm">
                     ${assignment.dueDate ? `
                         <div>
-                            <span class="text-slate-500">Due Date:</span>
-                            <p class="text-slate-900 font-medium">${this.formatDate(assignment.dueDate)}</p>
+                            <span class="text-slate-500 dark:text-slate-400">Due Date:</span>
+                            <p class="text-slate-900 dark:text-slate-200 font-medium">${this.formatDate(assignment.dueDate)}</p>
                         </div>
                         <div>
-                            <span class="text-slate-500">Time Remaining:</span>
-                            <p class="text-slate-900 font-medium">${assignment.timeRemaining}</p>
+                            <span class="text-slate-500 dark:text-slate-400">Time Remaining:</span>
+                            <p class="text-slate-900 dark:text-slate-200 font-medium">${assignment.timeRemaining}</p>
                         </div>
                     ` : `
                         <div class="col-span-2">
-                            <span class="text-slate-500">No due date set</span>
+                            <span class="text-slate-500 dark:text-slate-400">No due date set</span>
                         </div>
                     `}
                 </div>

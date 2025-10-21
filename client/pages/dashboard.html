@@ -4,39 +4,41 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Dashboard — MyCalendar</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="./js/util/tailwind-config.js"></script>
+    <script src="../js/util/tailwind-config.js"></script>
+    <script src="../js/util/handle-theme-flash.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
   </head>
 
-  <body class="min-h-screen bg-slate-50 text-slate-900">
+  <body class="flex flex-col transition-colors duration-300 min-h-screen bg-slate-50 dark:bg-neutral-800 text-slate-900 dark:text-slate-200">
     <div data-partial="../partials/nav.html"></div>
 
-    <header class="border-b border-slate-200 bg-white">
+    <header class="border-b border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900">
       <div class="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-700">📅</span>
           <span class="font-semibold tracking-tight">MyCalendar</span>
         </div>
         <div class="flex items-center gap-3">
-          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700"></span>
+          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-3 py-1 text-sm text-slate-700 dark:text-slate-200"></span>
           <a href="../index.html" class="text-sm text-indigo-700 hover:underline">Landing Page</a>
         </div>
       </div>
     </header>
 
-    <main class="mx-auto max-w-7xl px-4 py-8 space-y-8">
+    <main class="grow mx-auto max-w-7xl px-4 py-8 space-y-8">
 
-      <section class="rounded-2xl border border-slate-200 bg-white shadow-sm min-h-[35vh]">
-        <div class="px-5 py-4 border-b border-slate-200">
+      <section class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm min-h-[35vh]">
+        <div class="px-5 py-4 border-b border-slate-200 dark:border-neutral-600">
           <h2 class="text-lg font-semibold tracking-tight">User Story Area: This Semester’s Classes</h2>
-          <p class="text-sm text-slate-500 mt-1">
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Add class cards here (e.g., name, progress, overall grade).
           </p>
         </div>
         <div class="p-5">
           <div id="semesterClasses" class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
-            <div class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+            <div class="rounded-xl border border-dashed border-slate-300 dark:border-neutral-600 bg-slate-50 dark:bg-neutral-800 p-4 text-sm text-slate-500 dark:text-slate-400">
               No classes rendered yet. User Story Area: Class cards grid.
             </div>
           </div>
@@ -45,58 +47,58 @@
 
       <section class="grid grid-cols-1 lg:grid-cols-[3fr,1fr] gap-6 min-h-[60vh]">
         <!-- Calendar pane (expanded) -->
-        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm flex flex-col">
-          <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+        <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm flex flex-col">
+          <div class="px-5 py-4 border-b border-slate-200 dark:border-neutral-600 flex items-center justify-between">
             <h2 class="text-lg font-semibold tracking-tight">Calendar</h2>
             <span class="flex items-center space-x-4">
               <button id="addEventBtn" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition">Add Event</button>
               <button id="refreshCalendar" class="text-sm text-indigo-700 hover:underline">Refresh</button>
             </span>
           </div>
-          <div id="calendar" class="m-2 rounded-xl border border-slate-200 bg-white p-2 shadow-sm flex-1 min-h-[52vh]"></div>
+          <div id="calendar" class="m-2 rounded-xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-800 p-2 shadow-sm flex-1 min-h-[52vh]"></div>
         </div>
 
         <!-- Right-side vertical column - Filters only -->
         <div class="lg:w-80">
           <!-- Filter Section (User Story Area) -->
-          <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <div class="px-5 py-4 border-b border-slate-200">
+          <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm">
+            <div class="px-5 py-4 border-b border-slate-200 dark:border-neutral-600">
               <h2 class="text-lg font-semibold tracking-tight">Filters</h2>
-              <p class="text-sm text-slate-500 mt-1">
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
                 Control what appears on your calendar
               </p>
             </div>
             <div class="p-5 space-y-3">
               <!-- Filter by Assignment Type (Collapsible) -->
-              <div class="border border-slate-200 rounded-lg">
+              <div class="border border-slate-200 dark:border-neutral-600 rounded-lg">
                 <button
                   id="filterByAssignmentTypeToggle"
-                  class="w-full flex items-center justify-between px-4 py-3 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 transition rounded-lg"
+                  class="w-full flex items-center justify-between px-4 py-3 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 dark:hover:bg-neutral-800 transition rounded-lg"
                   type="button"
                 >
-                  <span>Filter by Assignment Type</span>
+                  <span class="dark:text-slate-200">Filter by Assignment Type</span>
                   <svg class="h-5 w-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                <div id="assignmentTypeToggles" class="hidden space-y-2 border-t border-slate-200">
+                <div id="assignmentTypeToggles" class="hidden space-y-2 border-t border-slate-200 dark:border-neutral-600">
                   <!-- Toggle checkboxes will be populated here by team member's user story -->
                 </div>
               </div>
 
               <!-- Filter by Course(s) (Collapsible) -->
-              <div class="border border-slate-200 rounded-lg">
+              <div class="border border-slate-200 dark:border-neutral-600 rounded-lg">
                 <button
                   id="filterByCoursesToggle"
-                  class="w-full flex items-center justify-between px-4 py-3 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 transition rounded-lg"
+                  class="w-full flex items-center justify-between px-4 py-3 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 dark:hover:bg-neutral-800 transition rounded-lg"
                   type="button"
                 >
-                  <span>Filter by Course(s)</span>
+                  <span class="dark:text-slate-200">Filter by Course(s)</span>
                   <svg class="h-5 w-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                <div id="courseToggles" class="hidden space-y-2 border-t border-slate-200">
+                <div id="courseToggles" class="hidden space-y-2 border-t border-slate-200 dark:border-neutral-600">
                   <!-- Toggle checkboxes will be populated here by team member's user story -->
                 </div>
               </div>
@@ -106,16 +108,16 @@
       </section>
 
       <!-- Upcoming Assignments Section (below calendar) -->
-      <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div class="px-5 py-4 border-b border-slate-200">
+      <section class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200 dark:border-neutral-600">
           <h2 class="text-lg font-semibold tracking-tight">User Story Area: Upcoming Assignments</h2>
-          <p class="text-sm text-slate-500 mt-1">
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Show upcoming due items below the calendar.
           </p>
           </div>
           <div class="p-5 overflow-y-auto">
             <ul id="upcomingAssignments" class="space-y-2">
-              <li class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+              <li class="rounded-xl border border-dashed border-slate-300 dark:border-neutral-600 bg-slate-50 dark:bg-neutral-800 p-4 text-sm text-slate-500 dark:text-slate-400">
                 No items yet. User Story Area: Upcoming assignments list.
               </li>
             </ul>
@@ -128,11 +130,11 @@
     <div id="classModal" class="fixed inset-0 z-50 hidden">
       <div id="modalBackdrop" class="absolute inset-0 bg-black bg-opacity-50"></div>
       <div class="relative flex min-h-full items-center justify-center p-4">
-        <div class="relative w-full max-w-2xl rounded-2xl bg-white shadow-xl">
+        <div class="relative w-full max-w-2xl rounded-2xl bg-white dark:bg-neutral-900 shadow-xl">
           <!-- Modal Header -->
-          <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-            <h3 id="mTitle" class="text-lg font-semibold text-slate-900">Course Details</h3>
-            <button id="mClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-neutral-600 px-6 py-4">
+            <h3 id="mTitle" class="text-lg font-semibold text-slate-900 dark:text-slate-200">Course Details</h3>
+            <button id="mClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-neutral-800 hover:text-slate-600">
               <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -146,20 +148,23 @@
               <div class="flex-1 min-w-0">
                 <div class="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span class="font-medium text-slate-900">Category:</span>
-                    <span id="mCat" class="ml-2 text-slate-600">—</span>
+                    <span class="font-medium text-slate-900 dark:text-slate-200">Category:</span>
+                    <span id="mCat" class="ml-2 text-slate-600 dark:text-slate-400">—</span>
                   </div>
                   <div>
-                    <span class="font-medium text-slate-900">Progress:</span>
-                    <span id="mProg" class="ml-2 text-slate-600">—</span>
+                    <span class="font-medium text-slate-900 dark:text-slate-200">Progress:</span>
+                    <span id="mProg" class="ml-2 text-slate-600 dark:text-slate-400">—</span>
+                    <div>
+                      <span id="mBar" class="flex w-1/2"></span>
+                    </div>
                   </div>
                   <div>
-                    <span class="font-medium text-slate-900">Grade:</span>
-                    <span id="mGrade" class="ml-2 text-slate-600">—</span>
+                    <span class="font-medium text-slate-900 dark:text-slate-200">Grade:</span>
+                    <span id="mGrade" class="ml-2 text-slate-600 dark:text-slate-400">—</span>
                   </div>
                   <div>
-                    <span class="font-medium text-slate-900">Next Due:</span>
-                    <span id="mNext" class="ml-2 text-slate-600">—</span>
+                    <span class="font-medium text-slate-900 dark:text-slate-200">Next Due:</span>
+                    <span id="mNext" class="ml-2 text-slate-600 dark:text-slate-400">—</span>
                   </div>
                 </div>
               </div>
@@ -167,7 +172,7 @@
 
             <!-- Upcoming Assignments -->
             <div class="mt-6">
-              <h4 class="text-sm font-semibold text-slate-900 mb-3">Upcoming Assignments</h4>
+              <h4 class="text-sm font-semibold text-slate-900 dark:text-slate-200 mb-3">Upcoming Assignments</h4>
               <ul id="mUpcoming" class="space-y-2">
                 <!-- Dynamic content will be inserted here -->
               </ul>

@@ -143,12 +143,12 @@ import { api } from "./apiClient.js";
         // add each course to the container
         courseToggles.insertAdjacentHTML('beforeend',
           `
-            <label class="w-full flex items-center px-4 py-3 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 transition rounded-lg select-none">
+            <label class="w-full flex items-center px-4 py-3 text-left text-sm font-medium text-slate-900 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 transition rounded-lg select-none">
               <span class="pr-2">
                 <input type="checkbox" id="${course.id}" class="peer sr-only" checked />
                 <span class="[&_path]:fill-none [&_path]:stroke-current
                   peer-checked:[&_path]:fill-current">
-                  <svg viewBox="0 0 24 24" class="size-5 text-slate-900" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" class="size-5 text-slate-900 dark:text-slate-200" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 5.25 16.5v-9Z" />
                   </svg>
@@ -179,12 +179,12 @@ import { api } from "./apiClient.js";
         // add each course to the container
         assignmentTypeToggles.insertAdjacentHTML('beforeend',
           `
-            <label class="w-full flex items-center px-4 py-3 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 transition rounded-lg select-none">
+            <label class="w-full flex items-center px-4 py-3 text-left text-sm font-medium text-slate-900 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 transition rounded-lg select-none">
               <span class="pr-2">
                 <input type="checkbox" id="${type}" class="peer sr-only" checked />
                 <span class="[&_path]:fill-none [&_path]:stroke-current
                   peer-checked:[&_path]:fill-current">
-                  <svg viewBox="0 0 24 24" class="size-5 text-slate-900" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" class="size-5 text-slate-900 dark:text-slate-200" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 5.25 16.5v-9Z" />
                   </svg>

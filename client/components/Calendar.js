@@ -358,7 +358,22 @@ function addCustomStyles() {
     .fc-day-today {
       background-color: rgba(52, 152, 219, 0.1) !important;
     }
+
+    /* FOR DARK MODE */
+    /* DAYS */
+    .dark .fc-day-sun, .dark .fc-day-mon, .dark .fc-day-tue, .dark .fc-day-wed, .dark .fc-day-thu, .dark .fc-day-fri, .dark .fc-day-sat {
+      background-color: #282a2cbd !important;
+    }
+
+    /* OTHER MODES: WEEK/DAY/LIST */
+    .dark .fc-timegrid-axis, .dark .fc-list-day > * {
+      background-color: #282a2cbd !important;
+    }
     
+    .dark .fc-list-event:hover td {
+      background-color: #747b81bd !important;
+    }
+
     .fc-event {
       border-radius: 4px !important;
       /* COURSE TYPE STYLE TEST */
