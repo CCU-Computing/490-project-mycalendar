@@ -431,16 +431,25 @@ async function handleStarToggle() {
       starBtn.textContent = '☆';
       starBtn.title = 'Star assignment';
       showNotification('Assignment unstarred');
+
+      // show assignment unstarred toast notification
+      toastNotification("Assignment has been unstarred", "success");
     } else {
       // Star
       await api.starredAssignments.star(currentItem.id);
       starBtn.textContent = '⭐';
       starBtn.title = 'Unstar assignment';
       showNotification('Assignment starred!');
+
+      // show assignment starred toast notification
+      toastNotification("Assignment has been starred", "success");
     }
   } catch (error) {
     console.error('Error toggling star:', error);
     showNotification('Failed to update star status');
+
+    // show assignment starred error toast notification
+    toastNotification("An error has occurred", "error");
   }
 }
 

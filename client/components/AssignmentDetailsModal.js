@@ -165,8 +165,8 @@ async function handleStarToggle() {
 
       showNotification('Assignment unstarred');
 
-      // show assignment has been unstarted toast notification
-      toastNotification("Assignment has been unstarted", "success");
+      // show assignment has been unstarred toast notification
+      toastNotification("Assignment has been unstarred", "success");
     } else {
       // Star the assignment
       await api.starredAssignments.star(assignmentId);
@@ -179,8 +179,8 @@ async function handleStarToggle() {
 
       showNotification('Assignment starred!');
 
-      // show assignment has been started toast notification
-      toastNotification("Assignment has been started", "success");
+      // show assignment has been starred toast notification
+      toastNotification("Assignment has been starred", "success");
     }
 
     // If there's a callback (e.g., to refresh calendar), call it
