@@ -1,5 +1,6 @@
 import { api } from "../js/apiClient.js";
 import { openStudyBlockModal } from "./StudyBlockModal.js";
+import toastNotification from "./ToastNotification.js";
 
 function $(id) { return document.getElementById(id); }
 
@@ -163,6 +164,9 @@ async function handleStarToggle() {
       }
 
       showNotification('Assignment unstarred');
+
+      // show assignment has been unstarted toast notification
+      toastNotification("Assignment has been unstarted", "success");
     } else {
       // Star the assignment
       await api.starredAssignments.star(assignmentId);
@@ -174,6 +178,9 @@ async function handleStarToggle() {
       }
 
       showNotification('Assignment starred!');
+
+      // show assignment has been started toast notification
+      toastNotification("Assignment has been started", "success");
     }
 
     // If there's a callback (e.g., to refresh calendar), call it
@@ -183,6 +190,9 @@ async function handleStarToggle() {
   } catch (error) {
     console.error('Error toggling star:', error);
     showNotification('Failed to update star status');
+
+    // show updated star status error toast notification
+    toastNotification("An error has occurred", "error");
   }
 }
 

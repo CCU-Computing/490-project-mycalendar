@@ -1,6 +1,7 @@
 import { mountClassList } from "../components/ClassList.js";
 import { mountCalendar } from "../components/Calendar.js";
 import { api } from "./apiClient.js";
+import toastNotification from "../components/ToastNotification.js";
 
 (function () {
   const userName = sessionStorage.getItem("mc_userName");
@@ -345,20 +346,41 @@ import { api } from "./apiClient.js";
     })
 
     // event listener for refreshing calendar
-    document.getElementById("refreshCalendar").addEventListener("click", () => {
+    document.getElementById("refreshCalendar").addEventListener("click", async() => {
 
       // get course and assignment type toggles element
       const courseToggles = document.getElementById("courseToggles");
       const assignmentTypeToggles = document.getElementById("assignmentTypeToggles");
 
-      // reset data and hide the elements
-      courseToggles.innerHTML = '';
-      courseToggles.classList.add("hidden");
-      assignmentTypeToggles.innerHTML = '';
-      assignmentTypeToggles.classList.add("hidden");
+      // save previous inner html
+      const courseTogglesPreviousInnerHTML = courseToggles.innerHTML;
+      const assignmentTypeTogglesPreviousInnerHTML = assignmentTypeToggles.innerHTML;
 
-      // reload calendar
-      calendar.reload();
+      // try/catch for calendar reload
+      try {
+
+        // reset data and hide the elements
+        courseToggles.innerHTML = '';
+        courseToggles.classList.add("hidden");
+        assignmentTypeToggles.innerHTML = '';
+        assignmentTypeToggles.classList.add("hidden");
+
+        // reload the calendar
+        await calendar.reload();
+
+        // show calendar refresh success toast notification
+        toastNotification("Calendar successfully refreshed", "success");
+      } catch (error) {
+
+        // restore inner html
+        courseToggles.innerHTML = courseTogglesPreviousInnerHTML;
+        assignmentTypeToggles.innerHTML = assignmentTypeTogglesPreviousInnerHTML;
+        courseToggles.classList.remove("hidden");
+        assignmentTypeToggles.classList.remove("hidden");
+
+        // show calendar refresh success toast notification
+        toastNotification("An error has occurred", "error");
+      }
     });
 
     // event listener for filter by course(s) toggle 

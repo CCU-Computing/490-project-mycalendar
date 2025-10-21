@@ -1,3 +1,4 @@
+import toastNotification from "../components/ToastNotification.js";
 import { api } from "./apiClient.js";
 
 const form = document.getElementById("loginForm");
@@ -23,6 +24,9 @@ form?.addEventListener("submit", async (e) => {
   const email = (emailEl?.value || "").trim(); // not used by backend right now
   const token = (pwdEl?.value || "").trim();   // <-- this is the token (hash)
 
+  // determine if any data is missing
+  if (!name || !email || !token) toastNotification("Missing login credentials", "error");
+
   if (!token) {
     errEl.textContent = "Please paste your Moodle token (hash) into the field.";
     errEl.classList.remove("hidden");
@@ -37,10 +41,16 @@ form?.addEventListener("submit", async (e) => {
     sessionStorage.setItem("mc_userName", name);
     sessionStorage.setItem("mc_email", email);
 
+    // show successful login toast notification
+    toastNotification("Login successful", "success");
+
     // Go to dashboard
     window.location.href = "/pages/dashboard.html";
   } catch (err) {
     errEl.textContent = "Login failed: " + (err?.message || "Unknown error");
     errEl.classList.remove("hidden");
+
+    // show unsuccessful login toast notification
+    toastNotification("Incorrect login credentials", "error");
   }
 });

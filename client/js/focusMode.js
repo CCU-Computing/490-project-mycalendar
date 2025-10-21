@@ -1,3 +1,4 @@
+import toastNotification from "../components/ToastNotification.js";
 import { api } from "./apiClient.js";
 
 // Get URL parameters
@@ -314,12 +315,20 @@ async function saveNotes() {
     notesStatus.textContent = 'Saving...';
     await api.focusMode.notes.save(currentItem.id, currentItem.type, notes);
     notesStatus.textContent = 'Saved ✓';
+
+    // show notes saved toast notification
+    toastNotification("Notes have been saved", "success");
+
     setTimeout(() => {
       notesStatus.textContent = 'Notes will auto-save';
     }, 2000);
   } catch (error) {
     console.error('Error saving notes:', error);
     notesStatus.textContent = 'Failed to save';
+
+    // show notes not able to be saved toast notification
+    toastNotification("An error has occurred", "error");
+
     setTimeout(() => {
       notesStatus.textContent = 'Notes will auto-save';
     }, 2000);
