@@ -1,5 +1,7 @@
 import { api } from "./apiClient.js";
 
+const settingsContainer = document.getElementById("settingsContainer");
+
 (async function () {
     // USER STATUS
     const userName = sessionStorage.getItem("mc_userName");
@@ -19,12 +21,19 @@ import { api } from "./apiClient.js";
     // COLOR PICKER
     // API Calls
     try {
+
+        // add loading states
+        addLoadingStates();
+
         // API Calls
         const [{ courses }, { prefs }, { events }] = await Promise.all([
             await api.courses(),
             await api.prefs.get(),
             await api.calendar()
         ]);
+
+        // remove loading states
+        removeLoadingStates();
 
         // Get Colors 
         const typeColors = prefs.calendar.assignmentTypeColors;
@@ -297,4 +306,16 @@ END:VEVENT
     
 })();
 
+// function for adding loading states
+function addLoadingStates() {
 
+    // add loading states
+    settingsContainer.classList.add("animate-pulse", "cursor-progress");
+}
+
+// function for removing loading states
+function removeLoadingStates() {
+
+    // remove loading states
+    settingsContainer.classList.remove("animate-pulse", "cursor-progress");
+}

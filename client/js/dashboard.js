@@ -3,8 +3,17 @@ import { mountCalendar } from "../components/Calendar.js";
 import { api } from "./apiClient.js";
 
 (function () {
+
+  // get document elements
   const userName = sessionStorage.getItem("mc_userName");
   const userChip = document.getElementById("userChip");
+  const calendarContainer = document.getElementById("calendar");
+  const calendarRefreshBtn = document.getElementById("calendarRefreshBtn");
+  const calendarAddEventBtn = document.getElementById("calendarAddEventBtn"); // <- functionality needs to be added
+  const courseToggles = document.getElementById("courseToggles");
+  const assignmentTypeToggles = document.getElementById("assignmentTypeToggles");
+  const filterByCoursesToggle = document.getElementById("filterByCoursesToggle");
+  const filterByAssignmentTypeToggle = document.getElementById("filterByAssignmentTypeToggle");
 
   if (!userName) {
     // dashboard.html is in /pages, so go to login in the same folder
@@ -28,6 +37,9 @@ import { api } from "./apiClient.js";
     let courseColors = {};
     let typeColors = {};
 
+    // add loading state classes
+    addLoadingStates()
+
     // calendar setup and options
     const calendar = mountCalendar({
       containerId: "calendar",
@@ -35,10 +47,9 @@ import { api } from "./apiClient.js";
       prefsEnabled: true,
       fetchEvents: async () => {
 
-        // get events and courses
-        await getEventsAndCourses();
-
-        // get colors
+        // get events, courses, and colors
+        await getEvents()
+        await getCourses()
         await getColors();
 
         // get study blocks from custom events
@@ -105,7 +116,7 @@ import { api } from "./apiClient.js";
     });
 
     // load calendar events immediately
-    calendar.reload();
+    calendar.reload().then(() => removeLoadingStates());
 
     // get colors from prefs for calendar events
     async function getColors() {
@@ -123,45 +134,14 @@ import { api } from "./apiClient.js";
       }
     }
 
-    // get events and courses function with filter by course select creation
-    async function getEventsAndCourses() {
+    // get events function
+    async function getEvents() {
 
-      // get events and courses
+      // get events
       const { events } = await api.calendar();
-      const { courses } = await api.courses();
 
-      // update all events and courses
+      // update all events
       allEvents = events;
-      allCourses = courses;
-
-      // get course toggles container
-      const courseToggles = document.getElementById("courseToggles");
-
-      // iterate through all courses
-      allCourses.forEach(course => {
-
-        // add each course to the container
-        courseToggles.insertAdjacentHTML('beforeend',
-          `
-            <label class="w-full flex items-center px-4 py-3 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 transition rounded-lg select-none">
-              <span class="pr-2">
-                <input type="checkbox" id="${course.id}" class="peer sr-only" checked />
-                <span class="[&_path]:fill-none [&_path]:stroke-current
-                  peer-checked:[&_path]:fill-current">
-                  <svg viewBox="0 0 24 24" class="size-5 text-slate-900" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 5.25 16.5v-9Z" />
-                  </svg>
-                </span>
-              </span>
-              <span class="truncate">${course.name}</span>
-            </label>
-          `
-        )
-      });
-
-      // get assignment type toggles container
-      const assignmentTypeToggles = document.getElementById("assignmentTypeToggles");
 
       // iterate through all events
       allEvents.forEach(ev => {
@@ -197,8 +177,41 @@ import { api } from "./apiClient.js";
       })
     }
 
+    // get courses function
+    async function getCourses() {
+
+      // get courses
+      const { courses } = await api.courses();
+
+      // update all courses
+      allCourses = courses;
+
+      // iterate through all courses
+      allCourses.forEach(course => {
+
+        // add each course to the container
+        courseToggles.insertAdjacentHTML('beforeend',
+          `
+            <label class="w-full flex items-center px-4 py-3 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 transition rounded-lg select-none">
+              <span class="pr-2">
+                <input type="checkbox" id="${course.id}" class="peer sr-only" checked />
+                <span class="[&_path]:fill-none [&_path]:stroke-current
+                  peer-checked:[&_path]:fill-current">
+                  <svg viewBox="0 0 24 24" class="size-5 text-slate-900" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 5.25 16.5v-9Z" />
+                  </svg>
+                </span>
+              </span>
+              <span class="truncate">${course.name}</span>
+            </label>
+          `
+        )
+      });
+    }
+
     // event listener for course toggle checkbox(es)
-    document.getElementById("courseToggles").addEventListener("change", async(e) => {
+    courseToggles.addEventListener("change", async(e) => {
 
       // get calendar instance
       const calendarInstance = calendar.getInstance();
@@ -289,7 +302,7 @@ import { api } from "./apiClient.js";
     })
 
     // event listener for assignment type toggle checkbox(es)
-    document.getElementById("assignmentTypeToggles").addEventListener("change", async(e) => {
+    assignmentTypeToggles.addEventListener("change", async(e) => {
 
       // get calendar instance
       const calendarInstance = calendar.getInstance();
@@ -345,11 +358,13 @@ import { api } from "./apiClient.js";
     })
 
     // event listener for refreshing calendar
-    document.getElementById("refreshCalendar").addEventListener("click", () => {
+    calendarRefreshBtn.addEventListener("click", () => {
 
-      // get course and assignment type toggles element
-      const courseToggles = document.getElementById("courseToggles");
-      const assignmentTypeToggles = document.getElementById("assignmentTypeToggles");
+      // get calendar instance
+      const calendarInstance = calendar.getInstance();
+
+      // remove all data from calendar <- may need to be corrected
+      calendarInstance.removeAllEvents();
 
       // reset data and hide the elements
       courseToggles.innerHTML = '';
@@ -357,15 +372,15 @@ import { api } from "./apiClient.js";
       assignmentTypeToggles.innerHTML = '';
       assignmentTypeToggles.classList.add("hidden");
 
+      // add loading states
+      addLoadingStates();
+      
       // reload calendar
       calendar.reload();
     });
 
     // event listener for filter by course(s) toggle 
-    document.getElementById("filterByCoursesToggle").addEventListener("click", () => {
-
-      // get course toggles element
-      const courseToggles = document.getElementById("courseToggles");
+    filterByCoursesToggle.addEventListener("click", () => {
 
       // determine if dropdown is already open
       if (!courseToggles.classList.contains("hidden")) {
@@ -380,10 +395,7 @@ import { api } from "./apiClient.js";
     });
 
     // event listener for filter by assignment type
-    document.getElementById("filterByAssignmentTypeToggle").addEventListener("click", () => {
-
-      // get assignment type toggles element
-      const assignmentTypeToggles = document.getElementById("assignmentTypeToggles");
+    filterByAssignmentTypeToggle.addEventListener("click", () => {
 
       // determine if dropdown is already open
       if (!assignmentTypeToggles.classList.contains("hidden")) {
@@ -396,6 +408,44 @@ import { api } from "./apiClient.js";
       // unhide assignment type toggles element
       assignmentTypeToggles.classList.remove("hidden");
     });
+
+    // function for adding loading states
+    function addLoadingStates() {
+
+      // add loading states
+      calendarContainer.classList.add("animate-pulse", "cursor-progress");
+      calendarRefreshBtn.classList.add("animate-pulse", "cursor-progress");
+      calendarAddEventBtn.classList.add("animate-pulse", "cursor-progress");
+
+      filterByAssignmentTypeToggle.classList.add("animate-pulse", "cursor-progress");
+      filterByCoursesToggle.classList.add("animate-pulse", "cursor-progress");
+
+      // disable buttons
+      calendarRefreshBtn.disabled = true;
+      calendarAddEventBtn.disabled = true;
+
+      filterByAssignmentTypeToggle.disabled = true;
+      filterByCoursesToggle.disabled = true;
+    }
+
+    // function for removing loading states
+    function removeLoadingStates() {
+
+      // remove loading states
+      calendarContainer.classList.remove("animate-pulse", "cursor-progress");
+      calendarRefreshBtn.classList.remove("animate-pulse", "cursor-progress");
+      calendarAddEventBtn.classList.remove("animate-pulse", "cursor-progress");
+
+      filterByAssignmentTypeToggle.classList.remove("animate-pulse", "cursor-progress");
+      filterByCoursesToggle.classList.remove("animate-pulse", "cursor-progress");
+
+      // enable buttons
+      calendarRefreshBtn.disabled = false;
+      calendarAddEventBtn.disabled = false;
+
+      filterByAssignmentTypeToggle.disabled = false;
+      filterByCoursesToggle.disabled = false;
+    }
   });
 })();
 // add more here for user stories related to the dashboard, like the calendar, mini action task items, etc. create branches for them, so we can do the code reviews and eventually merge all.
