@@ -48,7 +48,14 @@ async function init() {
  */
 async function loadTodaysFocus() {
   try {
+    
+    // add loading states
+    addLoadingStates();
+
     const data = await api.focusMode.getToday();
+
+    // remove loading states
+    removeLoadingStates();
 
     const { assignments, quizzes, studyBlocks } = data;
     const hasItems = assignments.length > 0 || quizzes.length > 0 || studyBlocks.length > 0;
@@ -591,3 +598,17 @@ window.addEventListener('beforeunload', () => {
     clearInterval(notesAutoSaveInterval);
   }
 });
+
+// function for adding loading states
+function addLoadingStates() {
+
+  // add loading state classes
+  focusHub.classList.add("animate-pulse", "cursor-progress");
+}
+
+// function for removing loading states
+function removeLoadingStates() {
+
+  // remove loading state classes
+  focusHub.classList.remove("animate-pulse", "cursor-progress");
+}

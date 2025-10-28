@@ -98,7 +98,7 @@ export function mountCalendar({
       center: "title",
       right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
     },
-    events: holidayEvents, // Start with holidays
+    // events: holidayEvents, // Start with holidays <- removed for now so that all data is fetched at once
     nowIndicator: true, // Show current time line
     now: new Date(), // Current date/time
     slotMinTime: "00:00:00", // Show full 24 hours

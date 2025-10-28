@@ -2,6 +2,9 @@ import { api } from "../js/apiClient.js";
 
 function $(id) { return document.getElementById(id); }
 
+// get document elements
+const semesterClasses = document.getElementById("semesterClasses");
+
 function ensureModalDOM() {
   if ($("classModal")) return;
   const wrapper = document.createElement("div");
@@ -256,6 +259,10 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
 
   async function reload() {
     try {
+
+      // add loading state classes
+      addLoadingStates()
+
       const [coursesRes, workRes, prefsRes, metadataRes] = await Promise.allSettled([
         api.courses(),
         api.work(),
@@ -300,8 +307,25 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
       container.innerHTML = `
         <div class="rounded-xl border border-dashed border-red-300 bg-red-50 p-4 text-sm text-red-600">${e.message}</div>`;
     }
+
+    // remove loading state classes
+    removeLoadingStates()
   }
 
   reload();
   return { reload };
+}
+
+// function for adding loading states
+function addLoadingStates() {
+
+  // add loading states
+  semesterClasses.classList.add("animate-pulse", "cursor-progress");
+}
+
+// function for removing loading states
+function removeLoadingStates() {
+
+  // remove loading states
+  semesterClasses.classList.remove("animate-pulse", "cursor-progress");
 }
