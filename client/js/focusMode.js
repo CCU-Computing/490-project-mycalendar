@@ -1,3 +1,4 @@
+import toastNotification from "../components/ToastNotification.js";
 import { api } from "./apiClient.js";
 
 // Get URL parameters
@@ -321,12 +322,20 @@ async function saveNotes() {
     notesStatus.textContent = 'Saving...';
     await api.focusMode.notes.save(currentItem.id, currentItem.type, notes);
     notesStatus.textContent = 'Saved ✓';
+
+    // show notes saved toast notification
+    toastNotification("Notes have been saved", "success");
+
     setTimeout(() => {
       notesStatus.textContent = 'Notes will auto-save';
     }, 2000);
   } catch (error) {
     console.error('Error saving notes:', error);
     notesStatus.textContent = 'Failed to save';
+
+    // show notes not able to be saved toast notification
+    toastNotification("An error has occurred", "error");
+
     setTimeout(() => {
       notesStatus.textContent = 'Notes will auto-save';
     }, 2000);
@@ -429,16 +438,25 @@ async function handleStarToggle() {
       starBtn.textContent = '☆';
       starBtn.title = 'Star assignment';
       showNotification('Assignment unstarred');
+
+      // show assignment unstarred toast notification
+      toastNotification("Assignment has been unstarred", "success");
     } else {
       // Star
       await api.starredAssignments.star(currentItem.id);
       starBtn.textContent = '⭐';
       starBtn.title = 'Unstar assignment';
       showNotification('Assignment starred!');
+
+      // show assignment starred toast notification
+      toastNotification("Assignment has been starred", "success");
     }
   } catch (error) {
     console.error('Error toggling star:', error);
     showNotification('Failed to update star status');
+
+    // show assignment starred error toast notification
+    toastNotification("An error has occurred", "error");
   }
 }
 

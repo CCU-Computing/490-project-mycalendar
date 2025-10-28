@@ -1,4 +1,5 @@
 import { api } from "../js/apiClient.js";
+import toastNotification from "./ToastNotification.js";
 
 function $(id) { return document.getElementById(id); }
 
@@ -155,9 +156,15 @@ async function handleDeleteStudyBlock() {
     }
 
     showNotification("success", "Study block deleted successfully!");
+
+    // show successful delete toast notification
+    toastNotification("Study block successfully deleted", "success");
   } catch (error) {
     console.error("Error deleting study block:", error);
     showNotification("error", "Failed to delete study block. Please try again.");
+
+    // show unsuccessful delete toast notification
+    toastNotification("An error has occurred", "error");
   }
 }
 
