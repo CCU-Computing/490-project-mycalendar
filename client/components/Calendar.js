@@ -98,7 +98,7 @@ export function mountCalendar({
       center: "title",
       right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
     },
-    events: holidayEvents, // Start with holidays
+    // events: holidayEvents, // Start with holidays <- removed for now so that all data is fetched at once
     nowIndicator: true, // Show current time line
     now: new Date(), // Current date/time
     slotMinTime: "00:00:00", // Show full 24 hours
@@ -118,6 +118,61 @@ export function mountCalendar({
           info.event.extendedProps.type === 'study_block') {
         info.el.style.cursor = 'pointer';
       }
+    },
+
+    // Custom event content for list view
+    eventContent: function(arg) {
+      // For list view, show more detailed information
+      if (arg.view.type === 'listWeek') {
+        const event = arg.event;
+        const type = event.extendedProps.type || 'event';
+        const courseName = event.extendedProps.courseName || '';
+
+        // Create custom HTML for list view
+        let content = document.createElement('div');
+        content.className = 'fc-event-main-frame';
+        content.style.display = 'flex';
+        content.style.alignItems = 'center';
+        content.style.justifyContent = 'space-between';
+        content.style.width = '100%';
+
+        let titleSection = document.createElement('div');
+        titleSection.style.flex = '1';
+
+        let title = document.createElement('div');
+        title.className = 'fc-event-title';
+        title.style.fontWeight = '600';
+        title.textContent = event.title;
+        titleSection.appendChild(title);
+
+        if (courseName && type !== 'holiday' && type !== 'study_block') {
+          let course = document.createElement('div');
+          course.style.fontSize = '0.85em';
+          course.style.opacity = '0.8';
+          course.style.marginTop = '2px';
+          course.textContent = courseName;
+          titleSection.appendChild(course);
+        }
+
+        content.appendChild(titleSection);
+
+        // Add type badge
+        let badge = document.createElement('span');
+        badge.style.padding = '2px 8px';
+        badge.style.borderRadius = '4px';
+        badge.style.fontSize = '0.75em';
+        badge.style.fontWeight = '600';
+        badge.style.marginLeft = '8px';
+        badge.style.backgroundColor = event.backgroundColor || '#6366f1';
+        badge.style.color = 'white';
+        badge.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+        content.appendChild(badge);
+
+        return { domNodes: [content] };
+      }
+
+      // Default rendering for other views
+      return true;
     },
 
     // Event click handler
@@ -358,7 +413,22 @@ function addCustomStyles() {
     .fc-day-today {
       background-color: rgba(52, 152, 219, 0.1) !important;
     }
+
+    /* FOR DARK MODE */
+    /* DAYS */
+    .dark .fc-day-sun, .dark .fc-day-mon, .dark .fc-day-tue, .dark .fc-day-wed, .dark .fc-day-thu, .dark .fc-day-fri, .dark .fc-day-sat {
+      background-color: #282a2cbd !important;
+    }
+
+    /* OTHER MODES: WEEK/DAY/LIST */
+    .dark .fc-timegrid-axis, .dark .fc-list-day > * {
+      background-color: #282a2cbd !important;
+    }
     
+    .dark .fc-list-event:hover td {
+      background-color: #747b81bd !important;
+    }
+
     .fc-event {
       border-radius: 4px !important;
       /* COURSE TYPE STYLE TEST */

@@ -5,37 +5,39 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Submitted Assignments — MyCalendar</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../js/util/tailwind-config.js"></script>
+    <script src="../js/util/handle-theme-flash.js"></script>
   </head>
 
-  <body class="min-h-screen bg-slate-50 text-slate-900">
+  <body class="flex flex-col transition-colors duration-300 min-h-screen bg-slate-50 dark:bg-neutral-800 text-slate-900 dark:text-slate-200">
     <div data-partial="../partials/nav.html"></div>
 
-    <header class="border-b border-slate-200 bg-white">
+    <header class="border-b border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900">
       <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-700">📋</span>
           <span class="font-semibold tracking-tight">Submitted Assignments</span>
         </div>
         <div class="flex items-center gap-3">
-          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700"></span>
+          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-3 py-1 text-sm text-slate-700 dark:text-slate-200"></span>
           <a href="./dashboard.html" class="text-sm text-indigo-700 hover:underline">Back to Dashboard</a>
         </div>
       </div>
     </header>
 
-    <main class="mx-auto max-w-6xl px-4 py-8 space-y-8">
+    <main class="grow mx-auto max-w-6xl px-4 py-8 space-y-8">
       <!-- Filters Section -->
-      <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div class="px-5 py-4 border-b border-slate-200">
+      <section class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200 dark:border-neutral-600">
           <h2 class="text-lg font-semibold tracking-tight">Filters</h2>
         </div>
         <div class="p-5">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label for="statusFilter" class="block text-sm font-medium text-slate-900 mb-2">Status</label>
+              <label for="statusFilter" class="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-2">Status</label>
               <select
                 id="statusFilter"
-                class="w-full cursor-pointer text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                class="w-full cursor-pointer text-sm bg-white dark:bg-neutral-800 border border-slate-300 dark:border-neutral-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="all">All Assignments</option>
                 <option value="submitted">Submitted</option>
@@ -45,19 +47,19 @@
               </select>
             </div>
             <div>
-              <label for="courseFilter" class="block text-sm font-medium text-slate-900 mb-2">Course</label>
+              <label for="courseFilter" class="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-2">Course</label>
               <select
                 id="courseFilter"
-                class="w-full cursor-pointer text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                class="w-full cursor-pointer text-sm bg-white dark:bg-neutral-800 border border-slate-300 dark:border-neutral-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="all">All Courses</option>
               </select>
             </div>
             <div>
-              <label for="dateFilter" class="block text-sm font-medium text-slate-900 mb-2">Due Date</label>
+              <label for="dateFilter" class="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-2">Due Date</label>
               <select
                 id="dateFilter"
-                class="w-full cursor-pointer text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                class="w-full cursor-pointer text-sm bg-white dark:bg-neutral-800 border border-slate-300 dark:border-neutral-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="all">All Time</option>
                 <option value="today">Due Today</option>
@@ -67,12 +69,12 @@
               </select>
             </div>
             <div>
-              <label for="searchFilter" class="block text-sm font-medium text-slate-900 mb-2">Search</label>
+              <label for="searchFilter" class="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-2">Search</label>
               <input
                 type="text"
                 id="searchFilter"
                 placeholder="Search assignments..."
-                class="w-full text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                class="w-full text-sm bg-white dark:bg-neutral-800 border border-slate-300 dark:border-neutral-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
           </div>
@@ -81,70 +83,69 @@
 
       <!-- Statistics Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+        <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
           <div class="flex items-center gap-4">
             <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-100">
               <span class="text-2xl">📋</span>
             </div>
             <div>
-              <div id="totalCount" class="text-2xl font-bold text-slate-900">0</div>
-              <div class="text-sm text-slate-600">Total Assignments</div>
+              <div id="totalCount" class="text-2xl font-bold text-slate-900 dark:text-slate-200">0</div>
+              <div class="text-sm text-slate-600 dark:text-slate-400">Total Assignments</div>
             </div>
           </div>
         </div>
-        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+        <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
           <div class="flex items-center gap-4">
             <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-yellow-100">
               <span class="text-2xl">⏰</span>
             </div>
             <div>
-              <div id="pendingCount" class="text-2xl font-bold text-slate-900">0</div>
-              <div class="text-sm text-slate-600">Pending</div>
+              <div id="pendingCount" class="text-2xl font-bold text-slate-900 dark:text-slate-200">0</div>
+              <div class="text-sm text-slate-600 dark:text-slate-400">Pending</div>
             </div>
           </div>
         </div>
-        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+        <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
           <div class="flex items-center gap-4">
             <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-green-100">
               <span class="text-2xl">✅</span>
             </div>
             <div>
-              <div id="submittedCount" class="text-2xl font-bold text-slate-900">0</div>
-              <div class="text-sm text-slate-600">Submitted</div>
+              <div id="submittedCount" class="text-2xl font-bold text-slate-900 dark:text-slate-200">0</div>
+              <div class="text-sm text-slate-600 dark:text-slate-400">Submitted</div>
             </div>
           </div>
         </div>
-        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+        <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
           <div class="flex items-center gap-4">
             <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-red-100">
               <span class="text-2xl">⚠️</span>
             </div>
             <div>
-              <div id="overdueCount" class="text-2xl font-bold text-slate-900">0</div>
-              <div class="text-sm text-slate-600">Overdue</div>
+              <div id="overdueCount" class="text-2xl font-bold text-slate-900 dark:text-slate-200">0</div>
+              <div class="text-sm text-slate-600 dark:text-slate-400">Overdue</div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Assignments List -->
-      <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div class="px-5 py-4 border-b border-slate-200">
+      <section class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200 dark:border-neutral-600">
           <h2 class="text-lg font-semibold tracking-tight">Assignments</h2>
         </div>
         <div class="p-5">
           <div id="assignmentsContainer" class="space-y-4">
             <!-- Loading state -->
             <div class="flex flex-col items-center justify-center py-12">
-              <div class="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-indigo-600"></div>
-              <p class="mt-4 text-sm text-slate-600">Loading assignments...</p>
+              <div class="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 dark:border-neutral-600 border-t-indigo-600"></div>
+              <p class="mt-4 text-sm text-slate-600 dark:text-slate-400">Loading assignments...</p>
             </div>
           </div>
         </div>
       </section>
     </main>
 
-    <script type="module" src="../js/partials.js"></script>
     <script type="module">
       import { api } from "../js/apiClient.js";
 
@@ -166,8 +167,8 @@
         setTimeout(() => {
           const container = document.getElementById("assignmentsContainer");
           container.innerHTML = `
-            <div class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
-              <p class="text-sm text-slate-500">
+            <div class="rounded-xl border border-dashed border-slate-300 dark:border-neutral-600 bg-slate-50 dark:bg-neutral-800 p-8 text-center">
+              <p class="text-sm text-slate-500 dark:text-slate-400">
                 User Story Area: Assignment tracking and submission status will be implemented here.
               </p>
             </div>
@@ -175,5 +176,8 @@
         }, 1000);
       });
     </script>
+
+  <div data-partial="../partials/footer.html"></div>
+  <script type="module" src="../js/partials.js"></script>
   </body>
 </html>

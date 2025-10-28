@@ -1,4 +1,8 @@
 import { api } from "./apiClient.js";
+import { getUserTheme } from "../js/util/theme-tools.js"
+
+
+const settingsContainer = document.getElementById("settingsContainer");
 
 (async function () {
     // USER STATUS
@@ -19,6 +23,10 @@ import { api } from "./apiClient.js";
     // COLOR PICKER
     // API Calls
     try {
+
+        // add loading states
+        addLoadingStates();
+
         // API Calls
         const [{ courses }, { prefs }, { events }] = await Promise.all([
             await api.courses(),
@@ -26,22 +34,39 @@ import { api } from "./apiClient.js";
             await api.calendar()
         ]);
 
+        // remove loading states
+        removeLoadingStates();
+
         // Get Colors 
         const typeColors = prefs.calendar.assignmentTypeColors;
         const courseColors = prefs.calendar.courseColors;
 
-        // Set up Coloris with basic colors
-        Coloris({
-            alpha: false,
-            swatches: [
-                "#FF0000",
-                "#FF9900",
-                "#00FF00",
-                "#0000FF",
-                "#9900FF",
-                "#FF00FF"
-            ],
-        });
+        // Get IDs
+        let lightSwitch = document.getElementById('lightSwitch');
+
+        // Set up Coloris with basic colors and theme
+        function setColoris() {
+            // Get Theme for Coloris
+            let userTheme = (getUserTheme() ? 'dark' : 'light'); 
+
+            Coloris({
+                alpha: false,
+                themeMode: userTheme,
+                swatches: [
+                    "#FF0000",
+                    "#FF9900",
+                    "#00FF00",
+                    "#0000FF",
+                    "#9900FF",
+                    "#FF00FF"
+                ],
+            });
+        }
+        
+        setColoris();
+
+        // Listen for the changes in html
+        lightSwitch.addEventListener('click', setColoris)
 
         // CALENDAR SECTION
         let calendarColorDeck = document.getElementById("calendarColorDeck");
@@ -61,19 +86,19 @@ import { api } from "./apiClient.js";
                 let typeCard = document.createElement("div");
                 typeCard.id = "typeCard";
                 typeCard.dataset.courseId = type;
-                typeCard.className = `min-w-[200px] flex justify-between items-center rounded-xl border-[3px] bg-slate-50 p-4 text-sm`;
+                typeCard.className = `min-w-[200px] flex justify-between items-center rounded-xl border-[3px] bg-slate-50 dark:bg-neutral-800 p-4 text-sm`;
         
                 let typeName = document.createElement("label");
                 typeName.id = "courseName";
                 typeName.innerHTML = label;
-                typeName.className = "pr-2 text-sm text-slate-500 mt-1";
+                typeName.className = "pr-2 text-sm text-slate-500 dark:text-slate-200 mt-1";
 
                 // NEW COLOR PICKER
                 let colorInput = document.createElement("input");
                 colorInput.id = "colorInput";
                 colorInput.type = "text";
                 colorInput.setAttribute("data-coloris", "")
-                colorInput.className = "w-8 aspect-square rounded-full border-2 border-gray-300 appearance-none cursor-pointer color-picker shrink-0";
+                colorInput.className = "w-8 aspect-square rounded-full border-2 border-gray-300 dark:border-neutral-600 appearance-none cursor-pointer color-picker shrink-0";
                 colorInput.style.color = "transparent";
                 colorInput.style.textShadow = "none";
                 colorInput.style.background = typeColors[type] || '#4F46E5';
@@ -115,19 +140,19 @@ import { api } from "./apiClient.js";
                 let courseCard = document.createElement("div");
                 courseCard.id = "courseCard";
                 courseCard.dataset.courseId = course.id;
-                courseCard.className = `flex justify-between items-center rounded-xl border-[3px] bg-slate-50 p-4 text-sm`;
+                courseCard.className = `flex justify-between items-center rounded-xl border-[3px] bg-slate-50 dark:bg-neutral-800 p-4 text-sm`;
 
                 let courseName = document.createElement("span");
                 courseName.id = "courseName";
                 courseName.innerHTML = course.name;
-                courseName.className = "pr-2 text-sm text-slate-500 mt-1";
+                courseName.className = "pr-2 text-sm text-slate-500 dark:text-slate-200 mt-1";
 
                 // NEW COLOR PICKER
                 let colorInput = document.createElement("input");
                 colorInput.id = "colorInput";
                 colorInput.type = "text";
                 colorInput.setAttribute("data-coloris", "")
-                colorInput.className = "w-8 aspect-square rounded-full border-2 border-gray-300 appearance-none cursor-pointer color-picker shrink-0";
+                colorInput.className = "w-8 aspect-square rounded-full border-2 border-gray-300 dark:border-neutral-600 appearance-none cursor-pointer color-picker shrink-0";
                 colorInput.style.color = "transparent";
                 colorInput.style.textShadow = "none";
                 colorInput.style.background = courseColors[course.id] || '#4F46E5';
@@ -297,4 +322,16 @@ END:VEVENT
     
 })();
 
+// function for adding loading states
+function addLoadingStates() {
 
+    // add loading states
+    settingsContainer.classList.add("animate-pulse", "cursor-progress");
+}
+
+// function for removing loading states
+function removeLoadingStates() {
+
+    // remove loading states
+    settingsContainer.classList.remove("animate-pulse", "cursor-progress");
+}

@@ -90,6 +90,22 @@ export const api = {
       }).then(handle),
   },
 
+  assignmentRatings: {
+    get: (assignmentId) =>
+      fetch(`/api/assignment-ratings/${encodeURIComponent(assignmentId)}`).then(handle),
+    getAll: () => fetch("/api/assignment-ratings").then(handle),
+    rate: (assignmentId, rating, assignmentData = {}) =>
+      fetch(`/api/assignment-ratings/${encodeURIComponent(assignmentId)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rating, ...assignmentData }),
+      }).then(handle),
+    delete: (assignmentId) =>
+      fetch(`/api/assignment-ratings/${encodeURIComponent(assignmentId)}`, {
+        method: "DELETE",
+      }).then(handle),
+  },
+
   starredAssignments: {
     getAll: () => fetch("/api/starred-assignments").then(handle),
     star: (moodleAssignmentId) =>

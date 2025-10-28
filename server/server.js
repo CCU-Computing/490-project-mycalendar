@@ -13,6 +13,7 @@ const courseMetadataRouter = require("../src/routes/courseMetadata");
 const timeBlocksRouter = require("../src/routes/timeBlocks");
 const starredAssignmentsRouter = require("../src/routes/starredAssignments");
 const focusModeRouter = require("../src/routes/focusMode");
+const assignmentRatingsRouter = require("../src/routes/assignmentRatings");
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use("/api/course-metadata", courseMetadataRouter);
 app.use("/api/time-blocks", timeBlocksRouter);
 app.use("/api/starred-assignments", starredAssignmentsRouter);
 app.use("/api/focus-mode", focusModeRouter);
+app.use("/api/assignment-ratings", assignmentRatingsRouter);
 
 // static files
 app.use(express.static(path.join(__dirname, "../client")));
