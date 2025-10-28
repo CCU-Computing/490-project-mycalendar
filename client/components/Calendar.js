@@ -120,6 +120,61 @@ export function mountCalendar({
       }
     },
 
+    // Custom event content for list view
+    eventContent: function(arg) {
+      // For list view, show more detailed information
+      if (arg.view.type === 'listWeek') {
+        const event = arg.event;
+        const type = event.extendedProps.type || 'event';
+        const courseName = event.extendedProps.courseName || '';
+
+        // Create custom HTML for list view
+        let content = document.createElement('div');
+        content.className = 'fc-event-main-frame';
+        content.style.display = 'flex';
+        content.style.alignItems = 'center';
+        content.style.justifyContent = 'space-between';
+        content.style.width = '100%';
+
+        let titleSection = document.createElement('div');
+        titleSection.style.flex = '1';
+
+        let title = document.createElement('div');
+        title.className = 'fc-event-title';
+        title.style.fontWeight = '600';
+        title.textContent = event.title;
+        titleSection.appendChild(title);
+
+        if (courseName && type !== 'holiday' && type !== 'study_block') {
+          let course = document.createElement('div');
+          course.style.fontSize = '0.85em';
+          course.style.opacity = '0.8';
+          course.style.marginTop = '2px';
+          course.textContent = courseName;
+          titleSection.appendChild(course);
+        }
+
+        content.appendChild(titleSection);
+
+        // Add type badge
+        let badge = document.createElement('span');
+        badge.style.padding = '2px 8px';
+        badge.style.borderRadius = '4px';
+        badge.style.fontSize = '0.75em';
+        badge.style.fontWeight = '600';
+        badge.style.marginLeft = '8px';
+        badge.style.backgroundColor = event.backgroundColor || '#6366f1';
+        badge.style.color = 'white';
+        badge.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+        content.appendChild(badge);
+
+        return { domNodes: [content] };
+      }
+
+      // Default rendering for other views
+      return true;
+    },
+
     // Event click handler
     eventClick: function(info) {
       const eventType = info.event.extendedProps.type;

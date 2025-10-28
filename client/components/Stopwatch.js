@@ -5,6 +5,12 @@ let elapsedSeconds = 0;
 let isRunning = false;
 let lapTimes = [];
 
+// Inline mode state
+let inlineMode = false;
+let inlineContainerId = null;
+let inlineCallbacks = {};
+let inlineSessionStartTime = null;
+
 function ensureStopwatchDOM() {
   if ($("stopwatchModal")) return;
   const wrapper = document.createElement("div");
@@ -83,9 +89,17 @@ function formatTime(seconds) {
 }
 
 function updateStopwatchDisplay() {
+  if (inlineMode) {
+    const display = $("inlineStopwatchDisplay");
+    if (display) {
+      display.textContent = formatTime(elapsedSeconds);
+    }
+    return;
+  }
+
   const display = $("stopwatchDisplay");
   const totalTime = $("stopwatchTotalTime");
-  
+
   if (display) {
     display.textContent = formatTime(elapsedSeconds);
   }
@@ -97,13 +111,31 @@ function updateStopwatchDisplay() {
 
 function startStopwatch() {
   if (stopwatchInterval) return;
-  
+
   isRunning = true;
-  const startStopBtn = $("stopwatchStartStop");
-  if (startStopBtn) {
-    startStopBtn.textContent = 'Stop';
-    startStopBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
-    startStopBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+
+  if (inlineMode) {
+    const startStopBtn = $("inlineStopwatchStartStop");
+    if (startStopBtn) {
+      startStopBtn.textContent = 'Stop';
+      startStopBtn.classList.remove('bg-indigo-600', 'dark:bg-indigo-700', 'hover:bg-indigo-700', 'dark:hover:bg-indigo-600');
+      startStopBtn.classList.add('bg-red-600', 'dark:bg-red-700', 'hover:bg-red-700', 'dark:hover:bg-red-600');
+    }
+
+    // Call onStart callback and track session start time
+    if (!inlineSessionStartTime) {
+      inlineSessionStartTime = Date.now();
+      if (inlineCallbacks.onStart) {
+        inlineCallbacks.onStart();
+      }
+    }
+  } else {
+    const startStopBtn = $("stopwatchStartStop");
+    if (startStopBtn) {
+      startStopBtn.textContent = 'Stop';
+      startStopBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+      startStopBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+    }
   }
 
   stopwatchInterval = setInterval(() => {
@@ -117,13 +149,29 @@ function stopStopwatch() {
     clearInterval(stopwatchInterval);
     stopwatchInterval = null;
   }
-  
+
   isRunning = false;
-  const startStopBtn = $("stopwatchStartStop");
-  if (startStopBtn) {
-    startStopBtn.textContent = 'Start';
-    startStopBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
-    startStopBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+
+  // Call onStop callback for inline mode
+  if (inlineMode && inlineCallbacks.onStop && inlineSessionStartTime) {
+    inlineCallbacks.onStop(elapsedSeconds, [...lapTimes]);
+    inlineSessionStartTime = null;
+  }
+
+  if (inlineMode) {
+    const startStopBtn = $("inlineStopwatchStartStop");
+    if (startStopBtn) {
+      startStopBtn.textContent = 'Start';
+      startStopBtn.classList.remove('bg-red-600', 'dark:bg-red-700', 'hover:bg-red-700', 'dark:hover:bg-red-600');
+      startStopBtn.classList.add('bg-indigo-600', 'dark:bg-indigo-700', 'hover:bg-indigo-700', 'dark:hover:bg-indigo-600');
+    }
+  } else {
+    const startStopBtn = $("stopwatchStartStop");
+    if (startStopBtn) {
+      startStopBtn.textContent = 'Start';
+      startStopBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+      startStopBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+    }
   }
 }
 
@@ -143,32 +191,61 @@ function recordLap() {
 }
 
 function renderLaps() {
-  const lapsList = $("stopwatchLapsList");
+  const lapsList = inlineMode ? $("inlineStopwatchLapsList") : $("stopwatchLapsList");
   if (!lapsList) return;
 
   if (lapTimes.length === 0) {
-    lapsList.innerHTML = '<div class="text-sm text-slate-500 text-center py-4">No laps recorded</div>';
+    if (inlineMode) {
+      lapsList.innerHTML = '<div class="text-slate-500 dark:text-slate-400 text-center py-2">No laps yet</div>';
+    } else {
+      lapsList.innerHTML = '<div class="text-sm text-slate-500 text-center py-4">No laps recorded</div>';
+    }
     return;
   }
 
-  lapsList.innerHTML = lapTimes
-    .map((time, index) => {
-      const lapNumber = lapTimes.length - index;
-      const previousTime = index > 0 ? lapTimes[lapTimes.length - index - 1] : 0;
-      const lapDuration = time - previousTime;
-      
-      return `
-        <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 hover:border-indigo-300 transition">
-          <span class="text-sm font-medium text-slate-700">Lap ${lapNumber}</span>
-          <div class="flex items-center gap-4">
-            <span class="text-xs text-slate-500">${formatTime(lapDuration)}</span>
-            <span class="text-sm font-semibold text-slate-900">${formatTime(time)}</span>
+  if (inlineMode) {
+    // Compact inline version - show last 3 laps
+    lapsList.innerHTML = lapTimes
+      .slice(-3)
+      .map((time, index) => {
+        const actualIndex = lapTimes.length - 3 + index;
+        const lapNumber = actualIndex + 1;
+        const previousTime = actualIndex > 0 ? lapTimes[actualIndex - 1] : 0;
+        const lapDuration = time - previousTime;
+
+        return `
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-600 dark:text-slate-400">Lap ${lapNumber}</span>
+            <div class="flex items-center gap-2">
+              <span class="text-slate-500 dark:text-slate-500">${formatTime(lapDuration)}</span>
+              <span class="font-semibold text-slate-900 dark:text-slate-200">${formatTime(time)}</span>
+            </div>
           </div>
-        </div>
-      `;
-    })
-    .reverse()
-    .join('');
+        `;
+      })
+      .reverse()
+      .join('');
+  } else {
+    // Full modal version
+    lapsList.innerHTML = lapTimes
+      .map((time, index) => {
+        const lapNumber = lapTimes.length - index;
+        const previousTime = index > 0 ? lapTimes[lapTimes.length - index - 1] : 0;
+        const lapDuration = time - previousTime;
+
+        return `
+          <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 hover:border-indigo-300 transition">
+            <span class="text-sm font-medium text-slate-700">Lap ${lapNumber}</span>
+            <div class="flex items-center gap-4">
+              <span class="text-xs text-slate-500">${formatTime(lapDuration)}</span>
+              <span class="text-sm font-semibold text-slate-900">${formatTime(time)}</span>
+            </div>
+          </div>
+        `;
+      })
+      .reverse()
+      .join('');
+  }
 }
 
 function resetStopwatch() {
@@ -180,6 +257,80 @@ function resetStopwatch() {
   stopStopwatch();
   elapsedSeconds = 0;
   lapTimes = [];
+  inlineSessionStartTime = null;
+  updateStopwatchDisplay();
+  renderLaps();
+}
+
+export async function mountInlineStopwatch({
+  containerId,
+  itemId,
+  itemType,
+  onStart,
+  onStop
+}) {
+  const container = $(containerId);
+  if (!container) {
+    console.error(`[Stopwatch] Container not found: #${containerId}`);
+    return;
+  }
+
+  // Set inline mode state
+  inlineMode = true;
+  inlineContainerId = containerId;
+  inlineCallbacks = { onStart, onStop };
+
+  // Reset state
+  elapsedSeconds = 0;
+  lapTimes = [];
+  inlineSessionStartTime = null;
+
+  // Render inline stopwatch UI
+  container.innerHTML = `
+    <div class="text-center p-4">
+      <div class="text-5xl md:text-6xl font-bold text-slate-900 dark:text-slate-200 font-mono tracking-tight" id="inlineStopwatchDisplay">00:00:00</div>
+
+      <!-- Controls -->
+      <div class="flex gap-2 mt-4">
+        <button class="flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-600 dark:bg-indigo-700 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition" id="inlineStopwatchStartStop">
+          Start
+        </button>
+        <button class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-neutral-800 border border-slate-300 dark:border-neutral-600 rounded-lg hover:bg-slate-50 dark:hover:bg-neutral-700 transition" id="inlineStopwatchLap">
+          Lap
+        </button>
+        <button class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-neutral-800 border border-slate-300 dark:border-neutral-600 rounded-lg hover:bg-slate-50 dark:hover:bg-neutral-700 transition" id="inlineStopwatchReset">
+          Reset
+        </button>
+      </div>
+
+      <!-- Lap times (compact list) -->
+      <div class="mt-3 border-t border-slate-200 dark:border-neutral-600 pt-3">
+        <div class="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Recent Laps</div>
+        <div class="max-h-20 overflow-y-auto space-y-1" id="inlineStopwatchLapsList">
+          <div class="text-slate-500 dark:text-slate-400 text-center py-2">No laps yet</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Attach event listeners
+  const startStopBtn = $("inlineStopwatchStartStop");
+  const lapBtn = $("inlineStopwatchLap");
+  const resetBtn = $("inlineStopwatchReset");
+
+  if (startStopBtn) {
+    startStopBtn.addEventListener('click', toggleStopwatch);
+  }
+
+  if (lapBtn) {
+    lapBtn.addEventListener('click', recordLap);
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', resetStopwatch);
+  }
+
+  // Initial display update
   updateStopwatchDisplay();
   renderLaps();
 }
@@ -188,7 +339,7 @@ export function openStopwatch(callback) {
   ensureStopwatchDOM();
 
   const modal = $("stopwatchModal");
-  
+
   updateStopwatchDisplay();
   renderLaps();
 

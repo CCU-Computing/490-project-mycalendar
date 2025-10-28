@@ -8,6 +8,13 @@ let isPaused = false;
 let currentAssignmentId = null;
 let persistentTimerBar = null;
 
+// Inline mode state
+let inlineMode = false;
+let inlineContainerId = null;
+let inlineCallbacks = {};
+let inlineOriginalSeconds = 0;
+let inlineSessionStartTime = null;
+
 function ensureTimerDOM() {
   if ($("timerModal")) return;
   const wrapper = document.createElement("div");
@@ -117,19 +124,60 @@ function formatTime(seconds) {
 }
 
 function updateTimerDisplay() {
+  // Update inline mode display
+  if (inlineMode) {
+    const display = $("inlineTimerDisplay");
+    const progress = $("inlineTimerProgress");
+    const sessionDisplay = $("inlineTimerSession");
+
+    if (display) {
+      display.textContent = formatTime(remainingSeconds);
+    }
+
+    if (progress) {
+      const total = inlineOriginalSeconds;
+      const percentage = total > 0 ? (remainingSeconds / total) * 100 : 0;
+      progress.style.width = percentage + '%';
+
+      if (percentage < 25) {
+        progress.classList.remove('bg-indigo-600', 'bg-amber-600');
+        progress.classList.add('bg-red-600');
+      } else if (percentage < 50) {
+        progress.classList.remove('bg-indigo-600', 'bg-red-600');
+        progress.classList.add('bg-amber-600');
+      } else {
+        progress.classList.remove('bg-red-600', 'bg-amber-600');
+        progress.classList.add('bg-indigo-600');
+      }
+    }
+
+    if (sessionDisplay && inlineSessionStartTime) {
+      const elapsed = Math.floor((Date.now() - inlineSessionStartTime) / 1000);
+      const hours = Math.floor(elapsed / 3600);
+      const minutes = Math.floor((elapsed % 3600) / 60);
+      if (hours > 0) {
+        sessionDisplay.textContent = `${hours}h ${minutes}m tracked`;
+      } else {
+        sessionDisplay.textContent = `${minutes}m tracked`;
+      }
+    }
+    return;
+  }
+
+  // Update modal mode display
   const display = $("timerDisplay");
   const progress = $("timerProgress");
   const warning = $("timerWarning");
-  
+
   if (display) {
     display.textContent = formatTime(remainingSeconds);
   }
 
-  if (progress && currentAssignmentId) {
-    const total = getTotalSecondsForAssignment(currentAssignmentId);
+  if (progress) {
+    const total = inlineOriginalSeconds || 86400;
     const percentage = total > 0 ? (remainingSeconds / total) * 100 : 0;
     progress.style.width = percentage + '%';
-    
+
     if (percentage < 25) {
       progress.classList.remove('bg-indigo-600');
       progress.classList.add('bg-red-600');
@@ -158,17 +206,30 @@ function updateTimerDisplay() {
   }
 }
 
-function getTotalSecondsForAssignment(assignmentId) {
-  return 86400;
-}
-
 function startTimer() {
   if (timerInterval) return;
-  
+
   isPaused = false;
-  const startPauseBtn = $("timerStartPause");
-  if (startPauseBtn) {
-    startPauseBtn.textContent = 'Pause';
+
+  // Update button for inline mode
+  if (inlineMode) {
+    const startPauseBtn = $("inlineTimerStartPause");
+    if (startPauseBtn) {
+      startPauseBtn.textContent = 'Pause';
+    }
+
+    // Track session start time and call onStart callback
+    if (!inlineSessionStartTime) {
+      inlineSessionStartTime = Date.now();
+      if (inlineCallbacks.onStart) {
+        inlineCallbacks.onStart(inlineOriginalSeconds);
+      }
+    }
+  } else {
+    const startPauseBtn = $("timerStartPause");
+    if (startPauseBtn) {
+      startPauseBtn.textContent = 'Pause';
+    }
   }
 
   timerInterval = setInterval(() => {
@@ -178,7 +239,13 @@ function startTimer() {
 
       if (remainingSeconds === 0) {
         stopTimer();
-        showTimerCompleteNotification();
+
+        if (inlineMode && inlineCallbacks.onComplete) {
+          const actualDuration = inlineOriginalSeconds;
+          inlineCallbacks.onComplete(actualDuration);
+        } else {
+          showTimerCompleteNotification();
+        }
       }
     }
   }, 1000);
@@ -189,11 +256,19 @@ function pauseTimer() {
     clearInterval(timerInterval);
     timerInterval = null;
   }
-  
+
   isPaused = true;
-  const startPauseBtn = $("timerStartPause");
-  if (startPauseBtn) {
-    startPauseBtn.textContent = 'Resume';
+
+  if (inlineMode) {
+    const startPauseBtn = $("inlineTimerStartPause");
+    if (startPauseBtn) {
+      startPauseBtn.textContent = 'Resume';
+    }
+  } else {
+    const startPauseBtn = $("timerStartPause");
+    if (startPauseBtn) {
+      startPauseBtn.textContent = 'Resume';
+    }
   }
 }
 
@@ -202,11 +277,31 @@ function stopTimer() {
     clearInterval(timerInterval);
     timerInterval = null;
   }
-  
+
   isPaused = false;
-  const startPauseBtn = $("timerStartPause");
-  if (startPauseBtn) {
-    startPauseBtn.textContent = 'Start';
+
+  // Call onStop callback for inline mode
+  if (inlineMode && inlineCallbacks.onStop && inlineSessionStartTime) {
+    const actualDuration = inlineOriginalSeconds - remainingSeconds;
+    const completed = remainingSeconds === 0;
+    inlineCallbacks.onStop(actualDuration, completed);
+    inlineSessionStartTime = null;
+  }
+
+  if (inlineMode) {
+    const startPauseBtn = $("inlineTimerStartPause");
+    if (startPauseBtn) {
+      startPauseBtn.textContent = 'Start';
+    }
+    const sessionDisplay = $("inlineTimerSession");
+    if (sessionDisplay) {
+      sessionDisplay.textContent = 'Not started';
+    }
+  } else {
+    const startPauseBtn = $("timerStartPause");
+    if (startPauseBtn) {
+      startPauseBtn.textContent = 'Start';
+    }
   }
 }
 
@@ -222,10 +317,19 @@ function toggleTimer() {
 
 function resetTimer() {
   stopTimer();
-  if (currentAssignmentId) {
-    remainingSeconds = getTotalSecondsForAssignment(currentAssignmentId);
-    updateTimerDisplay();
+
+  if (inlineMode) {
+    remainingSeconds = inlineOriginalSeconds;
+    inlineSessionStartTime = null;
+    const sessionDisplay = $("inlineTimerSession");
+    if (sessionDisplay) {
+      sessionDisplay.textContent = 'Not started';
+    }
+  } else {
+    remainingSeconds = inlineOriginalSeconds || 86400;
   }
+
+  updateTimerDisplay();
 }
 
 function showTimerCompleteNotification() {
@@ -283,17 +387,150 @@ function hidePersistentTimerBar() {
   }
 }
 
+export async function mountInlineTimer({
+  containerId,
+  itemId,
+  itemType,
+  onStart,
+  onStop,
+  onComplete
+}) {
+  const container = $(containerId);
+  if (!container) {
+    console.error(`[Timer] Container not found: #${containerId}`);
+    return;
+  }
+
+  // Set inline mode state
+  inlineMode = true;
+  inlineContainerId = containerId;
+  inlineCallbacks = { onStart, onStop, onComplete };
+
+  // Initialize with no duration set
+  remainingSeconds = 0;
+  inlineOriginalSeconds = 0;
+  inlineSessionStartTime = null;
+
+  // Render inline timer UI with duration selector
+  container.innerHTML = `
+    <div class="text-center p-4">
+      <div class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">Pomodoro Timer</div>
+
+      <!-- Duration selector (shown when not running) -->
+      <div id="inlineTimerDurationSelector" class="space-y-2 mb-4">
+        <div class="flex gap-2 justify-center flex-wrap">
+          <button class="px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-neutral-800 border border-slate-300 dark:border-neutral-600 rounded-lg hover:bg-indigo-50 dark:hover:bg-neutral-700 transition" data-minutes="25">
+            25 min
+          </button>
+          <button class="px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-neutral-800 border border-slate-300 dark:border-neutral-600 rounded-lg hover:bg-indigo-50 dark:hover:bg-neutral-700 transition" data-minutes="50">
+            50 min
+          </button>
+          <button class="px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-neutral-800 border border-slate-300 dark:border-neutral-600 rounded-lg hover:bg-indigo-50 dark:hover:bg-neutral-700 transition" id="inlineTimerCustomBtn">
+            Custom
+          </button>
+        </div>
+        <div id="inlineTimerCustomInput" class="hidden">
+          <input type="number" id="inlineTimerCustomMinutes" min="1" max="240" placeholder="Minutes" class="w-24 px-2 py-1 text-sm border border-slate-300 dark:border-neutral-600 rounded-lg dark:bg-neutral-800 dark:text-slate-200" />
+        </div>
+      </div>
+
+      <!-- Timer display -->
+      <div class="text-5xl md:text-6xl font-bold text-slate-900 dark:text-slate-200 font-mono tracking-tight" id="inlineTimerDisplay">00:00</div>
+
+      <!-- Progress bar -->
+      <div class="w-full bg-slate-200 dark:bg-neutral-700 rounded-full h-3 mt-4 overflow-hidden">
+        <div class="h-full bg-indigo-600 rounded-full transition-all duration-1000" id="inlineTimerProgress" style="width: 100%"></div>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex gap-2 mt-4">
+        <button class="flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-600 dark:bg-indigo-700 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition" id="inlineTimerStartPause">
+          Start
+        </button>
+        <button class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-neutral-800 border border-slate-300 dark:border-neutral-600 rounded-lg hover:bg-slate-50 dark:hover:bg-neutral-700 transition" id="inlineTimerReset">
+          Reset
+        </button>
+      </div>
+
+      <!-- Session time tracker -->
+      <div class="mt-3 text-xs text-slate-500 dark:text-slate-400">
+        Session: <span id="inlineTimerSession">Select duration to start</span>
+      </div>
+    </div>
+  `;
+
+  // Helper function to set duration
+  function setTimerDuration(minutes) {
+    if (timerInterval) return; // Can't change duration while running
+
+    remainingSeconds = minutes * 60;
+    inlineOriginalSeconds = remainingSeconds;
+    updateTimerDisplay();
+
+    const sessionDisplay = $("inlineTimerSession");
+    if (sessionDisplay) {
+      sessionDisplay.textContent = `Ready: ${minutes} min session`;
+    }
+  }
+
+  // Attach event listeners for duration selection
+  const durationButtons = container.querySelectorAll('[data-minutes]');
+  durationButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const minutes = parseInt(btn.dataset.minutes);
+      setTimerDuration(minutes);
+    });
+  });
+
+  const customBtn = $("inlineTimerCustomBtn");
+  const customInput = $("inlineTimerCustomInput");
+  const customMinutesInput = $("inlineTimerCustomMinutes");
+
+  if (customBtn) {
+    customBtn.addEventListener('click', () => {
+      if (customInput) {
+        customInput.classList.toggle('hidden');
+      }
+    });
+  }
+
+  if (customMinutesInput) {
+    customMinutesInput.addEventListener('change', (e) => {
+      const minutes = parseInt(e.target.value);
+      if (minutes > 0 && minutes <= 240) {
+        setTimerDuration(minutes);
+      }
+    });
+  }
+
+  // Attach control event listeners
+  const startPauseBtn = $("inlineTimerStartPause");
+  const resetBtn = $("inlineTimerReset");
+
+  if (startPauseBtn) {
+    startPauseBtn.addEventListener('click', toggleTimer);
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', resetTimer);
+  }
+
+  // Initial display update
+  updateTimerDisplay();
+}
+
 export function openTimer(assignmentData, callback) {
   ensureTimerDOM();
   ensurePersistentTimerBarDOM();
 
   currentAssignmentId = assignmentData.id;
-  
+
   const dueDate = new Date(assignmentData.start || assignmentData.duedate * 1000);
   const now = new Date();
   const secondsUntilDue = Math.floor((dueDate - now) / 1000);
-  
+
   remainingSeconds = Math.max(0, secondsUntilDue);
+  inlineOriginalSeconds = remainingSeconds; // Store for progress calculation
 
   const modal = $("timerModal");
   const assignmentName = $("timerAssignmentName");

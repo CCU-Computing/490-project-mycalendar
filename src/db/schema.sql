@@ -94,6 +94,7 @@ CREATE TABLE IF NOT EXISTS user_assignments (
   status TEXT DEFAULT 'pending',
   completed_at DATETIME,
   notes TEXT,
+  difficulty_rating INTEGER CHECK(difficulty_rating >= 1 AND difficulty_rating <= 5),
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
