@@ -18,15 +18,15 @@ function ensureAssignmentDetailsModalDOM() {
     <div id="assignmentDetailsModal" class="fixed inset-0 z-50 hidden">
       <div id="adModalBackdrop" class="absolute inset-0 bg-black bg-opacity-50"></div>
       <div class="relative flex min-h-full items-center justify-center p-4">
-        <div class="relative w-full max-w-lg rounded-2xl bg-white shadow-xl">
+        <div class="relative w-full max-w-lg rounded-2xl bg-white dark:bg-neutral-900 shadow-xl">
           <!-- Modal Header -->
-          <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-            <h3 class="text-lg font-semibold text-slate-900">Assignment Details</h3>
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-neutral-600 px-6 py-4">
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-200">Assignment Details</h3>
             <div class="flex items-center gap-2">
               <button id="adStarButton" class="text-2xl hover:scale-110 transition-transform cursor-pointer p-2" title="Star assignment">
                 ⭐
               </button>
-              <button id="adClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
+              <button id="adClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-neutral-800 hover:text-slate-600">
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -38,44 +38,44 @@ function ensureAssignmentDetailsModalDOM() {
           <div class="px-6 py-6 space-y-6">
             <!-- Assignment Title -->
             <div>
-              <div class="text-sm font-medium text-slate-500 mb-1">Assignment</div>
-              <div id="adTitle" class="text-lg font-semibold text-slate-900"></div>
+              <div class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Assignment</div>
+              <div id="adTitle" class="text-lg font-semibold text-slate-900 dark:text-slate-200"></div>
             </div>
 
             <!-- Assignment Stats Grid -->
             <div class="grid grid-cols-2 gap-4">
-              <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Type</div>
-                <div id="adType" class="text-sm font-semibold text-slate-900">—</div>
+              <div class="bg-slate-50 dark:bg-neutral-800 rounded-lg p-4 border border-slate-200 dark:border-neutral-600">
+                <div class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Type</div>
+                <div id="adType" class="text-sm font-semibold text-slate-900 dark:text-slate-200">—</div>
               </div>
-              <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Due Date</div>
-                <div id="adDueDate" class="text-sm font-semibold text-slate-900">—</div>
+              <div class="bg-slate-50 dark:bg-neutral-800 rounded-lg p-4 border border-slate-200 dark:border-neutral-600">
+                <div class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Due Date</div>
+                <div id="adDueDate" class="text-sm font-semibold text-slate-900 dark:text-slate-200">—</div>
               </div>
-              <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Course</div>
-                <div id="adCourse" class="text-sm font-semibold text-slate-900">—</div>
+              <div class="bg-slate-50 dark:bg-neutral-800 rounded-lg p-4 border border-slate-200 dark:border-neutral-600">
+                <div class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Course</div>
+                <div id="adCourse" class="text-sm font-semibold text-slate-900 dark:text-slate-200">—</div>
               </div>
-              <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Study Blocks</div>
-                <div id="adStudyBlockCount" class="text-sm font-semibold text-slate-900">—</div>
+              <div class="bg-slate-50 dark:bg-neutral-800 rounded-lg p-4 border border-slate-200 dark:border-neutral-600">
+                <div class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Study Blocks</div>
+                <div id="adStudyBlockCount" class="text-sm font-semibold text-slate-900 dark:text-slate-200">—</div>
               </div>
             </div>
 
             <!-- Existing Study Blocks -->
             <div id="adExistingStudyBlocks" class="hidden">
-              <div class="text-sm font-medium text-slate-900 mb-2">Scheduled Study Time</div>
+              <div class="text-sm font-medium text-slate-900 dark:text-slate-200 mb-2">Scheduled Study Time</div>
               <div id="adStudyBlocksList" class="space-y-2 max-h-40 overflow-y-auto">
                 <!-- Study blocks will be populated here -->
               </div>
             </div>
 
             <!-- Actions -->
-            <div class="flex justify-between gap-3 pt-4 border-t border-slate-200">
+            <div class="flex justify-between gap-3 pt-4 border-t border-slate-200 dark:border-neutral-600">
               <button
                 type="button"
                 id="adFocusMode"
-                class="px-4 py-2 text-sm font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition"
+                class="px-4 py-2 text-sm font-medium text-indigo-700 bg-indigo-50 dark:bg-indigo-100 border border-indigo-200 dark:border-indigo-300 border rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-200 transition"
               >
                 🎯 Focus Mode
               </button>
@@ -83,7 +83,7 @@ function ensureAssignmentDetailsModalDOM() {
                 <button
                   type="button"
                   id="adCancel"
-                  class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition"
+                  class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-neutral-800 border border-slate-300 dark:border-neutral-600 rounded-lg hover:bg-slate-50 dark:hover:bg-neutral-700 transition"
                 >
                   Close
                 </button>
@@ -355,11 +355,11 @@ export async function openAssignmentDetailsModal(assignmentData, callback) {
           const endDate = sb.end_time ? new Date(sb.end_time) : null;
 
           return `
-            <div class="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-lg">
+            <div class="flex items-center gap-3 p-3 bg-white dark:bg-neutral-800 border border-slate-200 dark:border-neutral-600 rounded-lg">
               <div class="w-3 h-3 rounded-full" style="background-color: ${sb.color || '#4F46E5'}"></div>
               <div class="flex-1 min-w-0">
-                <div class="text-sm font-medium text-slate-900">${sb.title || 'Study Session'}</div>
-                <div class="text-xs text-slate-500">
+                <div class="text-sm font-medium text-slate-900 dark:text-slate-200">${sb.title || 'Study Session'}</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400">
                   ${startDate.toLocaleDateString()} • ${startDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}${endDate ? ' - ' + endDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : ''}
                 </div>
               </div>

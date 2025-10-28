@@ -1,4 +1,5 @@
 import { api } from "../js/apiClient.js";
+import { courseProgressBar } from "./CourseProgressBar.js";
 
 function $(id) { return document.getElementById(id); }
 
@@ -12,10 +13,10 @@ function ensureModalDOM() {
     <div id="classModal" class="fixed inset-0 z-50 hidden">
       <div id="modalBackdrop" class="absolute inset-0 bg-black bg-opacity-50"></div>
       <div class="relative flex min-h-full items-center justify-center p-4">
-        <div class="relative w-full max-w-2xl rounded-2xl bg-white shadow-xl">
-          <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+        <div class="relative w-full max-w-2xl rounded-2xl bg-white dark:bg-neutral-800 shadow-xl">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-neutral-600 px-6 py-4">
             <h3 id="mTitle" class="text-lg font-semibold text-slate-900">Course Details</h3>
-            <button id="mClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
+            <button id="mClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-neutral-800 hover:text-slate-600">
               <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -33,6 +34,9 @@ function ensureModalDOM() {
                   <div>
                     <span class="font-medium text-slate-900">Progress:</span>
                     <span id="mProg" class="ml-2 text-slate-600">—</span>
+                    <div>
+                      <span id="mBar" class="flex w-1/2"></span>
+                    </div>
                   </div>
                   <div>
                     <span class="font-medium text-slate-900">Grade:</span>
@@ -50,7 +54,7 @@ function ensureModalDOM() {
               <ul id="mUpcoming" class="space-y-2"></ul>
             </div>
             <div class="mt-6 flex justify-end">
-              <a id="mViewCourse" href="#" class="hidden inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+              <a id="mViewCourse" href="#" class="hidden inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-indigo-700">
                 View Course
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -148,6 +152,7 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
   const mProg = $("mProg");
   const mGrade = $("mGrade");
   const mNext = $("mNext");
+  const mBar = $("mBar");
   const mUpcoming = $("mUpcoming");
   const mViewCourse = $("mViewCourse");
 
@@ -170,13 +175,15 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
     mGrade.textContent = g ? (g.percentText || (g.percentNum + "%")) : "—";
     const next = nextByCourse[course.id]?.next;
     mNext.textContent = next ? (stripHTML(next.name) + " — " + fmtDate(next.dueAt)) : "—";
+    mBar.innerHTML = "";
+    mBar.appendChild(courseProgressBar(progress));
     mUpcoming.innerHTML = "";
     const list = nextByCourse[course.id]?.upcoming || [];
     list.slice(0, 5).forEach(function (a) {
       const li = document.createElement("li");
-      li.className = "flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2";
+      li.className = "flex items-center justify-between rounded-lg border border-slate-200 dark:border-neutral-600 px-3 py-2";
       li.innerHTML = "<span class='font-medium'>" + stripHTML(a.name) + "</span>" +
-                     "<span class='text-slate-600 text-xs'>" + fmtDate(a.dueAt) + "</span>";
+                     "<span class='text-slate-600 dark:text-slate-400 text-xs'>" + fmtDate(a.dueAt) + "</span>";
       mUpcoming.appendChild(li);
     });
     if (course.viewurl) {
@@ -196,7 +203,7 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
   function renderCourses() {
     if (courseList.length === 0) {
       container.innerHTML = `
-        <div class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+        <div class="rounded-xl border border-dashed border-slate-300 dark:border-neutral-600 bg-slate-50 dark:bg-neutral-800 p-4 text-sm text-slate-500">
           No classes found. Please check your enrollment or try refreshing.
         </div>`;
       return;
@@ -209,8 +216,8 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
       const card = document.createElement("button");
       card.type = "button";
       card.className = [
-        "group relative flex items-center gap-3 rounded-xl border-3 border-slate-200 bg-white p-3 text-left shadow-sm",
-        "hover:shadow-md hover:border-slate-400 transition",
+        "group relative flex items-center gap-3 rounded-xl border-3 border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-800 p-3 text-left shadow-sm",
+        "hover:shadow-md dark:shadow-neutral-200 hover:border-slate-400 dark:hover:border-neutral-500 transition",
         "cursor-pointer"
       ].join(" ");
       if (color) {
@@ -236,20 +243,21 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
       const stats = document.createElement("div");
       stats.className = "mt-1 grid grid-cols-3 gap-2 text-[11px] text-slate-600";
       stats.innerHTML =
-        "<div class='rounded-lg bg-slate-50 px-2 py-1 border border-slate-200'>" +
-          "<div class='font-medium text-slate-900 text-xs'>" + (grade ? (grade.percentText || (grade.percentNum + "%")) : "—") + "</div>" +
-          "<div class='uppercase tracking-wide'>Grade</div>" +
+        "<div class='rounded-lg bg-slate-50 dark:bg-neutral-600 px-2 py-1 border border-slate-200 dark:border-neutral-600'>" +
+          "<div class='font-medium text-slate-900 dark:text-slate-200 text-xs'>" + (grade ? (grade.percentText || (grade.percentNum + "%")) : "—") + "</div>" +
+          "<div class='dark:text-slate-400 uppercase tracking-wide'>Grade</div>" +
         "</div>" +
-        "<div class='rounded-lg bg-slate-50 px-2 py-1 border border-slate-200'>" +
-          "<div class='font-medium text-slate-900 text-xs'>" + (typeof progress === "number" ? (progress + "%") : "—") + "</div>" +
-          "<div class='uppercase tracking-wide'>Progress</div>" +
+        "<div class='rounded-lg bg-slate-50 dark:bg-neutral-600 px-2 py-1 border border-slate-200 dark:border-neutral-600'>" +
+          "<div class='font-medium text-slate-900 dark:text-slate-200 text-xs'>" + (typeof progress === "number" ? (progress + "%") : "—") + "</div>" +
+          "<div class='dark:text-slate-400 uppercase tracking-wide'>Progress</div>" +
         "</div>" +
-        "<div class='rounded-lg bg-slate-50 px-2 py-1 border border-slate-200'>" +
-          "<div class='font-medium text-slate-900 text-xs'>" + (next ? new Date(next.dueAt * 1000).toLocaleDateString() : "—") + "</div>" +
-          "<div class='uppercase tracking-wide'>Next Due</div>" +
+        "<div class='rounded-lg bg-slate-50 dark:bg-neutral-600 px-2 py-1 border border-slate-200 dark:border-neutral-600'>" +
+          "<div class='font-medium text-slate-900 dark:text-slate-200 text-xs'>" + (next ? new Date(next.dueAt * 1000).toLocaleDateString() : "—") + "</div>" +
+          "<div class='dark:text-slate-400 uppercase tracking-wide'>Next Due</div>" +
         "</div>";
       content.appendChild(title);
       content.appendChild(stats);
+      content.appendChild(courseProgressBar(progress));
       card.appendChild(img);
       card.appendChild(content);
       card.addEventListener("click", function () { openModal(c); });

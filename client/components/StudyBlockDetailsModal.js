@@ -17,11 +17,11 @@ function ensureStudyBlockDetailsModalDOM() {
     <div id="studyBlockDetailsModal" class="fixed inset-0 z-[60] hidden">
       <div id="sbdModalBackdrop" class="absolute inset-0 bg-black bg-opacity-50"></div>
       <div class="relative flex min-h-full items-center justify-center p-4">
-        <div class="relative w-full max-w-lg rounded-2xl bg-white shadow-xl">
+        <div class="relative w-full max-w-lg rounded-2xl bg-white dark:bg-neutral-900 shadow-xl">
           <!-- Modal Header -->
-          <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-            <h3 class="text-lg font-semibold text-slate-900">Study Block Details</h3>
-            <button id="sbdClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-neutral-600 px-6 py-4">
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-200">Study Block Details</h3>
+            <button id="sbdClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-neutral-800">
               <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -33,43 +33,43 @@ function ensureStudyBlockDetailsModalDOM() {
             <!-- Study Block Title -->
             <div>
               <div class="text-sm font-medium text-slate-500 mb-1">Study Session</div>
-              <div id="sbdTitle" class="text-lg font-semibold text-slate-900"></div>
+              <div id="sbdTitle" class="text-lg font-semibold text-slate-900 dark:text-slate-200"></div>
             </div>
 
             <!-- Study Block Details Grid -->
             <div class="grid grid-cols-2 gap-4">
-              <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+              <div class="bg-slate-50 dark:bg-neutral-800 rounded-lg p-4 border border-slate-200 dark:border-neutral-600">
                 <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Date</div>
-                <div id="sbdDate" class="text-sm font-semibold text-slate-900">—</div>
+                <div id="sbdDate" class="text-sm font-semibold text-slate-900 dark:text-slate-200">—</div>
               </div>
-              <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+              <div class="bg-slate-50 dark:bg-neutral-800 rounded-lg p-4 border border-slate-200 dark:border-neutral-600">
                 <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Time</div>
-                <div id="sbdTime" class="text-sm font-semibold text-slate-900">—</div>
+                <div id="sbdTime" class="text-sm font-semibold text-slate-900 dark:text-slate-200">—</div>
               </div>
-              <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+              <div class="bg-slate-50 dark:bg-neutral-800 rounded-lg p-4 border border-slate-200 dark:border-neutral-600">
                 <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Duration</div>
-                <div id="sbdDuration" class="text-sm font-semibold text-slate-900">—</div>
+                <div id="sbdDuration" class="text-sm font-semibold text-slate-900 dark:text-slate-200">—</div>
               </div>
-              <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+              <div class="bg-slate-50 dark:bg-neutral-800 rounded-lg p-4 border border-slate-200 dark:border-neutral-600">
                 <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Color</div>
                 <div class="flex items-center gap-2">
-                  <div id="sbdColorBox" class="w-6 h-6 rounded border border-slate-300"></div>
+                  <div id="sbdColorBox" class="w-6 h-6 rounded border border-slate-300 dark:border-neutral-600"></div>
                 </div>
               </div>
             </div>
 
             <!-- Description -->
             <div id="sbdDescriptionSection" class="hidden">
-              <div class="text-sm font-medium text-slate-900 mb-2">Description</div>
-              <div id="sbdDescription" class="text-sm text-slate-600 bg-slate-50 rounded-lg px-3 py-2 border border-slate-200"></div>
+              <div class="text-sm font-medium text-slate-900 dark:text-slate-200 mb-2">Description</div>
+              <div id="sbdDescription" class="text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-neutral-800 rounded-lg px-3 py-2 border border-slate-200 dark:border-neutral-600"></div>
             </div>
 
             <!-- Actions -->
-            <div class="flex justify-between gap-3 pt-4 border-t border-slate-200">
+            <div class="flex justify-between gap-3 pt-4 border-t border-slate-200 dark:border-neutral-600">
               <button
                 type="button"
                 id="sbdDelete"
-                class="px-4 py-2 text-sm font-medium text-red-600 bg-white border border-red-300 rounded-lg hover:bg-red-50 transition"
+                class="px-4 py-2 text-sm font-medium text-red-600 bg-white dark:bg-neutral-800 border border-red-300 rounded-lg hover:bg-red-50 dark:hover:bg-red-50 transition"
               >
                 🗑️ Delete
               </button>
@@ -77,14 +77,14 @@ function ensureStudyBlockDetailsModalDOM() {
                 <button
                   type="button"
                   id="sbdFocusMode"
-                  class="px-4 py-2 text-sm font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition"
+                  class="px-4 py-2 text-sm font-medium text-indigo-700 bg-indigo-50 dark:bg-indigo-100 border border-indigo-200 dark:border-indigo-300 border rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-200 transition"
                 >
                   🎯 Focus Mode
                 </button>
                 <button
                   type="button"
                   id="sbdClose2"
-                  class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition"
+                  class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-neutral-800 border border-slate-300 dark:border-neutral-600 rounded-lg hover:bg-slate-50 dark:hover:bg-neutral-700 transition"
                 >
                   Close
                 </button>
