@@ -13,7 +13,7 @@ function ensureModalDOM() {
     <div id="classModal" class="fixed inset-0 z-50 hidden">
       <div id="modalBackdrop" class="absolute inset-0 bg-black bg-opacity-50"></div>
       <div class="relative flex min-h-full items-center justify-center p-4">
-        <div class="relative w-full max-w-2xl rounded-2xl bg-white dark:bg-neutral-800 shadow-xl">
+        <div class="relative w-full max-w-2xl rounded-2xl bg-white dark:bg-neutral-900 shadow-xl">
           <div class="flex items-center justify-between border-b border-slate-200 dark:border-neutral-600 px-6 py-4">
             <h3 id="mTitle" class="text-lg font-semibold text-slate-900">Course Details</h3>
             <button id="mClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-neutral-800 hover:text-slate-600">
