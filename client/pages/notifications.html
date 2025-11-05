@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Notifications — MyCalendar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+    <div data-partial="../partials/nav.html"></div>
+
+    <header class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-700">🔔</span>
+          <span class="font-semibold tracking-tight">Notifications</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700"></span>
+          <a href="./dashboard.html" class="text-sm text-indigo-700 hover:underline">Back to Dashboard</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-6xl px-4 py-8 space-y-8">
+      <!-- Notification Settings Section -->
+      <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200">
+          <h2 class="text-lg font-semibold tracking-tight">Notification Settings</h2>
+          <p class="text-sm text-slate-500 mt-1">
+            Configure how you receive notifications
+          </p>
+        </div>
+        <div class="p-5">
+          <div id="notificationSettings" class="space-y-4">
+            <!-- Settings will be populated here by team leader -->
+            <div class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+              <div class="text-4xl mb-3">⚙️</div>
+              <h3 class="text-base font-medium text-slate-700 mb-1">Settings Coming Soon</h3>
+              <p class="text-sm text-slate-500">Notification preferences will be available here</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filter Options -->
+      <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200">
+          <h2 class="text-lg font-semibold tracking-tight">Filter Notifications</h2>
+        </div>
+        <div class="p-5">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label for="typeFilter" class="block text-sm font-medium text-slate-900 mb-2">Type</label>
+              <select
+                id="typeFilter"
+                class="w-full cursor-pointer text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="all">All Types</option>
+                <option value="assignment">Assignment Due</option>
+                <option value="grade">Grade Posted</option>
+                <option value="announcement">Announcement</option>
+                <option value="reminder">Reminder</option>
+              </select>
+            </div>
+            <div>
+              <label for="statusFilter" class="block text-sm font-medium text-slate-900 mb-2">Status</label>
+              <select
+                id="statusFilter"
+                class="w-full cursor-pointer text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="all">All Notifications</option>
+                <option value="unread">Unread Only</option>
+                <option value="read">Read Only</option>
+              </select>
+            </div>
+            <div>
+              <label for="dateFilter" class="block text-sm font-medium text-slate-900 mb-2">Date Range</label>
+              <select
+                id="dateFilter"
+                class="w-full cursor-pointer text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="all">All Time</option>
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-4 flex justify-between items-center">
+            <button
+              id="markAllReadBtn"
+              class="text-sm text-indigo-700 hover:text-indigo-800 font-medium"
+            >
+              Mark all as read
+            </button>
+            <button
+              id="clearAllBtn"
+              class="text-sm text-slate-600 hover:text-slate-700"
+            >
+              Clear all notifications
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Notifications List -->
+      <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200">
+          <h2 class="text-lg font-semibold tracking-tight">Recent Notifications</h2>
+          <p class="text-sm text-slate-500 mt-1">
+            Stay updated with your course activities
+          </p>
+        </div>
+        <div class="p-5">
+          <div id="notificationsContainer" class="space-y-3">
+            <!-- Notifications will be populated here by team leader -->
+            <!-- Placeholder/Empty State -->
+            <div class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+              <div class="text-4xl mb-3">🔔</div>
+              <h3 class="text-base font-medium text-slate-700 mb-1">No Notifications Yet</h3>
+              <p class="text-sm text-slate-500">You're all caught up! Notifications will appear here when you have updates.</p>
+            </div>
+          </div>
+
+          <!-- Loading State (hidden by default, can be shown when loading) -->
+          <div id="notificationsLoading" class="hidden flex flex-col items-center justify-center py-12">
+            <div class="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-indigo-600"></div>
+            <p class="mt-4 text-sm text-slate-600">Loading notifications...</p>
+          </div>
+
+          <!-- Example Notification Structure (commented out for reference) -->
+          <!--
+          <div class="notification-item flex items-start gap-4 p-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition cursor-pointer">
+            <div class="flex-shrink-0">
+              <div class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                <span class="text-lg">📝</span>
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between mb-1">
+                <h3 class="text-sm font-semibold text-slate-900">Assignment Due Soon</h3>
+                <span class="text-xs text-slate-500">2h ago</span>
+              </div>
+              <p class="text-sm text-slate-600 mb-2">
+                Project Sprint 3 Submission is due in 2 hours
+              </p>
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-700">
+                  CSCI 490
+                </span>
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700">
+                  Assignment
+                </span>
+              </div>
+            </div>
+            <div class="flex-shrink-0">
+              <div class="h-2 w-2 rounded-full bg-indigo-600"></div>
+            </div>
+          </div>
+          -->
+        </div>
+      </section>
+
+      <!-- Statistics Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+          <div class="flex items-center gap-4">
+            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-100">
+              <span class="text-2xl">📬</span>
+            </div>
+            <div>
+              <div id="totalNotifications" class="text-2xl font-bold text-slate-900">0</div>
+              <div class="text-sm text-slate-600">Total Notifications</div>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+          <div class="flex items-center gap-4">
+            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-amber-100">
+              <span class="text-2xl">📩</span>
+            </div>
+            <div>
+              <div id="unreadCount" class="text-2xl font-bold text-slate-900">0</div>
+              <div class="text-sm text-slate-600">Unread</div>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+          <div class="flex items-center gap-4">
+            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-green-100">
+              <span class="text-2xl">✅</span>
+            </div>
+            <div>
+              <div id="readCount" class="text-2xl font-bold text-slate-900">0</div>
+              <div class="text-sm text-slate-600">Read</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script type="module" src="../js/partials.js"></script>
+    <script type="module">
+      import { api } from "../js/apiClient.js";
+
+      // Check if user is logged in
+      const userName = sessionStorage.getItem("mc_userName");
+      const userChip = document.getElementById("userChip");
+
+      if (!userName) {
+        window.location.href = "./login.html";
+      }
+
+      if (userChip) {
+        userChip.textContent = "Hi, " + userName;
+      }
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        // TODO: Team leader will implement notification loading logic here
+        
+        console.log("Notifications page loaded - ready for backend integration");
+        
+        // Placeholder event listeners (can be wired up by team leader)
+        const typeFilter = document.getElementById("typeFilter");
+        const statusFilter = document.getElementById("statusFilter");
+        const dateFilter = document.getElementById("dateFilter");
+        const markAllReadBtn = document.getElementById("markAllReadBtn");
+        const clearAllBtn = document.getElementById("clearAllBtn");
+        
+        typeFilter?.addEventListener("change", () => {
+          console.log("Type filter changed:", typeFilter.value);
+          // TODO: Implement filter logic
+        });
+        
+        statusFilter?.addEventListener("change", () => {
+          console.log("Status filter changed:", statusFilter.value);
+          // TODO: Implement filter logic
+        });
+        
+        dateFilter?.addEventListener("change", () => {
+          console.log("Date filter changed:", dateFilter.value);
+          // TODO: Implement filter logic
+        });
+        
+        markAllReadBtn?.addEventListener("click", () => {
+          console.log("Mark all as read clicked");
+          // TODO: Implement mark all as read
+        });
+        
+        clearAllBtn?.addEventListener("click", () => {
+          console.log("Clear all clicked");
+          // TODO: Implement clear all notifications
+        });
+      });
+    </script>
+  </body>
+</html>
