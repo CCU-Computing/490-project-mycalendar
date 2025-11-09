@@ -2,6 +2,21 @@
 import { api } from './apiClient.js';
 import { openAssignmentDetailsModal } from '../components/AssignmentDetailsModal.js';
 
+// get document elements
+const userName = sessionStorage.getItem("mc_userName");
+const userChip = document.getElementById("userChip");
+
+// determine if user is logged in
+if (!userName) {
+  // dashboard.html is in /pages, so go to login in the same folder
+  window.location.href = "./login.html";
+}
+
+// update user chip
+if (userChip) {
+  userChip.textContent = "Hi, " + userName;
+}
+
 class AssignmentManager {
     constructor() {
         this.assignments = [];
