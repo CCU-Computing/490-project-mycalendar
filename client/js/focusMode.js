@@ -1,4 +1,4 @@
-import toastNotification from "../components/ToastNotification.js";
+import ToastNotification from "../components/ToastNotification.js";
 import { api } from "./apiClient.js";
 import { mountInlineTimer } from "../components/Timer.js";
 import { mountInlineStopwatch } from "../components/Stopwatch.js";
@@ -337,7 +337,7 @@ async function saveNotes() {
     await autoSaveActiveSessions();
 
     // show notes saved toast notification
-    toastNotification("Notes have been saved", "success");
+    ToastNotification("Notes have been saved", "success");
 
     setTimeout(() => {
       notesStatus.textContent = 'Notes will auto-save';
@@ -347,7 +347,7 @@ async function saveNotes() {
     notesStatus.textContent = 'Failed to save';
 
     // show notes not able to be saved toast notification
-    toastNotification("An error has occurred", "error");
+    ToastNotification("An error has occurred", "error");
 
     setTimeout(() => {
       notesStatus.textContent = 'Notes will auto-save';
@@ -476,7 +476,7 @@ async function handleStarToggle() {
       showNotification('Assignment unstarred');
 
       // show assignment unstarred toast notification
-      toastNotification("Assignment has been unstarred", "success");
+      ToastNotification("Assignment has been unstarred", "success");
     } else {
       // Star
       await api.starredAssignments.star(currentItem.id);
@@ -485,14 +485,14 @@ async function handleStarToggle() {
       showNotification('Assignment starred!');
 
       // show assignment starred toast notification
-      toastNotification("Assignment has been starred", "success");
+      ToastNotification("Assignment has been starred", "success");
     }
   } catch (error) {
     console.error('Error toggling star:', error);
     showNotification('Failed to update star status');
 
     // show assignment starred error toast notification
-    toastNotification("An error has occurred", "error");
+    ToastNotification("An error has occurred", "error");
   }
 }
 
@@ -664,7 +664,7 @@ async function initializeTimer(item) {
         console.log('[FocusMode] Timer session created:', timerSessionId);
       } catch (error) {
         console.error('Failed to create timer session:', error);
-        toastNotification("Failed to start timer session", "error");
+        ToastNotification("Failed to start timer session", "error");
       }
     },
 
@@ -680,13 +680,13 @@ async function initializeTimer(item) {
         await loadSessionHistory(currentItem.id, currentItem.type);
 
         // Show notification
-        toastNotification(
+        ToastNotification(
           completed ? "Timer completed!" : "Timer stopped",
           "success"
         );
       } catch (error) {
         console.error('Failed to save timer session:', error);
-        toastNotification("Failed to save session", "error");
+        ToastNotification("Failed to save session", "error");
       }
     },
 
@@ -702,10 +702,10 @@ async function initializeTimer(item) {
         await loadSessionHistory(currentItem.id, currentItem.type);
 
         // Show notification
-        toastNotification("Timer completed! Time to submit!", "success");
+        ToastNotification("Timer completed! Time to submit!", "success");
       } catch (error) {
         console.error('Failed to save timer session:', error);
-        toastNotification("Failed to save session", "error");
+        ToastNotification("Failed to save session", "error");
       }
     }
   });
@@ -732,7 +732,7 @@ async function initializeStopwatch(item) {
         console.log('[FocusMode] Stopwatch session created:', stopwatchSessionId);
       } catch (error) {
         console.error('Failed to create stopwatch session:', error);
-        toastNotification("Failed to start stopwatch session", "error");
+        ToastNotification("Failed to start stopwatch session", "error");
       }
     },
 
@@ -751,10 +751,10 @@ async function initializeStopwatch(item) {
         const hours = Math.floor(elapsedSeconds / 3600);
         const minutes = Math.floor((elapsedSeconds % 3600) / 60);
         const timeStr = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
-        toastNotification(`Session saved: ${timeStr}`, "success");
+        ToastNotification(`Session saved: ${timeStr}`, "success");
       } catch (error) {
         console.error('Failed to save stopwatch session:', error);
-        toastNotification("Failed to save session", "error");
+        ToastNotification("Failed to save session", "error");
       }
     }
   });
