@@ -7,24 +7,6 @@ const emailEl = document.getElementById("email");
 const pwdEl = document.getElementById("password");
 const errEl = document.getElementById("formError");
 
-const successBtn = document.getElementById("successBtn");
-const infoBtn = document.getElementById("infoBtn");
-const warningBtn = document.getElementById("warningBtn");
-const errorBtn = document.getElementById("errorBtn");
-
-successBtn.addEventListener("click", function () {
-    ToastNotification("success", "success");
-});
-infoBtn.addEventListener("click", function () {
-    ToastNotification("info", "info");
-});
-warningBtn.addEventListener("click", function () {
-    ToastNotification("warning", "warning");
-});
-errorBtn.addEventListener("click", function () {
-    ToastNotification("error", "error");
-});
-
 // (Optional) relabel the password field to make it clear it's the token
 const pwdLabel = document.querySelector('label[for="password"]');
 if (pwdLabel) pwdLabel.textContent = "Moodle Token (hash)";
