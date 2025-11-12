@@ -1,7 +1,7 @@
 import { mountClassList } from "../components/ClassList.js";
 import { mountCalendar } from "../components/Calendar.js";
 import { api } from "./apiClient.js";
-import toastNotification from "../components/ToastNotification.js";
+import ToastNotification from "../components/ToastNotification.js";
 
 (function () {
 
@@ -392,7 +392,7 @@ import toastNotification from "../components/ToastNotification.js";
         await calendar.reload();
 
         // show calendar refresh success toast notification
-        toastNotification("Calendar successfully refreshed", "success");
+        ToastNotification("Calendar successfully refreshed", "success");
       } catch (error) {
 
         // restore inner html
@@ -402,7 +402,7 @@ import toastNotification from "../components/ToastNotification.js";
         assignmentTypeToggles.classList.remove("hidden");
 
         // show calendar refresh success toast notification
-        toastNotification("An error has occurred", "error");
+        ToastNotification("An error has occurred", "error");
       }
     });
 
