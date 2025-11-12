@@ -286,13 +286,15 @@ export async function openAssignmentDetailsModal(assignmentData, callback) {
 
   // Check and set star status
   try {
+    console.log('[AssignmentDetailsModal] Checking star status for ID:', assignmentData.id);
     const { isStarred } = await api.starredAssignments.check(assignmentData.id);
+    console.log('[AssignmentDetailsModal] Star check result:', isStarred);
     if (starBtn) {
       starBtn.textContent = isStarred ? '⭐' : '☆';
       starBtn.title = isStarred ? 'Unstar assignment' : 'Star assignment';
     }
   } catch (error) {
-    console.error('Error checking star status:', error);
+    console.error('[AssignmentDetailsModal] Error checking star status for ID:', assignmentData.id, error);
     // Default to unstarred on error
     if (starBtn) {
       starBtn.textContent = '☆';
@@ -316,9 +318,17 @@ export async function openAssignmentDetailsModal(assignmentData, callback) {
     typeEl.textContent = typeMap[assignmentData.type] || assignmentData.type || "Assignment";
   }
 
-  // Set due date and time
-  if (dueDateEl && assignmentData.start) {
-    const dueDate = new Date(assignmentData.start);
+  // Set due date and time (handle both 'start' and 'dueAt' fields)
+  if (dueDateEl && (assignmentData.start || assignmentData.dueAt)) {
+    let dueDate;
+    if (assignmentData.start) {
+      // Calendar passes 'start' as Date object or ISO string
+      dueDate = new Date(assignmentData.start);
+    } else if (assignmentData.dueAt) {
+      // UpcomingAssignments and assignments.js pass 'dueAt' as Unix timestamp in seconds
+      dueDate = new Date(assignmentData.dueAt * 1000); // Convert seconds to milliseconds
+    }
+
     const dateStr = dueDate.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',

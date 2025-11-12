@@ -1,5 +1,6 @@
 import { mountClassList } from "../components/ClassList.js";
 import { mountCalendar } from "../components/Calendar.js";
+import { mountUpcomingAssignments } from "../components/UpcomingAssignments.js";
 import { api } from "./apiClient.js";
 import ToastNotification from "../components/ToastNotification.js";
 
@@ -28,6 +29,7 @@ import ToastNotification from "../components/ToastNotification.js";
 
   document.addEventListener("DOMContentLoaded", function () {
     mountClassList({ containerId: "semesterClasses" });
+    mountUpcomingAssignments({ containerId: "upcomingAssignments" });
 
     // array to hold events, courses, and assignment types
     let allEvents = [];

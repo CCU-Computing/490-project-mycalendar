@@ -22,13 +22,17 @@ class AssignmentManager {
         this.assignments = [];
         this.courses = new Map();
         this.starredAssignmentIds = [];
+        this.courseColors = {};
+        this.typeColors = {};
         this.init();
     }
 
     async init() {
         await this.loadCourses();
+        await this.loadColorPreferences();
         await this.loadAssignments();
         await this.loadStarredAssignments();
+        await this.renderAllAssignments();
     }
 
     async loadCourses() {
@@ -43,6 +47,18 @@ class AssignmentManager {
             });
         } catch (error) {
             console.error('Error loading courses:', error);
+        }
+    }
+
+    async loadColorPreferences() {
+        try {
+            const { prefs } = await api.prefs.get();
+            this.courseColors = prefs?.calendar?.courseColors || {};
+            this.typeColors = prefs?.calendar?.assignmentTypeColors || {};
+        } catch (error) {
+            console.error('Error loading color preferences:', error);
+            this.courseColors = {};
+            this.typeColors = {};
         }
     }
 
@@ -64,6 +80,7 @@ class AssignmentManager {
                         title: assignment.name,
                         course: courseShortname,
                         courseName: courseName,
+                        courseId: courseData.courseId,
                         dueDate: assignment.dueAt ? new Date(assignment.dueAt * 1000).toISOString() : null,
                         status: 'pending'
                     });
@@ -77,6 +94,7 @@ class AssignmentManager {
                         title: quiz.name,
                         course: courseShortname,
                         courseName: courseName,
+                        courseId: courseData.courseId,
                         dueDate: quiz.dueAt ? new Date(quiz.dueAt * 1000).toISOString() : null,
                         status: 'pending'
                     });
@@ -152,6 +170,45 @@ class AssignmentManager {
         }
     }
 
+    // Render all upcoming assignments with calendar-style colors
+    async renderAllAssignments() {
+        // Add loading state at the start
+        this.addAllAssignmentsLoadingState();
+
+        const container = document.getElementById('assignmentsContainer');
+        if (!container) return;
+
+        const now = new Date();
+
+        // Filter to show only upcoming assignments (not overdue, has due date)
+        const upcomingAssignments = this.assignments.filter(assignment => {
+            if (!assignment.dueDate) return false;
+            const dueDate = new Date(assignment.dueDate);
+            return dueDate >= now;
+        });
+
+        if (upcomingAssignments.length === 0) {
+            container.innerHTML = `
+                <div class="rounded-xl border border-dashed border-slate-300 dark:border-neutral-600 bg-slate-50 dark:bg-neutral-800 p-8 text-center">
+                    <div class="text-4xl mb-3">🎉</div>
+                    <h3 class="text-base font-medium text-slate-700 dark:text-slate-300 mb-1">All Caught Up!</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">No upcoming assignments at the moment.</p>
+                </div>
+            `;
+            // Remove loading state after rendering
+            this.removeAllAssignmentsLoadingState();
+            return;
+        }
+
+        // Render each assignment with calendar-style colors
+        container.innerHTML = upcomingAssignments
+            .map(assignment => this.renderAssignmentCardWithColors(assignment))
+            .join('');
+
+        // Remove loading state after rendering
+        this.removeAllAssignmentsLoadingState();
+    }
+
     // Toggle star status for an assignment
     async toggleStar(assignmentId) {
         const assignmentIdStr = String(assignmentId);
@@ -179,8 +236,9 @@ class AssignmentManager {
                 this.showNotification('Assignment starred!');
             }
 
-            // Re-render starred section
+            // Re-render both sections to update star display
             this.renderStarredAssignments();
+            this.renderAllAssignments();
         } catch (error) {
             console.error('Error toggling star:', error);
             this.showNotification('Failed to update star status');
@@ -234,6 +292,60 @@ class AssignmentManager {
                     ` : `
                         <div class="col-span-2">
                             <span class="text-slate-500 dark:text-slate-400">No due date set</span>
+                        </div>
+                    `}
+                </div>
+            </div>
+        `;
+    }
+
+    // Render assignment card with calendar-style colors (border = course, background = type)
+    renderAssignmentCardWithColors(assignment) {
+        const isStarred = this.starredAssignmentIds.includes(String(assignment.id));
+        const typeLabel = assignment.type === 'quiz' ? '📝 Quiz' : '📄 Assignment';
+
+        // Get colors: border = course color, background = type color with transparency
+        const courseColor = this.courseColors[String(assignment.courseId)] || '#6366f1';
+        const typeColor = this.typeColors[assignment.type] || '#8b5cf6';
+        const backgroundColor = typeColor + '66'; // Add 40% opacity
+
+        return `
+            <div class="rounded-xl p-4 hover:shadow-md transition-all cursor-pointer"
+                 style="border: 3px solid ${courseColor}; background-color: ${backgroundColor};"
+                 data-id="${assignment.id}"
+                 onclick="assignmentManager.openModal('${assignment.id}')">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-sm text-slate-900 dark:text-slate-100">${typeLabel}</span>
+                        </div>
+                        <h3 class="text-base font-semibold text-slate-900 dark:text-slate-100 mb-1">${assignment.title}</h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-200">${assignment.course} - ${assignment.courseName}</p>
+                    </div>
+                    <div class="flex items-center gap-2 ml-3">
+                        <button
+                            class="text-2xl hover:scale-110 transition-transform cursor-pointer z-10"
+                            onclick="event.stopPropagation(); assignmentManager.toggleStar('${assignment.id}')"
+                            title="${isStarred ? 'Unstar' : 'Star'} assignment"
+                        >
+                            ${isStarred ? '⭐' : '☆'}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                    ${assignment.dueDate ? `
+                        <div>
+                            <span class="text-slate-700 dark:text-slate-200">Due Date:</span>
+                            <p class="text-slate-900 dark:text-slate-100 font-medium">${this.formatDate(assignment.dueDate)}</p>
+                        </div>
+                        <div>
+                            <span class="text-slate-700 dark:text-slate-200">Time Remaining:</span>
+                            <p class="text-slate-900 dark:text-slate-100 font-medium">${assignment.timeRemaining}</p>
+                        </div>
+                    ` : `
+                        <div class="col-span-2">
+                            <span class="text-slate-700 dark:text-slate-200">No due date set</span>
                         </div>
                     `}
                 </div>
@@ -342,6 +454,22 @@ class AssignmentManager {
             notification.style.opacity = '0';
             setTimeout(() => notification.remove(), 300);
         }, 3000);
+    }
+
+    // Add loading state to all assignments container
+    addAllAssignmentsLoadingState() {
+        const container = document.getElementById('assignmentsContainer');
+        if (container) {
+            container.classList.add("animate-pulse", "cursor-progress");
+        }
+    }
+
+    // Remove loading state from all assignments container
+    removeAllAssignmentsLoadingState() {
+        const container = document.getElementById('assignmentsContainer');
+        if (container) {
+            container.classList.remove("animate-pulse", "cursor-progress");
+        }
     }
 }
 
