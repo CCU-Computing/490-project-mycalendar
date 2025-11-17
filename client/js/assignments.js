@@ -82,7 +82,10 @@ class AssignmentManager {
                         courseName: courseName,
                         courseId: courseData.courseId,
                         dueDate: assignment.dueAt ? new Date(assignment.dueAt * 1000).toISOString() : null,
-                        status: 'pending'
+                        status: assignment.status || 'pending',
+                        gradeFormatted: assignment.gradeFormatted ?? null,
+                        gradeMax: assignment.gradeMax ?? null,
+                        gradePercent: assignment.gradePercent ?? null
                     });
                 }
 
@@ -96,7 +99,10 @@ class AssignmentManager {
                         courseName: courseName,
                         courseId: courseData.courseId,
                         dueDate: quiz.dueAt ? new Date(quiz.dueAt * 1000).toISOString() : null,
-                        status: 'pending'
+                        status: quiz.status || 'pending',
+                        gradeFormatted: quiz.gradeFormatted ?? null,
+                        gradeMax: quiz.gradeMax ?? null,
+                        gradePercent: quiz.gradePercent ?? null
                     });
                 }
             }
@@ -248,10 +254,15 @@ class AssignmentManager {
     renderAssignmentCard(assignment) {
         const isStarred = this.starredAssignmentIds.includes(String(assignment.id));
         const statusColors = {
-            pending: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-            overdue: 'bg-red-100 text-red-800 border-red-200'
+            pending: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800',
+            graded: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800',
+            submitted: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800',
+            overdue: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800'
         };
         const typeLabel = assignment.type === 'quiz' ? '📝 Quiz' : '📄 Assignment';
+        const gradeDisplay = assignment.gradeFormatted && assignment.gradeMax
+            ? `${assignment.gradeFormatted} / ${assignment.gradeMax}${assignment.gradePercent ? ` (${assignment.gradePercent})` : ''}`
+            : '—';
 
         return `
             <div class="rounded-xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 p-4 dark:shadow-neutral-200 hover:shadow-md transition-shadow cursor-pointer"
@@ -289,9 +300,17 @@ class AssignmentManager {
                             <span class="text-slate-500 dark:text-slate-400">Time Remaining:</span>
                             <p class="text-slate-900 dark:text-slate-200 font-medium">${assignment.timeRemaining}</p>
                         </div>
+                        <div>
+                            <span class="text-slate-500 dark:text-slate-400">Grade:</span>
+                            <p class="text-slate-900 dark:text-slate-200 font-medium">${gradeDisplay}</p>
+                        </div>
                     ` : `
                         <div class="col-span-2">
                             <span class="text-slate-500 dark:text-slate-400">No due date set</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 dark:text-slate-400">Grade:</span>
+                            <p class="text-slate-900 dark:text-slate-200 font-medium">${gradeDisplay}</p>
                         </div>
                     `}
                 </div>
@@ -303,6 +322,9 @@ class AssignmentManager {
     renderAssignmentCardWithColors(assignment) {
         const isStarred = this.starredAssignmentIds.includes(String(assignment.id));
         const typeLabel = assignment.type === 'quiz' ? '📝 Quiz' : '📄 Assignment';
+        const gradeDisplay = assignment.gradeFormatted && assignment.gradeMax
+            ? `${assignment.gradeFormatted} / ${assignment.gradeMax}${assignment.gradePercent ? ` (${assignment.gradePercent})` : ''}`
+            : '—';
 
         // Get colors: border = course color, background = type color with transparency
         const courseColor = this.courseColors[String(assignment.courseId)] || '#6366f1';
@@ -343,9 +365,17 @@ class AssignmentManager {
                             <span class="text-slate-700 dark:text-slate-200">Time Remaining:</span>
                             <p class="text-slate-900 dark:text-slate-100 font-medium">${assignment.timeRemaining}</p>
                         </div>
+                        <div>
+                            <span class="text-slate-700 dark:text-slate-200">Grade:</span>
+                            <p class="text-slate-900 dark:text-slate-100 font-medium">${gradeDisplay}</p>
+                        </div>
                     ` : `
                         <div class="col-span-2">
                             <span class="text-slate-700 dark:text-slate-200">No due date set</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-700 dark:text-slate-200">Grade:</span>
+                            <p class="text-slate-900 dark:text-slate-100 font-medium">${gradeDisplay}</p>
                         </div>
                     `}
                 </div>
@@ -371,15 +401,17 @@ class AssignmentManager {
             title: assignment.title,
             courseName: assignment.courseName,
             dueAt: assignment.dueDate ? Math.floor(new Date(assignment.dueDate).getTime() / 1000) : null,
+            gradeFormatted: assignment.gradeFormatted ?? null,
+            gradeMax: assignment.gradeMax ?? null,
+            gradePercent: assignment.gradePercent ?? null,
+            instructorComments: assignment.instructorComments ?? null
         };
 
         openAssignmentDetailsModal(assignmentData);
     }
 
-    // Process assignments (calculate status, etc.)
+    // Process assignments (calculate time remaining, trust backend status)
     processAssignments() {
-        const now = new Date();
-
         this.assignments.forEach(assignment => {
             if (!assignment.dueDate) {
                 assignment.timeRemaining = 'No due date';
@@ -388,14 +420,10 @@ class AssignmentManager {
 
             const dueDate = new Date(assignment.dueDate);
 
-            // Update status based on dates
-            if (assignment.grade !== null) {
-                assignment.status = 'graded';
-            } else if (assignment.submittedDate) {
-                assignment.status = 'submitted';
-            } else if (dueDate < now) {
-                assignment.status = 'overdue';
-            } else {
+            // Trust the status from the backend (already calculated by enrichWithGrades)
+            // Status values: 'pending', 'graded', 'submitted', 'overdue'
+            // If not set, default to 'pending'
+            if (!assignment.status) {
                 assignment.status = 'pending';
             }
 

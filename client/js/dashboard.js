@@ -108,7 +108,11 @@ import ToastNotification from "../components/ToastNotification.js";
             extendedProps: {
               type: ev.type || 'assign',
               courseName: course?.name || 'Unknown Course',
-              courseId: ev.courseId
+              courseId: ev.courseId,
+              gradeFormatted: ev.gradeFormatted ?? null,
+              gradeMax: ev.gradeMax ?? null,
+              gradePercent: ev.gradePercent ?? null,
+              instructorComments: ev.instructorComments ?? null
             }
           };
         });

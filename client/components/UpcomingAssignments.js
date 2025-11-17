@@ -66,41 +66,47 @@ export function mountUpcomingAssignments({ containerId = "upcomingAssignmentsCon
     const urgencyClass = getUrgencyClass(assignment.dueDate);
     const formattedDate = formatDueDate(assignment.dueDate);
     const courseColor = courseColors[String(assignment.courseId)] || '#4F46E5';
-    
+    const gradeDisplay = assignment.gradeFormatted && assignment.gradeMax
+      ? `${assignment.gradeFormatted} / ${assignment.gradeMax}${assignment.gradePercent ? ` (${assignment.gradePercent})` : ''}`
+      : '—';
+
     const box = document.createElement('div');
     box.className = 'flex items-center gap-4 rounded-xl border-2 p-4 transition-all hover:shadow-md cursor-pointer';
     box.style.borderColor = courseColor;
     box.style.background = `${courseColor}15`;
-    
+
     box.innerHTML = `
       <!-- Color indicator -->
       <div class="flex-shrink-0">
         <div class="w-3 h-16 rounded-full" style="background-color: ${courseColor};"></div>
       </div>
-      
+
       <!-- Assignment content -->
       <div class="flex-1 min-w-0">
         <!-- Course code and number -->
         <div class="flex items-center gap-2 mb-1">
-          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold" 
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold"
                 style="background-color: ${courseColor}; color: white;">
             ${assignment.courseCode} ${assignment.courseNumber}
           </span>
         </div>
-        
+
         <!-- Assignment title -->
-        <h3 class="text-base font-semibold text-slate-900 dark:text-slate-100 truncate mb-1">
+        <h3 class="text-base font-semibold text-slate-900 dark:text-slate-100 truncate mb-2">
           ${assignment.title}
         </h3>
-        
-        <!-- Due date with urgency indicator -->
-        <div class="flex items-center gap-2">
+
+        <!-- Due date and Grade badges on same line -->
+        <div class="flex items-center gap-2 flex-wrap">
           <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium border ${urgencyClass}">
             📅 ${formattedDate}
           </span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-neutral-700 border border-slate-300 dark:border-neutral-600">
+            📊 ${gradeDisplay}
+          </span>
         </div>
       </div>
-      
+
       <!-- Arrow icon -->
       <div class="flex-shrink-0">
         <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -117,7 +123,11 @@ export function mountUpcomingAssignments({ containerId = "upcomingAssignmentsCon
         type: assignment.type,
         title: assignment.title,
         courseName: assignment.courseName,
-        dueAt: Math.floor(assignment.dueDate.getTime() / 1000) // Convert to Unix timestamp
+        dueAt: Math.floor(assignment.dueDate.getTime() / 1000), // Convert to Unix timestamp
+        gradeFormatted: assignment.gradeFormatted ?? null,
+        gradeMax: assignment.gradeMax ?? null,
+        gradePercent: assignment.gradePercent ?? null,
+        instructorComments: assignment.instructorComments ?? null
       };
 
       // Open modal with callback to reload on changes
@@ -204,8 +214,12 @@ export function mountUpcomingAssignments({ containerId = "upcomingAssignmentsCon
                 courseName: courseName,
                 title: assignment.name,
                 dueDate: new Date(assignment.dueAt * 1000),
-                isCompleted: false, // You can add logic to determine completion
-                type: 'assignment'
+                isCompleted: false,
+                type: 'assignment',
+                gradeFormatted: assignment.gradeFormatted ?? null,
+                gradeMax: assignment.gradeMax ?? null,
+                gradePercent: assignment.gradePercent ?? null,
+                instructorComments: assignment.instructorComments ?? null
               });
             }
           });
@@ -221,8 +235,12 @@ export function mountUpcomingAssignments({ containerId = "upcomingAssignmentsCon
                 courseName: courseName,
                 title: quiz.name,
                 dueDate: new Date(quiz.dueAt * 1000),
-                isCompleted: false, // You can add logic to determine completion
-                type: 'quiz'
+                isCompleted: false,
+                type: 'quiz',
+                gradeFormatted: quiz.gradeFormatted ?? null,
+                gradeMax: quiz.gradeMax ?? null,
+                gradePercent: quiz.gradePercent ?? null,
+                instructorComments: quiz.instructorComments ?? null
               });
             }
           });
