@@ -497,4 +497,79 @@ export const api = {
         fetch(`/api/focus-mode/sessions?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`).then(handle),
     },
   },
+
+  analytics: {
+    getSummary: async (onFresh) => {
+      const fetchFn = () => fetch("/api/analytics/summary").then(handle);
+      if (typeof onFresh === 'function') {
+        return revalidationManager.fetchWithRevalidate("analytics_summary", fetchFn, 3600, onFresh);
+      }
+      const cached = cacheManager.get("analytics_summary");
+      if (cached) return cached;
+      const data = await fetchFn();
+      cacheManager.set("analytics_summary", data, 3600);
+      return data;
+    },
+
+    getStudyTime: async (onFresh) => {
+      const fetchFn = () => fetch("/api/analytics/study-time").then(handle);
+      if (typeof onFresh === 'function') {
+        return revalidationManager.fetchWithRevalidate("analytics_study_time", fetchFn, 3600, onFresh);
+      }
+      const cached = cacheManager.get("analytics_study_time");
+      if (cached) return cached;
+      const data = await fetchFn();
+      cacheManager.set("analytics_study_time", data, 3600);
+      return data;
+    },
+
+    getTimeTrends: async (onFresh) => {
+      const fetchFn = () => fetch("/api/analytics/time-trends").then(handle);
+      if (typeof onFresh === 'function') {
+        return revalidationManager.fetchWithRevalidate("analytics_time_trends", fetchFn, 3600, onFresh);
+      }
+      const cached = cacheManager.get("analytics_time_trends");
+      if (cached) return cached;
+      const data = await fetchFn();
+      cacheManager.set("analytics_time_trends", data, 3600);
+      return data;
+    },
+
+    getAssignmentAnalytics: async (onFresh) => {
+      const fetchFn = () => fetch("/api/analytics/assignment-analytics").then(handle);
+      if (typeof onFresh === 'function') {
+        return revalidationManager.fetchWithRevalidate("analytics_assignments", fetchFn, 3600, onFresh);
+      }
+      const cached = cacheManager.get("analytics_assignments");
+      if (cached) return cached;
+      const data = await fetchFn();
+      cacheManager.set("analytics_assignments", data, 3600);
+      return data;
+    },
+
+    getCourseAnalytics: async (courseId, onFresh) => {
+      const cacheKey = `analytics_course_${courseId}`;
+      const fetchFn = () => fetch(`/api/analytics/course/${encodeURIComponent(courseId)}`).then(handle);
+      if (typeof onFresh === 'function') {
+        return revalidationManager.fetchWithRevalidate(cacheKey, fetchFn, 3600, onFresh);
+      }
+      const cached = cacheManager.get(cacheKey);
+      if (cached) return cached;
+      const data = await fetchFn();
+      cacheManager.set(cacheKey, data, 3600);
+      return data;
+    },
+
+    getTopStats: async (onFresh) => {
+      const fetchFn = () => fetch("/api/analytics/top-stats").then(handle);
+      if (typeof onFresh === 'function') {
+        return revalidationManager.fetchWithRevalidate("analytics_top_stats", fetchFn, 3600, onFresh);
+      }
+      const cached = cacheManager.get("analytics_top_stats");
+      if (cached) return cached;
+      const data = await fetchFn();
+      cacheManager.set("analytics_top_stats", data, 3600);
+      return data;
+    },
+  },
 };
