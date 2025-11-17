@@ -6,6 +6,7 @@ const {
   getWorkItemsByCourse,
   buildDueCalendar,
 } = require("../services/aggregator");
+const cacheManager = require("../services/cacheManager");
 
 const router = express.Router();
 
@@ -41,6 +42,10 @@ router.post("/login", async (req, res) => {
 
 /** logout */
 router.post("/logout", (req, res) => {
+  // Clear user cache before destroying session
+  if (req.session.userid) {
+    cacheManager.clear(req.session.userid);
+  }
   req.session.destroy(() => res.json({ ok: true }));
 });
 

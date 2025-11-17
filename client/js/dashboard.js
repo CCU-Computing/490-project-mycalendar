@@ -144,8 +144,22 @@ import ToastNotification from "../components/ToastNotification.js";
     // get events function
     async function getEvents() {
 
-      // get events
-      const { events } = await api.calendar();
+      // get events with cache-while-revalidate pattern
+      // returns cached data immediately, fetches fresh in background
+      const { events } = await api.calendar({
+        onFresh: (freshData) => {
+          // Handle fresh data updates
+          if (freshData.events && calendar) {
+            console.log('[Dashboard] Fresh calendar data received, updating...');
+            // Update the allEvents variable
+            allEvents = freshData.events;
+            // Refresh calendar if it's already mounted
+            if (typeof calendar.refetchEvents === 'function') {
+              calendar.refetchEvents();
+            }
+          }
+        }
+      });
 
       // update all events
       allEvents = events;

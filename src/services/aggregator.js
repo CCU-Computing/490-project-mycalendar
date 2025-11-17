@@ -6,6 +6,7 @@ const {
   getUserGradeItems,
   getAssignSubmissionStatus,
 } = require("../moodle/api");
+const cacheManager = require("./cacheManager");
 
 // helper: safe percent from grade item fields
 function extractCourseTotal(gradeItemsPayload) {
@@ -109,39 +110,30 @@ function synthesizeAssignmentsFromGrades(gradeItemsPayload, existingAssignIds) {
 function extractInstructorComments(feedbackData) {
   try {
     if (!feedbackData) {
-      console.log("extractInstructorComments: no feedbackData provided");
       return null;
     }
 
     // Look for feedback comments plugin in the plugins array
     const plugins = feedbackData.plugins || [];
-    console.log("extractInstructorComments: found", plugins.length, "plugins:", plugins.map(p => ({ type: p.type, name: p.name })));
-
     const commentsPlugin = plugins.find(p => p.type === "comments" && p.name === "Feedback comments");
 
     if (!commentsPlugin) {
-      console.log("extractInstructorComments: No feedback comments plugin found. Available plugins:", plugins.map(p => `${p.type}/${p.name}`));
       return null;
     }
 
     // Extract the comments field from editorfields
     const editorfields = commentsPlugin.editorfields || [];
-    console.log("extractInstructorComments: found", editorfields.length, "editorfields in comments plugin:", editorfields.map(f => f.name));
-
     const commentsField = editorfields.find(f => f.name === "comments");
 
     if (!commentsField || !commentsField.text) {
-      console.log("extractInstructorComments: No comments text found in editorfield");
       return null;
     }
 
-    console.log("extractInstructorComments: Successfully extracted comments, length:", commentsField.text.length);
     return {
       text: commentsField.text,
       format: commentsField.format
     };
   } catch (error) {
-    console.error("Error extracting instructor comments:", error);
     return null;
   }
 }
@@ -158,21 +150,38 @@ function enrichWithGrades(workItems, gradeItemsPayload, itemType) {
     // build lookup maps for efficient matching
     const gradeMapByCmid = new Map();
     const gradeMapByInstance = new Map();
+    const gradeMapByName = new Map();
 
     for (const item of gradeItems) {
       // only process grade items of matching type
       if (item.itemtype === "mod" && item.itemmodule === itemType) {
         if (item.cmid) gradeMapByCmid.set(item.cmid, item);
         if (item.iteminstance) gradeMapByInstance.set(item.iteminstance, item);
+        // Also index by itemname for fallback matching
+        if (item.itemname) gradeMapByName.set(item.itemname.toLowerCase(), item);
       }
     }
 
     // enrich each work item with grade data
     return workItems.map(work => {
-      // try matching by cmid first, fallback to instance ID
-      const grade = work.cmid
-        ? gradeMapByCmid.get(work.cmid)
-        : gradeMapByInstance.get(work.id);
+      let grade = null;
+
+      // Try matching in order of specificity:
+      // 1. First try matching by cmid (most reliable)
+      if (work.cmid) {
+        grade = gradeMapByCmid.get(work.cmid);
+      }
+
+      // 2. Fallback to matching by iteminstance (assignment ID)
+      if (!grade) {
+        grade = gradeMapByInstance.get(work.id);
+      }
+
+      // 3. Final fallback: try matching by name (case-insensitive)
+      // This helps when cmid and iteminstance don't match due to course configuration
+      if (!grade && work.name) {
+        grade = gradeMapByName.get(work.name.toLowerCase());
+      }
 
       // derive status based on grade presence and due date
       let status = "pending";
@@ -208,35 +217,26 @@ function enrichWithGrades(workItems, gradeItemsPayload, itemType) {
  */
 async function enrichAssignmentsWithComments(assignments, token, userid) {
   try {
-    console.log(`enrichAssignmentsWithComments: Starting for ${assignments.length} assignments, userid:`, userid);
-
     // fetch comments for each assignment in parallel with a reasonable limit
     const commentPromises = assignments.map(async (assignment) => {
       try {
-        console.log(`enrichAssignmentsWithComments: Fetching submission status for assignment ${assignment.id}`);
         const submissionStatus = await getAssignSubmissionStatus(token, assignment.id, userid);
 
         if (!submissionStatus) {
-          console.warn(`enrichAssignmentsWithComments: No submission status returned for assignment ${assignment.id}`);
           return { id: assignment.id, instructorComments: null };
         }
 
-        const feedback = submissionStatus?.lastattempt?.feedback;
-        console.log(`enrichAssignmentsWithComments: Assignment ${assignment.id} has feedback:`, !!feedback, feedback ? Object.keys(feedback) : null);
-
+        // feedback is at the root level of the submission status response
+        const feedback = submissionStatus?.feedback;
         const comments = extractInstructorComments(feedback);
-        console.log(`enrichAssignmentsWithComments: Extracted comments for assignment ${assignment.id}:`, !!comments);
 
         return { id: assignment.id, instructorComments: comments };
       } catch (error) {
-        console.warn(`Failed to fetch comments for assignment ${assignment.id}:`, error);
         return { id: assignment.id, instructorComments: null };
       }
     });
 
     const commentResults = await Promise.all(commentPromises);
-    console.log(`enrichAssignmentsWithComments: Got ${commentResults.length} comment results`);
-
     const commentMap = new Map(commentResults.map(r => [r.id, r.instructorComments]));
 
     // merge comments back into assignments
@@ -245,11 +245,8 @@ async function enrichAssignmentsWithComments(assignments, token, userid) {
       instructorComments: commentMap.get(assignment.id) || null
     }));
 
-    console.log(`enrichAssignmentsWithComments: Finished enriching assignments. Sample:`, enriched.slice(0, 2).map(a => ({ id: a.id, hasComments: !!a.instructorComments })));
-
     return enriched;
   } catch (error) {
-    console.error("Error enriching assignments with comments:", error);
     // return assignments without comments on error
     return assignments;
   }
@@ -290,9 +287,16 @@ async function bootstrapSession({ token, session }) {
 
 /**
  * build course cards: combine course meta + course total grade
+ * Cache TTL: 60 minutes (courses rarely change during a semester)
  */
 async function buildCourseCards({ token, session }) {
   const { userid, courses } = await bootstrapSession({ token, session });
+
+  // Check cache first
+  const cachedCards = cacheManager.get(userid, "courseCards");
+  if (cachedCards) {
+    return cachedCards;
+  }
 
   const result = [];
   for (const c of courses) {
@@ -308,14 +312,25 @@ async function buildCourseCards({ token, session }) {
       grade: totals.courseTotalFormatted, // e.g., "95.00 %" or "95.00"
     });
   }
+
+  // Cache for 60 minutes
+  cacheManager.set(userid, "courseCards", result, 3600);
   return result;
 }
 
 /**
  * get assignments & quizzes for all in-progress courses, with grades enriched
+ * Cache TTL: 15 minutes (grades/submissions update periodically)
  */
 async function getWorkItemsByCourse({ token, session }) {
   const { userid, courses } = await bootstrapSession({ token, session });
+
+  // Check cache first
+  const cachedWorkItems = cacheManager.get(userid, "workItems");
+  if (cachedWorkItems) {
+    return cachedWorkItems;
+  }
+
   const courseIds = courses.map((c) => c.id);
 
   const [assignPayload, quizPayload] = await Promise.all([
@@ -361,13 +376,25 @@ async function getWorkItemsByCourse({ token, session }) {
       quizzes,
     });
   }
+
+  // Cache for 15 minutes
+  cacheManager.set(userid, "workItems", byCourse, 900);
   return byCourse;
 }
 
 /**
  * build a "due-only" calendar (assign.duedate, quiz.timeclose) with grade data and comments
+ * Cache TTL: 15 minutes (depends on workItems cache)
  */
 async function buildDueCalendar({ token, session }) {
+  const { userid } = await bootstrapSession({ token, session });
+
+  // Check cache first
+  const cachedEvents = cacheManager.get(userid, "calendar");
+  if (cachedEvents) {
+    return cachedEvents;
+  }
+
   const work = await getWorkItemsByCourse({ token, session });
   const events = [];
 
@@ -406,6 +433,9 @@ async function buildDueCalendar({ token, session }) {
 
   // optional: sort by dueAt ascending
   events.sort((a, b) => (a.dueAt || 0) - (b.dueAt || 0));
+
+  // Cache for 15 minutes
+  cacheManager.set(userid, "calendar", events, 900);
   return events;
 }
 
