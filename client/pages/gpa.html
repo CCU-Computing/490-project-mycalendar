@@ -4,32 +4,74 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>GPA — MyCalendar</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
+    <script src="../js/util/tailwind-config.js"></script>
+    <script src="../js/util/handle-theme-flash.js"></script>
   </head>
 
-  <body class="min-h-screen bg-slate-50 text-slate-900">
+  <body class="flex flex-col transition-colors duration-300 min-h-screen bg-slate-50 dark:bg-neutral-800 text-slate-900 dark:text-slate-200">
     <div data-partial="../partials/nav.html"></div>
 
-    <header class="border-b border-slate-200 bg-white">
+    <header class="border-b border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900">
       <div class="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-700">📅</span>
-          <span class="font-semibold tracking-tight">MyCalendar</span>
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-700">📊</span>
+          <span class="font-semibold tracking-tight">GPA Calculator</span>
         </div>
         <div class="flex items-center gap-3">
-          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700"></span>
+          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-3 py-1 text-sm text-slate-700 dark:text-slate-200"></span>
           <a href="../index.html" class="text-sm text-indigo-700 hover:underline">Landing Page</a>
         </div>
       </div>
     </header>
 
-    <main class="mx-auto max-w-7xl px-4 py-8 space-y-8">
-      <h1 class="text-5xl font-extrabold mb-8">GPA Calculator</h1>
-        <div id="courses" class="space-y-4"></div>
-        <p id="gpa" class="text-3xl font-bold mb-8"></p>
-    </main>  
+    <main class="grow mx-auto max-w-7xl px-4 py-8 space-y-8 w-full">
+      <!-- Overall GPA Card -->
+      <section class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200 dark:border-neutral-600">
+          <h2 class="text-lg font-semibold tracking-tight">Your GPA</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Overall GPA calculated from all courses
+          </p>
+        </div>
+        <div class="p-5">
+          <p id="gpa" class="text-4xl font-bold text-indigo-600 dark:text-indigo-400"></p>
+        </div>
+      </section>
+
+      <!-- Reported Grades Section -->
+      <section class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200 dark:border-neutral-600">
+          <h2 class="text-lg font-semibold tracking-tight">Reported Grades</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Courses with final grades reported by your instructor
+          </p>
+        </div>
+        <div class="p-5">
+          <div id="reportedCourses" class="space-y-3">
+            <div class="rounded-xl border border-dashed border-slate-300 dark:border-neutral-600 bg-slate-50 dark:bg-neutral-800 p-4 text-sm text-slate-500 dark:text-slate-400">
+              Loading your courses...
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Manual Grade Entry Section -->
+      <section id="manualGradeSection" class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm hidden">
+        <div class="px-5 py-4 border-b border-slate-200 dark:border-neutral-600">
+          <h2 class="text-lg font-semibold tracking-tight">Manual Grade Entry</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            These courses don't have final grades reported yet. Enter your final grade to include them in your GPA.
+          </p>
+        </div>
+        <div class="p-5">
+          <div id="manualGradeCourses" class="space-y-4">
+            <!-- Manual grade inputs will be added here -->
+          </div>
+        </div>
+      </section>
+    </main>
 
     <script type="module" src="../js/partials.js"></script>
     <script type="module" src="../js/gpa.js"></script>
