@@ -1,6 +1,7 @@
 const express = require("express");
 const requireSession = require("../middleware/sessionAuth");
 const { getDatabase } = require("../db/init");
+const cacheManager = require("../services/cacheManager");
 
 const router = express.Router();
 
@@ -72,6 +73,10 @@ router.post("/", requireSession, async (req, res) => {
       )
       .run(userId, moodleAssignmentId);
 
+    // Invalidate work items and calendar cache since starred status changed
+    cacheManager.invalidate(userId, "workItems");
+    cacheManager.invalidate(userId, "calendar");
+
     res.json({
       ok: true,
       id: result.lastInsertRowid,
@@ -107,6 +112,10 @@ router.delete("/:moodleAssignmentId", requireSession, async (req, res) => {
     if (result.changes === 0) {
       return res.status(404).json({ error: "Starred assignment not found" });
     }
+
+    // Invalidate work items and calendar cache since starred status changed
+    cacheManager.invalidate(userId, "workItems");
+    cacheManager.invalidate(userId, "calendar");
 
     res.json({ ok: true });
   } catch (e) {

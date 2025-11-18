@@ -1,7 +1,8 @@
 import { mountClassList } from "../components/ClassList.js";
 import { mountCalendar } from "../components/Calendar.js";
+import { mountUpcomingAssignments } from "../components/UpcomingAssignments.js";
 import { api } from "./apiClient.js";
-import toastNotification from "../components/ToastNotification.js";
+import ToastNotification from "../components/ToastNotification.js";
 
 (function () {
 
@@ -28,6 +29,7 @@ import toastNotification from "../components/ToastNotification.js";
 
   document.addEventListener("DOMContentLoaded", function () {
     mountClassList({ containerId: "semesterClasses" });
+    mountUpcomingAssignments({ containerId: "upcomingAssignments" });
 
     // array to hold events, courses, and assignment types
     let allEvents = [];
@@ -106,7 +108,11 @@ import toastNotification from "../components/ToastNotification.js";
             extendedProps: {
               type: ev.type || 'assign',
               courseName: course?.name || 'Unknown Course',
-              courseId: ev.courseId
+              courseId: ev.courseId,
+              gradeFormatted: ev.gradeFormatted ?? null,
+              gradeMax: ev.gradeMax ?? null,
+              gradePercent: ev.gradePercent ?? null,
+              instructorComments: ev.instructorComments ?? null
             }
           };
         });
@@ -138,8 +144,22 @@ import toastNotification from "../components/ToastNotification.js";
     // get events function
     async function getEvents() {
 
-      // get events
-      const { events } = await api.calendar();
+      // get events with cache-while-revalidate pattern
+      // returns cached data immediately, fetches fresh in background
+      const { events } = await api.calendar({
+        onFresh: (freshData) => {
+          // Handle fresh data updates
+          if (freshData.events && calendar) {
+            console.log('[Dashboard] Fresh calendar data received, updating...');
+            // Update the allEvents variable
+            allEvents = freshData.events;
+            // Refresh calendar if it's already mounted
+            if (typeof calendar.refetchEvents === 'function') {
+              calendar.refetchEvents();
+            }
+          }
+        }
+      });
 
       // update all events
       allEvents = events;
@@ -160,10 +180,15 @@ import toastNotification from "../components/ToastNotification.js";
       // iterate through each assignment type
       assignmentTypes.forEach(type => {
 
+        // update type name if needed (i.e. assign -> assignment) <- better name in client
+        let assignmentTypeName = type;
+
+        if (assignmentTypeName === "assign") assignmentTypeName = "assignment"
+
         // add each assignment type to the container
         assignmentTypeTogglesContainer.insertAdjacentHTML('beforeend',
           `
-            <label class="w-full flex items-center px-4 py-3 text-left text-sm font-medium text-slate-900 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 transition rounded-lg select-none">
+            <label class="w-full flex items-center px-4 py-3 text-left text-sm font-medium text-slate-900 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 transition rounded-lg select-none cursor-pointer">
               <span class="pr-2">
                 <input type="checkbox" id="${type}" class="peer sr-only" checked />
                 <span class="[&_path]:fill-none [&_path]:stroke-current
@@ -174,7 +199,7 @@ import toastNotification from "../components/ToastNotification.js";
                   </svg>
                 </span>
               </span>
-              <span class="truncate">${type[0].toUpperCase() + type.slice(1)}</span>
+              <span class="truncate">${assignmentTypeName[0].toUpperCase() + assignmentTypeName.slice(1)}</span>
             </label>
           `
         )
@@ -196,12 +221,12 @@ import toastNotification from "../components/ToastNotification.js";
         // add each course to the container
         courseToggles.insertAdjacentHTML('beforeend',
           `
-            <label class="w-full flex items-center px-4 py-3 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 transition rounded-lg select-none">
+            <label class="w-full flex items-center px-4 py-3 text-left text-sm font-medium text-slate-900 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 transition rounded-lg select-none cursor-pointer">
               <span class="pr-2">
                 <input type="checkbox" id="${course.id}" class="peer sr-only" checked />
                 <span class="[&_path]:fill-none [&_path]:stroke-current
                   peer-checked:[&_path]:fill-current">
-                  <svg viewBox="0 0 24 24" class="size-5 text-slate-900" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" class="size-5 text-slate-900 dark:text-slate-200" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 5.25 16.5v-9Z" />
                   </svg>
@@ -362,7 +387,7 @@ import toastNotification from "../components/ToastNotification.js";
     })
 
     // event listener for refreshing calendar
-    document.getElementById("refreshCalendar").addEventListener("click", async() => {
+    calendarRefreshBtn.addEventListener("click", async() => {
 
       // get calendar instance
       const calendarInstance = calendar.getInstance();
@@ -387,7 +412,7 @@ import toastNotification from "../components/ToastNotification.js";
         await calendar.reload();
 
         // show calendar refresh success toast notification
-        toastNotification("Calendar successfully refreshed", "success");
+        ToastNotification("Calendar successfully refreshed", "success");
       } catch (error) {
 
         // restore inner html
@@ -397,12 +422,17 @@ import toastNotification from "../components/ToastNotification.js";
         assignmentTypeToggles.classList.remove("hidden");
 
         // show calendar refresh success toast notification
-        toastNotification("An error has occurred", "error");
+        ToastNotification("An error has occurred", "error");
       }
     });
 
     // event listener for filter by course(s) toggle 
     filterByCoursesToggle.addEventListener("click", () => {
+
+      // determine if at least one course exists
+      if (allCourses.length === 0) {
+        return;
+      }
 
       // determine if dropdown is already open
       if (!courseToggles.classList.contains("hidden")) {
@@ -418,6 +448,11 @@ import toastNotification from "../components/ToastNotification.js";
 
     // event listener for filter by assignment type
     filterByAssignmentTypeToggle.addEventListener("click", () => {
+
+      // determine if at least one assignment type exists
+      if (assignmentTypes.length === 0) {
+        return;
+      }
 
       // determine if dropdown is already open
       if (!assignmentTypeToggles.classList.contains("hidden")) {

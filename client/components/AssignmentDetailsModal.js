@@ -57,6 +57,10 @@ function ensureAssignmentDetailsModalDOM() {
                 <div id="adCourse" class="text-sm font-semibold text-slate-900 dark:text-slate-200">—</div>
               </div>
               <div class="bg-slate-50 dark:bg-neutral-800 rounded-lg p-4 border border-slate-200 dark:border-neutral-600">
+                <div class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Grade</div>
+                <div id="adGrade" class="text-sm font-semibold text-slate-900 dark:text-slate-200">—</div>
+              </div>
+              <div class="bg-slate-50 dark:bg-neutral-800 rounded-lg p-4 border border-slate-200 dark:border-neutral-600">
                 <div class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Study Blocks</div>
                 <div id="adStudyBlockCount" class="text-sm font-semibold text-slate-900 dark:text-slate-200">—</div>
               </div>
@@ -67,6 +71,16 @@ function ensureAssignmentDetailsModalDOM() {
               <div class="text-sm font-medium text-slate-900 dark:text-slate-200 mb-2">Scheduled Study Time</div>
               <div id="adStudyBlocksList" class="space-y-2 max-h-40 overflow-y-auto">
                 <!-- Study blocks will be populated here -->
+              </div>
+            </div>
+
+            <!-- Instructor Comments Section -->
+            <div id="adInstructorComments" class="hidden">
+              <div class="text-sm font-medium text-slate-900 dark:text-slate-200 mb-2">Instructor Comments</div>
+              <div id="adCommentsContent" class="bg-slate-50 dark:bg-neutral-800 rounded-lg p-4 border border-slate-200 dark:border-neutral-600">
+                <div id="adCommentsText" class="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap break-words">
+                  <!-- Comments will be populated here -->
+                </div>
               </div>
             </div>
 
@@ -286,13 +300,15 @@ export async function openAssignmentDetailsModal(assignmentData, callback) {
 
   // Check and set star status
   try {
+    console.log('[AssignmentDetailsModal] Checking star status for ID:', assignmentData.id);
     const { isStarred } = await api.starredAssignments.check(assignmentData.id);
+    console.log('[AssignmentDetailsModal] Star check result:', isStarred);
     if (starBtn) {
       starBtn.textContent = isStarred ? '⭐' : '☆';
       starBtn.title = isStarred ? 'Unstar assignment' : 'Star assignment';
     }
   } catch (error) {
-    console.error('Error checking star status:', error);
+    console.error('[AssignmentDetailsModal] Error checking star status for ID:', assignmentData.id, error);
     // Default to unstarred on error
     if (starBtn) {
       starBtn.textContent = '☆';
@@ -316,9 +332,17 @@ export async function openAssignmentDetailsModal(assignmentData, callback) {
     typeEl.textContent = typeMap[assignmentData.type] || assignmentData.type || "Assignment";
   }
 
-  // Set due date and time
-  if (dueDateEl && assignmentData.start) {
-    const dueDate = new Date(assignmentData.start);
+  // Set due date and time (handle both 'start' and 'dueAt' fields)
+  if (dueDateEl && (assignmentData.start || assignmentData.dueAt)) {
+    let dueDate;
+    if (assignmentData.start) {
+      // Calendar passes 'start' as Date object or ISO string
+      dueDate = new Date(assignmentData.start);
+    } else if (assignmentData.dueAt) {
+      // UpcomingAssignments and assignments.js pass 'dueAt' as Unix timestamp in seconds
+      dueDate = new Date(assignmentData.dueAt * 1000); // Convert seconds to milliseconds
+    }
+
     const dateStr = dueDate.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
@@ -335,6 +359,47 @@ export async function openAssignmentDetailsModal(assignmentData, callback) {
   // Set course name
   if (courseEl) {
     courseEl.textContent = assignmentData.courseName || "—";
+  }
+
+  // Set grade information
+  const gradeEl = $("adGrade");
+  if (gradeEl) {
+    // Display grade if available, otherwise show "—"
+    if (assignmentData.gradeFormatted && assignmentData.gradeMax) {
+      gradeEl.textContent = `${assignmentData.gradeFormatted} / ${assignmentData.gradeMax}${assignmentData.gradePercent ? ` (${assignmentData.gradePercent})` : ''}`;
+    } else {
+      gradeEl.textContent = "—";
+    }
+  }
+
+  // Set instructor comments if available
+  const commentsSection = $("adInstructorComments");
+  const commentsText = $("adCommentsText");
+  if (assignmentData.instructorComments && assignmentData.instructorComments.text) {
+    commentsSection?.classList.remove("hidden");
+    if (commentsText) {
+      // First, decode HTML entities (handles both &entity; and \uXXXX formats)
+      let decodedText = assignmentData.instructorComments.text;
+
+      // Create a temporary element to leverage browser's HTML entity decoding
+      const tempEl = document.createElement('textarea');
+      tempEl.innerHTML = decodedText;
+      decodedText = tempEl.value;
+
+      // Strip HTML tags for display
+      const plainText = decodedText
+        .replace(/<[^>]*>/g, '') // Remove HTML tags
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&')
+        .trim();
+
+      commentsText.textContent = plainText || "No comments";
+      console.log("Comments set in modal:", plainText.substring(0, 100));
+    }
+  } else {
+    commentsSection?.classList.add("hidden");
   }
 
   // Fetch existing study blocks for this assignment

@@ -192,7 +192,11 @@ export function mountCalendar({
           title: info.event.title,
           type: eventType,
           start: info.event.start,
-          courseName: info.event.extendedProps?.courseName || null
+          courseName: info.event.extendedProps?.courseName || null,
+          gradeFormatted: info.event.extendedProps?.gradeFormatted ?? null,
+          gradeMax: info.event.extendedProps?.gradeMax ?? null,
+          gradePercent: info.event.extendedProps?.gradePercent ?? null,
+          instructorComments: info.event.extendedProps?.instructorComments ?? null
         };
 
         // Call custom handler if provided, otherwise use default

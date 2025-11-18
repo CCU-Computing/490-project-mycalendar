@@ -13,7 +13,7 @@ function ensureModalDOM() {
     <div id="classModal" class="fixed inset-0 z-50 hidden">
       <div id="modalBackdrop" class="absolute inset-0 bg-black bg-opacity-50"></div>
       <div class="relative flex min-h-full items-center justify-center p-4">
-        <div class="relative w-full max-w-2xl rounded-2xl bg-white dark:bg-neutral-800 shadow-xl">
+        <div class="relative w-full max-w-2xl rounded-2xl bg-white dark:bg-neutral-900 shadow-xl">
           <div class="flex items-center justify-between border-b border-slate-200 dark:border-neutral-600 px-6 py-4">
             <h3 id="mTitle" class="text-lg font-semibold text-slate-900">Course Details</h3>
             <button id="mClose" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-neutral-800 hover:text-slate-600">
@@ -208,6 +208,7 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
         </div>`;
       return;
     }
+    container.className = "grid grid-cols-3 gap-4";
     container.innerHTML = "";
     courseList.forEach(function (c) {
       const next = nextByCourse[c.id]?.next;
@@ -241,19 +242,19 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
         : calculatedProgress[c.id];
 
       const stats = document.createElement("div");
-      stats.className = "mt-1 grid grid-cols-3 gap-2 text-[11px] text-slate-600";
+      stats.className = "mt-1 grid grid-cols-3 gap-2 text-xs text-slate-600";
       stats.innerHTML =
-        "<div class='rounded-lg bg-slate-50 dark:bg-neutral-600 px-2 py-1 border border-slate-200 dark:border-neutral-600'>" +
-          "<div class='font-medium text-slate-900 dark:text-slate-200 text-xs'>" + (grade ? (grade.percentText || (grade.percentNum + "%")) : "—") + "</div>" +
-          "<div class='dark:text-slate-400 uppercase tracking-wide'>Grade</div>" +
+        "<div class='rounded-lg bg-slate-50 dark:bg-neutral-600 px-2 py-1 border border-slate-200 dark:border-neutral-600 min-w-0 overflow-hidden'>" +
+          "<div class='font-medium text-slate-900 dark:text-slate-200 text-xs truncate'>" + (grade ? (grade.percentText || (grade.percentNum + "%")) : "—") + "</div>" +
+          "<div class='dark:text-slate-400 uppercase tracking-wide text-[10px]'>Grade</div>" +
         "</div>" +
-        "<div class='rounded-lg bg-slate-50 dark:bg-neutral-600 px-2 py-1 border border-slate-200 dark:border-neutral-600'>" +
-          "<div class='font-medium text-slate-900 dark:text-slate-200 text-xs'>" + (typeof progress === "number" ? (progress + "%") : "—") + "</div>" +
-          "<div class='dark:text-slate-400 uppercase tracking-wide'>Progress</div>" +
+        "<div class='rounded-lg bg-slate-50 dark:bg-neutral-600 px-2 py-1 border border-slate-200 dark:border-neutral-600 min-w-0 overflow-hidden'>" +
+          "<div class='font-medium text-slate-900 dark:text-slate-200 text-xs truncate'>" + (typeof progress === "number" ? (progress + "%") : "—") + "</div>" +
+          "<div class='dark:text-slate-400 uppercase tracking-wide text-[10px]'>Progress</div>" +
         "</div>" +
-        "<div class='rounded-lg bg-slate-50 dark:bg-neutral-600 px-2 py-1 border border-slate-200 dark:border-neutral-600'>" +
-          "<div class='font-medium text-slate-900 dark:text-slate-200 text-xs'>" + (next ? new Date(next.dueAt * 1000).toLocaleDateString() : "—") + "</div>" +
-          "<div class='dark:text-slate-400 uppercase tracking-wide'>Next Due</div>" +
+        "<div class='rounded-lg bg-slate-50 dark:bg-neutral-600 px-2 py-1 border border-slate-200 dark:border-neutral-600 min-w-0 overflow-hidden'>" +
+          "<div class='font-medium text-slate-900 dark:text-slate-200 text-xs truncate'>" + (next ? new Date(next.dueAt * 1000).toLocaleDateString() : "—") + "</div>" +
+          "<div class='dark:text-slate-400 uppercase tracking-wide text-[10px]'>Next Due</div>" +
         "</div>";
       content.appendChild(title);
       content.appendChild(stats);

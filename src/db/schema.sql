@@ -149,6 +149,35 @@ CREATE TABLE IF NOT EXISTS starred_assignments (
   UNIQUE(user_id, moodle_assignment_id)
 );
 
+-- focus sessions (study/timer tracking for analytics)
+CREATE TABLE IF NOT EXISTS focus_sessions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  item_id TEXT NOT NULL,
+  item_type TEXT NOT NULL,
+  session_type TEXT NOT NULL,
+  target_duration_seconds INTEGER,
+  actual_duration_seconds INTEGER DEFAULT 0,
+  completed INTEGER DEFAULT 0,
+  started_at DATETIME NOT NULL,
+  ended_at DATETIME,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- focus notes (notes taken during focus sessions)
+CREATE TABLE IF NOT EXISTS focus_notes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  item_id TEXT NOT NULL,
+  item_type TEXT NOT NULL,
+  notes TEXT,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  UNIQUE(user_id, item_id, item_type)
+);
+
 -- indexes for performance
 CREATE INDEX IF NOT EXISTS idx_user_preferences_user ON user_preferences(user_id);
 CREATE INDEX IF NOT EXISTS idx_course_colors_user ON course_colors(user_id);
@@ -156,9 +185,14 @@ CREATE INDEX IF NOT EXISTS idx_event_overrides_user ON event_overrides(user_id);
 CREATE INDEX IF NOT EXISTS idx_assignment_type_colors_user ON assignment_type_colors(user_id);
 CREATE INDEX IF NOT EXISTS idx_custom_events_user_date ON custom_events(user_id, start_time);
 CREATE INDEX IF NOT EXISTS idx_user_assignments_user_due ON user_assignments(user_id, due_date);
+CREATE INDEX IF NOT EXISTS idx_user_assignments_user_course ON user_assignments(user_id, course_id);
+CREATE INDEX IF NOT EXISTS idx_user_assignments_status ON user_assignments(user_id, status);
 CREATE INDEX IF NOT EXISTS idx_course_metadata_user ON course_metadata(user_id);
 CREATE INDEX IF NOT EXISTS idx_time_blocks_user_day ON time_blocks(user_id, day_of_week);
 CREATE INDEX IF NOT EXISTS idx_starred_assignments_user ON starred_assignments(user_id);
+CREATE INDEX IF NOT EXISTS idx_focus_sessions_user_time ON focus_sessions(user_id, started_at);
+CREATE INDEX IF NOT EXISTS idx_focus_sessions_item ON focus_sessions(user_id, item_id, item_type);
+CREATE INDEX IF NOT EXISTS idx_focus_notes_user ON focus_notes(user_id);
 
 -- schema version tracking
 PRAGMA user_version = 1;

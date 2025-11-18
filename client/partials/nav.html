@@ -1,12 +1,129 @@
-<nav class="bg-white dark:bg-neutral-900 border-b border-slate-200 dark:border-neutral-600">
-  <div class="mx-auto max-w-6xl px-4 py-3 flex items-center gap-4">
-    <a href="/index.html" class="font-semibold dark:text-slate-200 tracking-tight">MyCalendar</a>
-    <a href="/pages/dashboard.html" class="text-sm text-slate-700 dark:text-slate-200 hover:underline">Dashboard</a>
-    <a href="/pages/assignments.html" class="text-sm text-slate-700 dark:text-slate-200 hover:underline">Assignments</a>
-    <a href="/pages/calendar.html" class="text-sm text-slate-700 dark:text-slate-200 hover:underline">Calendar</a>
-    <a href="/pages/focusMode.html" class="text-sm font-medium text-indigo-700 hover:underline flex items-center gap-1">
+<nav class="bg-white dark:bg-neutral-900 border-b border-slate-200 dark:border-neutral-600 sticky top-0 z-40">
+  <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/index.html" class="font-bold text-lg dark:text-slate-100 tracking-tight hover:text-indigo-700 dark:hover:text-indigo-400 transition">
+      📅 MyCalendar
+    </a>
+
+    <!-- Desktop Nav Items -->
+    <div class="hidden md:flex items-center gap-1">
+      <!-- View & Browse Dropdown -->
+      <div class="relative group">
+        <button class="nav-dropdown-trigger px-4 py-2 text-sm text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-100 dark:hover:bg-neutral-800 rounded-lg transition flex items-center gap-2">
+          <span>📊 View</span>
+          <svg class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="nav-dropdown-menu absolute left-0 mt-0 w-48 bg-white dark:bg-neutral-800 border border-slate-200 dark:border-neutral-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+          <a href="/pages/dashboard.html" class="nav-item flex items-center gap-2 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-700 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+            <span>📋</span> Dashboard
+          </a>
+          <a href="/pages/calendar.html" class="nav-item flex items-center gap-2 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-700 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+            <span>📅</span> Calendar
+          </a>
+          <a href="/pages/classes.html" class="nav-item flex items-center gap-2 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-700 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+            <span>📚</span> Classes
+          </a>
+        </div>
+      </div>
+
+      <!-- Assignments Dropdown -->
+      <div class="relative group">
+        <button class="nav-dropdown-trigger px-4 py-2 text-sm text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-100 dark:hover:bg-neutral-800 rounded-lg transition flex items-center gap-2">
+          <span>📝 Assignments</span>
+          <svg class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="nav-dropdown-menu absolute left-0 mt-0 w-48 bg-white dark:bg-neutral-800 border border-slate-200 dark:border-neutral-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+          <a href="/pages/assignments.html" class="nav-item flex items-center gap-2 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-700 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+            <span>📋</span> Assignments
+          </a>
+          <a href="/pages/analytics.html" class="nav-item flex items-center gap-2 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-700 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+            <span>📊</span> Analytics
+          </a>
+        </div>
+      </div>
+
+      <!-- Study & Focus Dropdown -->
+      <div class="relative group">
+        <button class="nav-dropdown-trigger px-4 py-2 text-sm text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-100 dark:hover:bg-neutral-800 rounded-lg transition flex items-center gap-2">
+          <span>🎯 Study</span>
+          <svg class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="nav-dropdown-menu absolute left-0 mt-0 w-48 bg-white dark:bg-neutral-800 border border-slate-200 dark:border-neutral-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+          <a href="/pages/focusMode.html" class="nav-item flex items-center gap-2 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-700 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+            <span>🎯</span> Focus on Today
+          </a>
+          <a href="/pages/gpa.html" class="nav-item flex items-center gap-2 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-700 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+            <span>📈</span> GPA Calculator
+          </a>
+        </div>
+      </div>
+
+      <!-- Settings & Preferences Dropdown -->
+      <div class="relative group">
+        <button class="nav-dropdown-trigger px-4 py-2 text-sm text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-100 dark:hover:bg-neutral-800 rounded-lg transition flex items-center gap-2">
+          <span>⚙️ Settings</span>
+          <svg class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="nav-dropdown-menu absolute left-0 mt-0 w-48 bg-white dark:bg-neutral-800 border border-slate-200 dark:border-neutral-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+          <a href="/pages/settings.html" class="nav-item flex items-center gap-2 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-700 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+            <span>⚙️</span> Settings
+          </a>
+          <a href="/pages/notifications.html" class="nav-item flex items-center gap-2 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-700 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+            <span>🔔</span> Notifications
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-neutral-800 rounded-lg transition">
+      <svg id="menuIcon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+      <svg id="closeIcon" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="md:hidden hidden border-t border-slate-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
+    <a href="/pages/dashboard.html" class="nav-item block px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+      📋 Dashboard
+    </a>
+    <a href="/pages/calendar.html" class="nav-item block px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+      📅 Calendar
+    </a>
+    <a href="/pages/classes.html" class="nav-item block px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+      📚 Classes
+    </a>
+    <a href="/pages/assignments.html" class="nav-item block px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+      📝 Assignments
+    </a>
+    <a href="/pages/analytics.html" class="nav-item block px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+      📊 Analytics
+    </a>
+    <a href="/pages/focusMode.html" class="nav-item block px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
       🎯 Focus on Today
     </a>
-    <a href="/pages/settings.html" class="text-sm text-slate-700 dark:text-slate-200 hover:underline">Settings</a>
+    <a href="/pages/gpa.html" class="nav-item block px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+      📈 GPA Calculator
+    </a>
+    <a href="/pages/settings.html" class="nav-item block px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+      ⚙️ Settings
+    </a>
+    <a href="/pages/notifications.html" class="nav-item block px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-neutral-800 border-b border-slate-200 dark:border-neutral-700 last:border-b-0">
+      🔔 Notifications
+    </a>
   </div>
 </nav>
+
+<script type="module" src="../js/nav.js"></script>
