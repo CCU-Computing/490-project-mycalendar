@@ -280,10 +280,17 @@ function createClassDetails(course, workMap, gradeMap, courseMetadata, courseCol
         ${allWork.map(w => {
           const dueDate = w.dueAt ? new Date(w.dueAt * 1000) : null;
           const now = new Date();
-          const isOverdue = dueDate && dueDate < now;
-          const isUpcoming = dueDate && dueDate >= now;
-          const statusColor = isOverdue ? "text-red-600 dark:text-red-400" : isUpcoming ? "text-amber-600 dark:text-amber-400" : "text-green-600 dark:text-green-400";
-          const statusText = isOverdue ? "Overdue" : isUpcoming ? "Upcoming" : "Completed";
+
+          // Use backend-calculated status field for accurate assignment status
+          // Backend logic (aggregator.js) correctly handles graded vs overdue assignments
+          const statusText = w.status === "graded" ? "Graded"
+            : w.status === "overdue" ? "Overdue"
+            : w.status === "pending" && dueDate && dueDate >= now ? "Upcoming"
+            : "Not Submitted";
+
+          const statusColor = w.status === "graded" ? "text-green-600 dark:text-green-400"
+            : w.status === "overdue" ? "text-red-600 dark:text-red-400"
+            : "text-amber-600 dark:text-amber-400";
 
           return `
             <tr class="border-b border-slate-200 dark:border-neutral-600 hover:bg-slate-50 dark:hover:bg-neutral-700 transition">

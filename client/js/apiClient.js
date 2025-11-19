@@ -308,8 +308,9 @@ export const api = {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       }).then(handle);
-      // Invalidate calendar cache
+      // Invalidate calendar and study blocks cache
       cacheManager.invalidate("calendar");
+      cacheManager.invalidate("studyBlocks*");
       return result;
     },
     getAll: async () => {

@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS custom_events (
   all_day INTEGER DEFAULT 0,
   color TEXT,
   recurrence_rule TEXT,
+  moodle_assignment_id TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -184,6 +185,7 @@ CREATE INDEX IF NOT EXISTS idx_course_colors_user ON course_colors(user_id);
 CREATE INDEX IF NOT EXISTS idx_event_overrides_user ON event_overrides(user_id);
 CREATE INDEX IF NOT EXISTS idx_assignment_type_colors_user ON assignment_type_colors(user_id);
 CREATE INDEX IF NOT EXISTS idx_custom_events_user_date ON custom_events(user_id, start_time);
+CREATE INDEX IF NOT EXISTS idx_custom_events_moodle_assignment ON custom_events(user_id, moodle_assignment_id);
 CREATE INDEX IF NOT EXISTS idx_user_assignments_user_due ON user_assignments(user_id, due_date);
 CREATE INDEX IF NOT EXISTS idx_user_assignments_user_course ON user_assignments(user_id, course_id);
 CREATE INDEX IF NOT EXISTS idx_user_assignments_status ON user_assignments(user_id, status);

@@ -122,8 +122,9 @@ router.post("/", requireSession, async (req, res) => {
       .prepare("SELECT * FROM custom_events WHERE id = ?")
       .get(result.lastInsertRowid);
 
-    // Invalidate calendar cache since a new custom event was created
+    // Invalidate calendar and study blocks cache since a new custom event was created
     cacheManager.invalidate(userId, "calendar");
+    cacheManager.invalidate(userId, "studyBlocks");
 
     res.json({ ok: true, event });
   } catch (e) {
@@ -223,8 +224,9 @@ router.put("/:id", requireSession, async (req, res) => {
       .prepare("SELECT * FROM custom_events WHERE id = ?")
       .get(eventId);
 
-    // Invalidate calendar cache since event was updated
+    // Invalidate calendar and study blocks cache since event was updated
     cacheManager.invalidate(userId, "calendar");
+    cacheManager.invalidate(userId, "studyBlocks");
 
     res.json({ ok: true, event });
   } catch (e) {
@@ -250,8 +252,9 @@ router.delete("/:id", requireSession, async (req, res) => {
       return res.status(404).json({ error: "Event not found" });
     }
 
-    // Invalidate calendar cache since event was deleted
+    // Invalidate calendar and study blocks cache since event was deleted
     cacheManager.invalidate(userId, "calendar");
+    cacheManager.invalidate(userId, "studyBlocks");
 
     res.json({ ok: true });
   } catch (e) {
