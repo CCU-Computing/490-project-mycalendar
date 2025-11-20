@@ -67,6 +67,15 @@ class AssignmentManager {
             const { courses } = await api.work();
             const flatAssignments = [];
 
+            console.log('[AssignmentManager] api.work() returned:', {
+                courseCount: courses?.length,
+                courses: courses?.map(c => ({
+                    courseId: c.courseId,
+                    assignmentCount: c.assignments?.length,
+                    quizCount: c.quizzes?.length
+                }))
+            });
+
             for (const courseData of courses) {
                 const course = this.courses.get(courseData.courseId);
                 const courseName = course?.name || 'Unknown Course';
@@ -109,6 +118,11 @@ class AssignmentManager {
                 }
             }
 
+            console.log('[AssignmentManager] loadAssignments complete:', {
+                totalAssignments: flatAssignments.length,
+                assignments: flatAssignments.map(a => ({ id: a.id, numericId: a.numericId, title: a.title }))
+            });
+
             this.assignments = flatAssignments;
             this.processAssignments();
         } catch (error) {
@@ -120,7 +134,25 @@ class AssignmentManager {
     async loadStarredAssignments() {
         try {
             const { starred } = await api.starredAssignments.getAll();
-            this.starredAssignmentIds = starred.map(s => String(s.moodle_assignment_id));
+            // Normalize all IDs to numeric format
+            // Handle both new format (numeric) and old format (composite like "assign:123")
+            this.starredAssignmentIds = starred.map(s => {
+                let id = s.moodle_assignment_id;
+
+                // If it's a composite ID like "assign:123", extract the numeric part
+                if (typeof id === 'string' && id.includes(':')) {
+                    id = id.split(':')[1];
+                }
+
+                // Convert to number if possible, otherwise keep as string
+                return typeof id === 'number' ? id : (isNaN(id) ? String(id) : Number(id));
+            });
+
+            console.log('[AssignmentManager] Loaded starred assignments:', {
+                count: this.starredAssignmentIds.length,
+                ids: this.starredAssignmentIds,
+                raw: starred.map(s => ({ id: s.id, moodle_assignment_id: s.moodle_assignment_id, type: typeof s.moodle_assignment_id }))
+            });
             this.renderStarredAssignments();
         } catch (error) {
             console.error('Error loading starred assignments:', error);
@@ -134,9 +166,27 @@ class AssignmentManager {
         const container = document.getElementById('starredAssignmentsContainer');
         if (!container) return;
 
-        const starredAssignments = this.assignments.filter(assignment =>
-            this.starredAssignmentIds.includes(String(assignment.id))
-        );
+        const starredAssignments = this.assignments.filter(assignment => {
+            // Extract numeric ID from composite ID and compare
+            const numericId = assignment.numericId || (assignment.id.includes(':') ? assignment.id.split(':')[1] : assignment.id);
+            const isStarred = this.starredAssignmentIds.includes(Number(numericId)) || this.starredAssignmentIds.includes(String(numericId));
+            if (isStarred) {
+                console.log('[AssignmentManager] Found starred assignment:', {
+                    composite: assignment.id,
+                    numeric: numericId,
+                    type: typeof numericId,
+                    starredIds: this.starredAssignmentIds
+                });
+            }
+            return isStarred;
+        });
+
+        console.log('[AssignmentManager] renderStarredAssignments:', {
+            totalAssignments: this.assignments.length,
+            starredCount: starredAssignments.length,
+            starredIds: this.starredAssignmentIds,
+            assignments: this.assignments.map(a => ({ id: a.id, numericId: a.numericId }))
+        });
 
         // Calculate dynamic grid columns based on number of starred assignments
         const count = starredAssignments.length;
@@ -218,14 +268,21 @@ class AssignmentManager {
     }
 
     // Toggle star status for an assignment
-    async toggleStar(assignmentId) {
-        const assignmentIdStr = String(assignmentId);
-        const isStarred = this.starredAssignmentIds.includes(assignmentIdStr);
+    async toggleStar(compositeAssignmentId) {
+        // compositeAssignmentId is in format "type:numericId" (e.g., "assign:12345")
+        const assignment = this.assignments.find(a => a.id === compositeAssignmentId);
+        if (!assignment) {
+            console.error('Assignment not found:', compositeAssignmentId);
+            return;
+        }
+
+        const numericId = assignment.numericId || Number(compositeAssignmentId.split(':')[1]);
+        const numericIdStr = String(numericId);
+        const isStarred = this.starredAssignmentIds.includes(numericId) || this.starredAssignmentIds.includes(numericIdStr);
 
         // If unstarring, show confirmation prompt
         if (isStarred) {
-            const assignment = this.assignments.find(a => a.id === assignmentIdStr);
-            const assignmentName = assignment ? assignment.title : 'this assignment';
+            const assignmentName = assignment.title || 'this assignment';
 
             const confirmed = confirm(`Are you sure you want to unstar "${assignmentName}"?`);
             if (!confirmed) {
@@ -235,12 +292,18 @@ class AssignmentManager {
 
         try {
             if (isStarred) {
-                await api.starredAssignments.unstar(assignmentIdStr);
-                this.starredAssignmentIds = this.starredAssignmentIds.filter(id => id !== assignmentIdStr);
+                await api.starredAssignments.unstar(numericIdStr);
+                // Remove from starred list (handle both number and string formats)
+                this.starredAssignmentIds = this.starredAssignmentIds.filter(id =>
+                    id !== numericId && id !== numericIdStr
+                );
                 this.showNotification('Assignment unstarred');
             } else {
-                await api.starredAssignments.star(assignmentIdStr);
-                this.starredAssignmentIds.push(assignmentIdStr);
+                await api.starredAssignments.star(numericIdStr);
+                // Add to starred list as number
+                if (!this.starredAssignmentIds.includes(numericId)) {
+                    this.starredAssignmentIds.push(numericId);
+                }
                 this.showNotification('Assignment starred!');
             }
 
@@ -254,7 +317,9 @@ class AssignmentManager {
     }
 
     renderAssignmentCard(assignment) {
-        const isStarred = this.starredAssignmentIds.includes(String(assignment.id));
+        // Extract numeric ID from composite ID
+        const numericId = assignment.numericId || (assignment.id.includes(':') ? assignment.id.split(':')[1] : assignment.id);
+        const isStarred = this.starredAssignmentIds.includes(Number(numericId)) || this.starredAssignmentIds.includes(String(numericId));
         const statusColors = {
             pending: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800',
             graded: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800',
@@ -322,7 +387,9 @@ class AssignmentManager {
 
     // Render assignment card with calendar-style colors (border = course, background = type)
     renderAssignmentCardWithColors(assignment) {
-        const isStarred = this.starredAssignmentIds.includes(String(assignment.id));
+        // Extract numeric ID from composite ID
+        const numericId = assignment.numericId || (assignment.id.includes(':') ? assignment.id.split(':')[1] : assignment.id);
+        const isStarred = this.starredAssignmentIds.includes(Number(numericId)) || this.starredAssignmentIds.includes(String(numericId));
         const typeLabel = assignment.type === 'quiz' ? '📝 Quiz' : '📄 Assignment';
         const gradeDisplay = assignment.gradeFormatted && assignment.gradeMax
             ? `${assignment.gradeFormatted} / ${assignment.gradeMax}${assignment.gradePercent ? ` (${assignment.gradePercent})` : ''}`
@@ -393,12 +460,13 @@ class AssignmentManager {
             return;
         }
 
-        // Extract the numeric ID from the prefixed ID (e.g., "assign:123" -> "123")
-        const numericId = assignment.id.split(':')[1];
+        // Use the composite ID (e.g., "assign:123") to match dashboard calendar format
+        // This ensures focus mode can find the assignment in the calendar data
+        const compositeId = assignment.id;
 
         // Prepare assignment data in the format expected by the modal
         const assignmentData = {
-            id: numericId,
+            id: compositeId,        // Use composite ID for consistency with dashboard (e.g., "assign:123")
             type: assignment.type,
             title: assignment.title,
             courseName: assignment.courseName,
@@ -409,7 +477,14 @@ class AssignmentManager {
             instructorComments: assignment.instructorComments ?? null
         };
 
-        openAssignmentDetailsModal(assignmentData);
+        // Provide callback to refresh starred assignments after modal closes
+        const self = this;
+        openAssignmentDetailsModal(assignmentData, async () => {
+            // Refresh starred assignments in case star status changed
+            await self.loadStarredAssignments();
+            // Also re-render the all assignments list to update star icons
+            self.renderAllAssignments();
+        });
     }
 
     // Process assignments (calculate time remaining, trust backend status)

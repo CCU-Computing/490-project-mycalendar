@@ -6,6 +6,7 @@
 
 import { openAssignmentDetailsModal } from "./AssignmentDetailsModal.js";
 import { openStudyBlockDetailsModal } from "./StudyBlockDetailsModal.js";
+import { openPersonalEventViewingModal } from "./PersonalEventViewingModal.js";
 
 function getElement(containerId) {
   if (!containerId) return null;
@@ -112,10 +113,11 @@ export function mountCalendar({
         info.el.setAttribute('title', info.event.extendedProps.description);
       }
 
-      // Add click cursor for assignment and study block events
+      // Add click cursor for assignment, quiz, study block, and personal events
       if (info.event.extendedProps.type === 'assign' ||
           info.event.extendedProps.type === 'quiz' ||
-          info.event.extendedProps.type === 'study_block') {
+          info.event.extendedProps.type === 'study_block' ||
+          info.event.extendedProps.type === 'personal') {
         info.el.style.cursor = 'pointer';
       }
     },
@@ -229,29 +231,23 @@ export function mountCalendar({
         return;
       }
 
-      // Personal event click - show delete confirmation
+      // Personal event click - open personal event viewing modal
       if (eventType === 'personal') {
-        const eventTitle = info.event.title;
-        const eventId = info.event.extendedProps?.eventId || info.event.id;
+        const eventData = {
+          id: info.event.id,
+          title: info.event.title,
+          start: info.event.start,
+          end: info.event.end,
+          color: info.event.backgroundColor || '#6366f1',
+          description: info.event.extendedProps?.description || null,
+          allDay: info.event.allDay || false,
+          extendedProps: info.event.extendedProps
+        };
 
-        if (confirm(`Delete "${eventTitle}"?`)) {
-          // Delete the personal event
-          import("../js/apiClient.js").then(({ api }) => {
-            api.studyBlocks.delete(eventId).then(() => {
-              // Reload calendar after deleting
-              reload();
-              // Show success notification
-              import("./ToastNotification.js").then(({ default: ToastNotification }) => {
-                ToastNotification("Personal event deleted successfully", "success");
-              });
-            }).catch((error) => {
-              console.error("Error deleting personal event:", error);
-              import("./ToastNotification.js").then(({ default: ToastNotification }) => {
-                ToastNotification("Failed to delete event", "error");
-              });
-            });
-          });
-        }
+        openPersonalEventViewingModal(eventData, () => {
+          // Reload calendar after deleting personal event
+          reload();
+        });
         return;
       }
     },
