@@ -1,6 +1,7 @@
 const express = require("express");
 const requireSession = require("../middleware/sessionAuth");
 const { getDatabase } = require("../db/init");
+const cacheManager = require("../services/cacheManager");
 
 const router = express.Router();
 
@@ -170,6 +171,9 @@ router.put("/:courseId", requireSession, async (req, res) => {
       )
       .get(courseId, userId);
 
+    // Invalidate course cards cache since course metadata was updated
+    cacheManager.invalidate(userId, "courseCards");
+
     res.json({ ok: true, metadata });
   } catch (e) {
     res.status(500).json({ error: e.message || "Failed to update metadata" });
@@ -195,6 +199,9 @@ router.delete("/:courseId", requireSession, async (req, res) => {
     if (result.changes === 0) {
       return res.status(404).json({ error: "Metadata not found" });
     }
+
+    // Invalidate course cards cache since course metadata was deleted
+    cacheManager.invalidate(userId, "courseCards");
 
     res.json({ ok: true });
   } catch (e) {

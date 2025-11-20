@@ -1,6 +1,7 @@
 const express = require("express");
 const requireSession = require("../middleware/sessionAuth.js");
 const { getUserPrefs, setCourseColor, setEventOverride, setAssignmentTypeColor } = require("../prefs/store.js");
+const cacheManager = require("../services/cacheManager");
 
 const router = express.Router();
 
@@ -22,6 +23,8 @@ router.put("/courseColor", requireSession, async (req, res) => {
     if (!userid) return res.status(400).json({ error: "Missing userid in session" });
     if (!courseId || !color) return res.status(400).json({ error: "courseId and color required" });
     const prefs = await setCourseColor(String(userid), String(courseId), String(color));
+    // Invalidate cache since preferences changed
+    cacheManager.invalidate(userid, "calendar");
     res.json({ ok: true, prefs });
   } catch (e) {
     res.status(500).json({ error: e.message || "Failed to update course color" });
@@ -38,6 +41,8 @@ router.put("/eventOverride", requireSession, async (req, res) => {
       ...(color ? { color: String(color) } : {}),
       ...(textColor ? { textColor: String(textColor) } : {}),
     });
+    // Invalidate cache since preferences changed
+    cacheManager.invalidate(userid, "calendar");
     res.json({ ok: true, prefs });
   } catch (e) {
     res.status(500).json({ error: e.message || "Failed to update event override" });
@@ -53,6 +58,8 @@ router.put("/assignmentTypeColor", requireSession, async (req, res) => {
       return res.status(400).json({ error: "assignmentType and color required" });
     }
     const prefs = await setAssignmentTypeColor(String(userid), String(assignmentType), String(color));
+    // Invalidate cache since preferences changed
+    cacheManager.invalidate(userid, "calendar");
     res.json({ ok: true, prefs });
   } catch (e) {
     res.status(500).json({ error: e.message || "Failed to update assignment type color" });

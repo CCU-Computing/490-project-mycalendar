@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Analytics — MyCalendar</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../js/util/tailwind-config.js"></script>
+    <script src="../js/util/handle-theme-flash.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  </head>
+
+  <body class="flex flex-col transition-colors duration-300 min-h-screen bg-slate-50 dark:bg-neutral-800 text-slate-900 dark:text-slate-200">
+    <div data-partial="../partials/nav.html"></div>
+
+    <header class="border-b border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900">
+      <div class="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-700">📊</span>
+          <span class="font-semibold tracking-tight">Analytics</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-3 py-1 text-sm text-slate-700 dark:text-slate-200"></span>
+          <a href="../index.html" class="text-sm text-indigo-700 hover:underline">Landing Page</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="grow mx-auto max-w-7xl px-4 py-8 space-y-8 w-full">
+
+      <!-- Summary Cards Section -->
+      <section id="summarySection" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Cards will be populated by JavaScript -->
+        <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5 animate-pulse">
+          <div class="h-4 bg-slate-200 dark:bg-neutral-700 rounded w-1/2 mb-2"></div>
+          <div class="h-8 bg-slate-200 dark:bg-neutral-700 rounded w-3/4"></div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5 animate-pulse">
+          <div class="h-4 bg-slate-200 dark:bg-neutral-700 rounded w-1/2 mb-2"></div>
+          <div class="h-8 bg-slate-200 dark:bg-neutral-700 rounded w-3/4"></div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5 animate-pulse">
+          <div class="h-4 bg-slate-200 dark:bg-neutral-700 rounded w-1/2 mb-2"></div>
+          <div class="h-8 bg-slate-200 dark:bg-neutral-700 rounded w-3/4"></div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5 animate-pulse">
+          <div class="h-4 bg-slate-200 dark:bg-neutral-700 rounded w-1/2 mb-2"></div>
+          <div class="h-8 bg-slate-200 dark:bg-neutral-700 rounded w-3/4"></div>
+        </div>
+      </section>
+
+      <!-- Tabs Navigation -->
+      <div class="border-b border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 rounded-t-2xl">
+        <div class="flex gap-1 px-4 overflow-x-auto">
+          <button class="tab-button px-4 py-3 border-b-2 border-indigo-600 text-indigo-700 font-medium whitespace-nowrap" data-tab="overview">
+            📊 Overview
+          </button>
+          <button class="tab-button px-4 py-3 border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 font-medium whitespace-nowrap" data-tab="time-tracking">
+            ⏱️ Time Tracking
+          </button>
+          <button class="tab-button px-4 py-3 border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 font-medium whitespace-nowrap" data-tab="course-performance">
+            📈 Course Performance
+          </button>
+          <button class="tab-button px-4 py-3 border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 font-medium whitespace-nowrap" data-tab="assignments">
+            ✏️ Assignments
+          </button>
+        </div>
+      </div>
+
+      <!-- Overview Tab -->
+      <section id="overview-tab" class="tab-content space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Study Time Trend Chart -->
+          <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
+            <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-200">Study Time Trend (Last 30 Days)</h3>
+            <div class="relative h-64">
+              <canvas id="studyTimeTrendChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Time by Course Chart -->
+          <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
+            <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-200">Study Time by Course</h3>
+            <div class="relative h-64">
+              <canvas id="timeByCoursChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Completion Rate -->
+          <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
+            <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-200">Assignment Completion Rate</h3>
+            <div class="relative h-64">
+              <canvas id="completionRateChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Weekly Distribution -->
+          <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
+            <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-200">Weekly Study Distribution</h3>
+            <div class="relative h-64">
+              <canvas id="weeklyDistributionChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Time Tracking Tab -->
+      <section id="time-tracking-tab" class="tab-content space-y-6 hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Daily Study Hours -->
+          <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
+            <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-200">Daily Study Hours</h3>
+            <div class="relative h-64">
+              <canvas id="dailyStudyChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Session Duration Trend -->
+          <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
+            <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-200">Average Session Duration Trend</h3>
+            <div class="relative h-64">
+              <canvas id="sessionDurationChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
+          <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-200">No Data Available</h3>
+          <p class="text-slate-600 dark:text-slate-400">Time tracking charts will display once you have study sessions recorded in the Focus Mode.</p>
+        </div>
+      </section>
+
+      <!-- Course Performance Tab -->
+      <section id="course-performance-tab" class="tab-content space-y-6 hidden">
+        <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-200">Select a Course</h3>
+          </div>
+          <select id="courseSelect" class="w-full md:w-64 rounded-lg border border-slate-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-slate-900 dark:text-slate-200">
+            <option value="">-- Select a course --</option>
+          </select>
+        </div>
+
+        <div id="courseAnalyticsContainer" class="space-y-6">
+          <!-- Will be populated when course is selected -->
+        </div>
+      </section>
+
+      <!-- Assignments Tab -->
+      <section id="assignments-tab" class="tab-content space-y-6 hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Difficulty vs Time Scatter -->
+          <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
+            <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-200">Difficulty vs Time Spent</h3>
+            <div class="relative h-64">
+              <canvas id="difficultyVsTimeChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Assignment Status -->
+          <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
+            <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-200">Assignment Status Overview</h3>
+            <div class="relative h-64">
+              <canvas id="assignmentStatusChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm p-5">
+          <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-200">No Data Available</h3>
+          <p class="text-slate-600 dark:text-slate-400">Assignment analytics will display once you have assignments and study sessions recorded.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <div data-partial="../partials/footer.html"></div>
+    <script type="module" src="../js/partials.js"></script>
+    <script type="module" src="../js/analytics.js"></script>
+  </body>
+</html>

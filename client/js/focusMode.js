@@ -1,4 +1,7 @@
+import ToastNotification from "../components/ToastNotification.js";
 import { api } from "./apiClient.js";
+import { mountInlineTimer } from "../components/Timer.js";
+import { mountInlineStopwatch } from "../components/Stopwatch.js";
 
 // Get URL parameters
 const urlParams = new URLSearchParams(window.location.search);
@@ -14,6 +17,10 @@ let notesAutoSaveInterval = null;
 
 // Current item data
 let currentItem = null;
+
+// Session tracking
+let timerSessionId = null;
+let stopwatchSessionId = null;
 
 /**
  * Initialize the page based on URL parameters
@@ -48,7 +55,14 @@ async function init() {
  */
 async function loadTodaysFocus() {
   try {
+    
+    // add loading states
+    addLoadingStates();
+
     const data = await api.focusMode.getToday();
+
+    // remove loading states
+    removeLoadingStates();
 
     const { assignments, quizzes, studyBlocks } = data;
     const hasItems = assignments.length > 0 || quizzes.length > 0 || studyBlocks.length > 0;
@@ -194,6 +208,10 @@ async function loadFocusSession(id, type) {
     // Setup markdown toolbar
     setupMarkdownToolbar();
 
+    // Initialize timer and stopwatch components
+    await initializeTimer(item);
+    await initializeStopwatch(item);
+
   } catch (error) {
     console.error('Error loading focus session:', error);
     alert('Failed to load item details. Please try again.');
@@ -314,15 +332,49 @@ async function saveNotes() {
     notesStatus.textContent = 'Saving...';
     await api.focusMode.notes.save(currentItem.id, currentItem.type, notes);
     notesStatus.textContent = 'Saved ✓';
+
+    // Auto-save active timer/stopwatch sessions
+    await autoSaveActiveSessions();
+
+    // show notes saved toast notification
+    ToastNotification("Notes have been saved", "success");
+
     setTimeout(() => {
       notesStatus.textContent = 'Notes will auto-save';
     }, 2000);
   } catch (error) {
     console.error('Error saving notes:', error);
     notesStatus.textContent = 'Failed to save';
+
+    // show notes not able to be saved toast notification
+    ToastNotification("An error has occurred", "error");
+
     setTimeout(() => {
       notesStatus.textContent = 'Notes will auto-save';
     }, 2000);
+  }
+}
+
+/**
+ * Auto-save active timer/stopwatch sessions when notes are saved
+ */
+async function autoSaveActiveSessions() {
+  // Check if timer is running and has a session
+  if (timerSessionId) {
+    console.log('[FocusMode] Timer session active during notes save:', timerSessionId);
+    // Session is already being tracked - it will be saved when timer stops
+    // We could add a PATCH endpoint to update mid-session, but for now just log
+  }
+
+  // Check if stopwatch is running and has a session
+  if (stopwatchSessionId) {
+    console.log('[FocusMode] Stopwatch session active during notes save:', stopwatchSessionId);
+    // Session is already being tracked - it will be saved when stopwatch stops
+  }
+
+  // Log that sessions are being tracked
+  if (timerSessionId || stopwatchSessionId) {
+    console.log('[FocusMode] Active sessions detected - they will be saved when stopped');
   }
 }
 
@@ -422,16 +474,25 @@ async function handleStarToggle() {
       starBtn.textContent = '☆';
       starBtn.title = 'Star assignment';
       showNotification('Assignment unstarred');
+
+      // show assignment unstarred toast notification
+      ToastNotification("Assignment has been unstarred", "success");
     } else {
       // Star
       await api.starredAssignments.star(currentItem.id);
       starBtn.textContent = '⭐';
       starBtn.title = 'Unstar assignment';
       showNotification('Assignment starred!');
+
+      // show assignment starred toast notification
+      ToastNotification("Assignment has been starred", "success");
     }
   } catch (error) {
     console.error('Error toggling star:', error);
     showNotification('Failed to update star status');
+
+    // show assignment starred error toast notification
+    ToastNotification("An error has occurred", "error");
   }
 }
 
@@ -582,6 +643,123 @@ function setupMarkdownToolbar() {
   });
 }
 
+/**
+ * Initialize timer component for countdown (Pomodoro-style)
+ */
+async function initializeTimer(item) {
+  await mountInlineTimer({
+    containerId: 'countdownTimerComponent',
+    itemId: item.id,
+    itemType: item.type,
+
+    onStart: async (targetDuration) => {
+      try {
+        const response = await api.focusMode.sessions.create(
+          currentItem.id,
+          currentItem.type,
+          'countdown',
+          targetDuration
+        );
+        timerSessionId = response.sessionId;
+        console.log('[FocusMode] Timer session created:', timerSessionId);
+      } catch (error) {
+        console.error('Failed to create timer session:', error);
+        ToastNotification("Failed to start timer session", "error");
+      }
+    },
+
+    onStop: async (actualDuration, completed) => {
+      if (!timerSessionId) return;
+
+      try {
+        await api.focusMode.sessions.end(timerSessionId, actualDuration, completed);
+        console.log('[FocusMode] Timer session ended:', { actualDuration, completed });
+        timerSessionId = null;
+
+        // Reload session history
+        await loadSessionHistory(currentItem.id, currentItem.type);
+
+        // Show notification
+        ToastNotification(
+          completed ? "Timer completed!" : "Timer stopped",
+          "success"
+        );
+      } catch (error) {
+        console.error('Failed to save timer session:', error);
+        ToastNotification("Failed to save session", "error");
+      }
+    },
+
+    onComplete: async (actualDuration) => {
+      if (!timerSessionId) return;
+
+      try {
+        await api.focusMode.sessions.end(timerSessionId, actualDuration, true);
+        console.log('[FocusMode] Timer completed:', actualDuration);
+        timerSessionId = null;
+
+        // Reload session history
+        await loadSessionHistory(currentItem.id, currentItem.type);
+
+        // Show notification
+        ToastNotification("Timer completed! Time to submit!", "success");
+      } catch (error) {
+        console.error('Failed to save timer session:', error);
+        ToastNotification("Failed to save session", "error");
+      }
+    }
+  });
+}
+
+/**
+ * Initialize stopwatch component
+ */
+async function initializeStopwatch(item) {
+  await mountInlineStopwatch({
+    containerId: 'stopwatchComponent',
+    itemId: item.id,
+    itemType: item.type,
+
+    onStart: async () => {
+      try {
+        const response = await api.focusMode.sessions.create(
+          currentItem.id,
+          currentItem.type,
+          'timer',
+          null
+        );
+        stopwatchSessionId = response.sessionId;
+        console.log('[FocusMode] Stopwatch session created:', stopwatchSessionId);
+      } catch (error) {
+        console.error('Failed to create stopwatch session:', error);
+        ToastNotification("Failed to start stopwatch session", "error");
+      }
+    },
+
+    onStop: async (elapsedSeconds, lapTimes) => {
+      if (!stopwatchSessionId) return;
+
+      try {
+        await api.focusMode.sessions.end(stopwatchSessionId, elapsedSeconds, true);
+        console.log('[FocusMode] Stopwatch session ended:', { elapsedSeconds, lapTimes });
+        stopwatchSessionId = null;
+
+        // Reload session history
+        await loadSessionHistory(currentItem.id, currentItem.type);
+
+        // Show notification
+        const hours = Math.floor(elapsedSeconds / 3600);
+        const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+        const timeStr = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+        ToastNotification(`Session saved: ${timeStr}`, "success");
+      } catch (error) {
+        console.error('Failed to save stopwatch session:', error);
+        ToastNotification("Failed to save session", "error");
+      }
+    }
+  });
+}
+
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', init);
 
@@ -591,3 +769,17 @@ window.addEventListener('beforeunload', () => {
     clearInterval(notesAutoSaveInterval);
   }
 });
+
+// function for adding loading states
+function addLoadingStates() {
+
+  // add loading state classes
+  focusHub.classList.add("animate-pulse", "cursor-progress");
+}
+
+// function for removing loading states
+function removeLoadingStates() {
+
+  // remove loading state classes
+  focusHub.classList.remove("animate-pulse", "cursor-progress");
+}

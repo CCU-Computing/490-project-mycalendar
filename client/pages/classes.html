@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Classes  MyCalendar</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>=�</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../js/util/tailwind-config.js"></script>
+    <script src="../js/util/handle-theme-flash.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  </head>
+
+  <body class="flex flex-col transition-colors duration-300 min-h-screen bg-slate-50 dark:bg-neutral-800 text-slate-900 dark:text-slate-200">
+    <div data-partial="../partials/nav.html"></div>
+
+    <header class="border-b border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900">
+      <div class="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600/10 text-blue-700">=�</span>
+          <span class="font-semibold tracking-tight">Classes</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-3 py-1 text-sm text-slate-700 dark:text-slate-200"></span>
+          <a href="../index.html" class="text-sm text-indigo-700 hover:underline">Landing Page</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="grow mx-auto max-w-7xl px-4 py-8 space-y-8">
+      <!-- Filter and Sort Section -->
+      <section class="rounded-2xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200 dark:border-neutral-600">
+          <h2 class="text-lg font-semibold tracking-tight">Filters & Sorting</h2>
+        </div>
+        <div class="p-5 flex flex-wrap gap-4 items-center">
+          <!-- Sort Dropdown -->
+          <div class="flex items-center gap-2">
+            <label for="sortSelect" class="text-sm font-medium text-slate-700 dark:text-slate-300">Sort by:</label>
+            <select id="sortSelect" class="rounded-lg border border-slate-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-3 py-2 text-sm text-slate-900 dark:text-slate-200">
+              <option value="name">Class Name</option>
+              <option value="grade">Grade (High to Low)</option>
+              <option value="dueDate">Next Due Date</option>
+              <option value="progress">Progress</option>
+            </select>
+          </div>
+
+          <!-- Grade Filter -->
+          <div class="flex items-center gap-2">
+            <label for="gradeFilter" class="text-sm font-medium text-slate-700 dark:text-slate-300">Min Grade:</label>
+            <input type="number" id="gradeFilter" min="0" max="100" placeholder="0" class="rounded-lg border border-slate-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-3 py-2 text-sm w-20 text-slate-900 dark:text-slate-200">
+          </div>
+
+          <!-- Refresh Button -->
+          <button id="refreshBtn" class="ml-auto px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">Refresh</button>
+        </div>
+      </section>
+
+      <!-- Classes List Section -->
+      <section class="space-y-0">
+        <div id="classesContainer" class="max-w-3xl mx-auto w-full">
+          <!-- ClassCards will be mounted here -->
+          <div class="rounded-xl border border-dashed border-slate-300 dark:border-neutral-600 bg-slate-50 dark:bg-neutral-800 p-8 text-center text-slate-500 dark:text-slate-400">
+            <p class="text-lg font-medium">Loading classes...</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div data-partial="../partials/footer.html"></div>
+    <script type="module" src="../js/partials.js"></script>
+    <script type="module" src="../js/classes.js"></script>
+  </body>
+</html>

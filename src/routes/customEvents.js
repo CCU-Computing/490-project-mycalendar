@@ -1,6 +1,7 @@
 const express = require("express");
 const requireSession = require("../middleware/sessionAuth");
 const { getDatabase } = require("../db/init");
+const cacheManager = require("../services/cacheManager");
 
 const router = express.Router();
 
@@ -121,6 +122,10 @@ router.post("/", requireSession, async (req, res) => {
       .prepare("SELECT * FROM custom_events WHERE id = ?")
       .get(result.lastInsertRowid);
 
+    // Invalidate calendar and study blocks cache since a new custom event was created
+    cacheManager.invalidate(userId, "calendar");
+    cacheManager.invalidate(userId, "studyBlocks");
+
     res.json({ ok: true, event });
   } catch (e) {
     res.status(500).json({ error: e.message || "Failed to create event" });
@@ -219,6 +224,10 @@ router.put("/:id", requireSession, async (req, res) => {
       .prepare("SELECT * FROM custom_events WHERE id = ?")
       .get(eventId);
 
+    // Invalidate calendar and study blocks cache since event was updated
+    cacheManager.invalidate(userId, "calendar");
+    cacheManager.invalidate(userId, "studyBlocks");
+
     res.json({ ok: true, event });
   } catch (e) {
     res.status(500).json({ error: e.message || "Failed to update event" });
@@ -242,6 +251,10 @@ router.delete("/:id", requireSession, async (req, res) => {
     if (result.changes === 0) {
       return res.status(404).json({ error: "Event not found" });
     }
+
+    // Invalidate calendar and study blocks cache since event was deleted
+    cacheManager.invalidate(userId, "calendar");
+    cacheManager.invalidate(userId, "studyBlocks");
 
     res.json({ ok: true });
   } catch (e) {
