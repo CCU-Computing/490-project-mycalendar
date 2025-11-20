@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>To-Do Lists — MyCalendar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+    <div data-partial="../partials/nav.html"></div>
+
+    <header class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-700">✅</span>
+          <span class="font-semibold tracking-tight">To-Do Lists</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="userChip" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700"></span>
+          <a href="./dashboard.html" class="text-sm text-indigo-700 hover:underline">Back to Dashboard</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-6xl px-4 py-8 space-y-8">
+      <!-- Quick Actions -->
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-semibold tracking-tight text-slate-900">Manage Your To-Do Lists</h1>
+          <p class="text-sm text-slate-600 mt-1">Create, edit, and organize your tasks</p>
+        </div>
+        <button
+          id="newListBtn"
+          class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-white shadow-sm hover:bg-indigo-700 transition"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          <span>New List</span>
+        </button>
+      </div>
+
+      <!-- Current/Selected List Editor -->
+      <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold tracking-tight">
+              <span id="editorModeLabel">Create New To-Do List</span>
+            </h2>
+            <div class="flex items-center gap-2">
+              <button
+                id="cancelEditBtn"
+                class="hidden px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg transition"
+              >
+                Cancel
+              </button>
+              <button
+                id="deleteListBtn"
+                class="hidden px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition"
+              >
+                Delete List
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="p-6">
+          <form id="todoForm" class="space-y-6">
+            <!-- List Title Input -->
+            <div>
+              <label for="listTitle" class="block text-sm font-medium text-slate-900 mb-2">
+                List Title <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="listTitle"
+                placeholder="e.g., Weekly Goals, Project Tasks, Grocery List..."
+                required
+                class="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+
+            <!-- List Content Textarea -->
+            <div>
+              <label for="listContent" class="block text-sm font-medium text-slate-900 mb-2">
+                Tasks & Notes
+              </label>
+              <textarea
+                id="listContent"
+                rows="12"
+                placeholder="Enter your tasks here, one per line...
+
+Examples:
+• Complete project proposal
+• Review chapter 5 notes
+• Schedule team meeting
+• Buy groceries
+• Call dentist office
+
+You can organize however you like!"
+                class="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y font-mono"
+              ></textarea>
+              <p class="mt-2 text-xs text-slate-500">
+                Tip: You can use bullet points, checkboxes, or any format that works for you
+              </p>
+            </div>
+
+            <!-- Character/Line Counter -->
+            <div class="flex items-center justify-between text-xs text-slate-500">
+              <span id="lineCount">0 lines</span>
+              <span id="charCount">0 characters</span>
+            </div>
+
+            <!-- Save Button -->
+            <div class="flex justify-end gap-3 pt-4 border-t border-slate-200">
+              <button
+                type="button"
+                id="clearFormBtn"
+                class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition"
+              >
+                Clear
+              </button>
+              <button
+                type="submit"
+                class="px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition flex items-center gap-2"
+              >
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span id="saveButtonText">Save List</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Previous/Saved To-Do Lists -->
+      <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="px-5 py-4 border-b border-slate-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-semibold tracking-tight">Saved To-Do Lists</h2>
+              <p class="text-sm text-slate-500 mt-1">
+                Click on any list to edit or view
+              </p>
+            </div>
+            <span id="listCount" class="text-sm text-slate-600">0 lists</span>
+          </div>
+        </div>
+        <div class="p-5">
+          <!-- Search/Filter Bar -->
+          <div class="mb-4">
+            <input
+              type="text"
+              id="searchLists"
+              placeholder="Search lists by title..."
+              class="w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <!-- Lists Container -->
+          <div id="savedListsContainer" class="space-y-3">
+            <!-- Saved lists will be dynamically inserted here -->
+            <!-- Empty state shown by default -->
+            <div id="emptyState" class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+              <div class="text-4xl mb-3">📝</div>
+              <h3 class="text-base font-medium text-slate-700 mb-1">No To-Do Lists Yet</h3>
+              <p class="text-sm text-slate-500">Create your first list to get started organizing your tasks!</p>
+            </div>
+          </div>
+
+          <!-- Loading State (hidden by default) -->
+          <div id="loadingState" class="hidden flex flex-col items-center justify-center py-12">
+            <div class="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-indigo-600"></div>
+            <p class="mt-4 text-sm text-slate-600">Loading your lists...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Statistics Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+          <div class="flex items-center gap-4">
+            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-100">
+              <span class="text-2xl">📋</span>
+            </div>
+            <div>
+              <div id="totalLists" class="text-2xl font-bold text-slate-900">0</div>
+              <div class="text-sm text-slate-600">Total Lists</div>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+          <div class="flex items-center gap-4">
+            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-green-100">
+              <span class="text-2xl">✅</span>
+            </div>
+            <div>
+              <div id="totalTasks" class="text-2xl font-bold text-slate-900">0</div>
+              <div class="text-sm text-slate-600">Total Tasks</div>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+          <div class="flex items-center gap-4">
+            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-amber-100">
+              <span class="text-2xl">📝</span>
+            </div>
+            <div>
+              <div id="recentlyUpdated" class="text-2xl font-bold text-slate-900">-</div>
+              <div class="text-sm text-slate-600">Last Updated</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script type="module" src="../js/partials.js"></script>
+    <script type="module">
+      import { api } from "../js/apiClient.js";
+
+      // Check if user is logged in
+      const userName = sessionStorage.getItem("mc_userName");
+      const userChip = document.getElementById("userChip");
+
+      if (!userName) {
+        window.location.href = "./login.html";
+      }
+
+      if (userChip) {
+        userChip.textContent = "Hi, " + userName;
+      }
+
+      // State management
+      let currentEditingId = null;
+      let allLists = [];
+
+      // DOM elements
+      const todoForm = document.getElementById("todoForm");
+      const listTitle = document.getElementById("listTitle");
+      const listContent = document.getElementById("listContent");
+      const lineCount = document.getElementById("lineCount");
+      const charCount = document.getElementById("charCount");
+      const savedListsContainer = document.getElementById("savedListsContainer");
+      const emptyState = document.getElementById("emptyState");
+      const loadingState = document.getElementById("loadingState");
+      const searchLists = document.getElementById("searchLists");
+      const newListBtn = document.getElementById("newListBtn");
+      const clearFormBtn = document.getElementById("clearFormBtn");
+      const cancelEditBtn = document.getElementById("cancelEditBtn");
+      const deleteListBtn = document.getElementById("deleteListBtn");
+      const editorModeLabel = document.getElementById("editorModeLabel");
+      const saveButtonText = document.getElementById("saveButtonText");
+
+      // Initialize page
+      document.addEventListener("DOMContentLoaded", async function () {
+        console.log("To-Do page loaded - ready for backend integration");
+        
+        // Load saved lists (placeholder)
+        await loadSavedLists();
+        
+        // Setup event listeners
+        setupEventListeners();
+      });
+
+      // Update character/line counter
+      function updateCounters() {
+        const text = listContent.value;
+        const lines = text.split('\n').length;
+        const chars = text.length;
+        
+        lineCount.textContent = `${lines} line${lines === 1 ? '' : 's'}`;
+        charCount.textContent = `${chars} character${chars === 1 ? '' : 's'}`;
+      }
+
+      // Setup all event listeners
+      function setupEventListeners() {
+        // Update counters on input
+        listContent?.addEventListener('input', updateCounters);
+        
+        // Form submission
+        todoForm?.addEventListener('submit', handleFormSubmit);
+        
+        // Clear form
+        clearFormBtn?.addEventListener('click', clearForm);
+        
+        // New list button
+        newListBtn?.addEventListener('click', () => {
+          clearForm();
+          scrollToEditor();
+        });
+        
+        // Cancel edit
+        cancelEditBtn?.addEventListener('click', () => {
+          clearForm();
+          currentEditingId = null;
+        });
+        
+        // Delete list
+        deleteListBtn?.addEventListener('click', handleDeleteList);
+        
+        // Search functionality
+        searchLists?.addEventListener('input', handleSearch);
+      }
+
+      // Handle form submission
+      async function handleFormSubmit(e) {
+        e.preventDefault();
+        
+        const title = listTitle.value.trim();
+        const content = listContent.value.trim();
+        
+        if (!title) {
+          showNotification('error', 'Please enter a list title');
+          return;
+        }
+        
+        const listData = {
+          id: currentEditingId || Date.now().toString(),
+          title: title,
+          content: content,
+          createdAt: currentEditingId ? undefined : new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+        
+        console.log('Saving list:', listData);
+        
+        // TODO: Team leader will implement actual save logic here
+        // await api.todoLists.save(listData);
+        
+        if (currentEditingId) {
+          showNotification('success', 'List updated successfully!');
+        } else {
+          showNotification('success', 'List created successfully!');
+        }
+        
+        clearForm();
+        await loadSavedLists();
+      }
+
+      // Clear form and reset state
+      function clearForm() {
+        listTitle.value = '';
+        listContent.value = '';
+        currentEditingId = null;
+        updateCounters();
+        
+        editorModeLabel.textContent = 'Create New To-Do List';
+        saveButtonText.textContent = 'Save List';
+        cancelEditBtn.classList.add('hidden');
+        deleteListBtn.classList.add('hidden');
+      }
+
+      // Load a list for editing
+      function loadListForEditing(list) {
+        listTitle.value = list.title;
+        listContent.value = list.content;
+        currentEditingId = list.id;
+        
+        editorModeLabel.textContent = 'Edit To-Do List';
+        saveButtonText.textContent = 'Update List';
+        cancelEditBtn.classList.remove('hidden');
+        deleteListBtn.classList.remove('hidden');
+        
+        updateCounters();
+        scrollToEditor();
+      }
+
+      // Scroll to editor
+      function scrollToEditor() {
+        todoForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        listTitle.focus();
+      }
+
+      // Handle delete list
+      async function handleDeleteList() {
+        if (!currentEditingId) return;
+        
+        const list = allLists.find(l => l.id === currentEditingId);
+        const listName = list ? list.title : 'this list';
+        
+        const confirmed = confirm(`Are you sure you want to delete "${listName}"? This action cannot be undone.`);
+        
+        if (!confirmed) return;
+        
+        console.log('Deleting list:', currentEditingId);
+        
+        // TODO: Team leader will implement actual delete logic here
+        // await api.todoLists.delete(currentEditingId);
+        
+        showNotification('success', 'List deleted successfully');
+        clearForm();
+        await loadSavedLists();
+      }
+
+      // Load saved lists
+      async function loadSavedLists() {
+        loadingState.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+        savedListsContainer.innerHTML = '';
+        
+        try {
+          // TODO: Team leader will implement actual API call here
+          // const { lists } = await api.todoLists.getAll();
+          
+          // Placeholder: Empty array for now
+          allLists = [];
+          
+          renderLists(allLists);
+          updateStatistics(allLists);
+        } catch (error) {
+          console.error('Error loading lists:', error);
+          showNotification('error', 'Failed to load lists');
+        } finally {
+          loadingState.classList.add('hidden');
+        }
+      }
+
+      // Render lists
+      function renderLists(lists) {
+        if (lists.length === 0) {
+          emptyState.classList.remove('hidden');
+          document.getElementById('listCount').textContent = '0 lists';
+          return;
+        }
+        
+        emptyState.classList.add('hidden');
+        document.getElementById('listCount').textContent = `${lists.length} list${lists.length === 1 ? '' : 's'}`;
+        
+        savedListsContainer.innerHTML = lists.map(list => {
+          const preview = list.content.substring(0, 150);
+          const hasMore = list.content.length > 150;
+          const lineCount = list.content.split('\n').length;
+          const updatedDate = new Date(list.updatedAt);
+          const formattedDate = updatedDate.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          });
+          
+          return `
+            <div class="group rounded-xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all cursor-pointer"
+                 data-list-id="${list.id}">
+              <div class="p-5">
+                <div class="flex items-start justify-between mb-3">
+                  <h3 class="text-base font-semibold text-slate-900 group-hover:text-indigo-700 transition">${escapeHtml(list.title)}</h3>
+                  <div class="flex items-center gap-2 ml-3">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700">
+                      ${lineCount} task${lineCount === 1 ? '' : 's'}
+                    </span>
+                  </div>
+                </div>
+                
+                <p class="text-sm text-slate-600 mb-3 line-clamp-2 font-mono whitespace-pre-wrap">
+${escapeHtml(preview)}${hasMore ? '...' : ''}
+                </p>
+                
+                <div class="flex items-center justify-between text-xs text-slate-500">
+                  <span>Last updated: ${formattedDate}</span>
+                  <button class="text-indigo-600 hover:text-indigo-700 font-medium">
+                    Edit →
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        
+        // Add click handlers
+        document.querySelectorAll('[data-list-id]').forEach(el => {
+          el.addEventListener('click', (e) => {
+            const listId = el.getAttribute('data-list-id');
+            const list = allLists.find(l => l.id === listId);
+            if (list) {
+              loadListForEditing(list);
+            }
+          });
+        });
+      }
+
+      // Update statistics
+      function updateStatistics(lists) {
+        const totalListsEl = document.getElementById('totalLists');
+        const totalTasksEl = document.getElementById('totalTasks');
+        const recentlyUpdatedEl = document.getElementById('recentlyUpdated');
+        
+        totalListsEl.textContent = lists.length;
+        
+        // Count total tasks (count lines with content)
+        const totalTasks = lists.reduce((sum, list) => {
+          return sum + list.content.split('\n').filter(line => line.trim()).length;
+        }, 0);
+        totalTasksEl.textContent = totalTasks;
+        
+        // Find most recently updated
+        if (lists.length > 0) {
+          const mostRecent = lists.reduce((latest, list) => {
+            return new Date(list.updatedAt) > new Date(latest.updatedAt) ? list : latest;
+          });
+          const date = new Date(mostRecent.updatedAt);
+          recentlyUpdatedEl.textContent = date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric'
+          });
+        } else {
+          recentlyUpdatedEl.textContent = '-';
+        }
+      }
+
+      // Handle search
+      function handleSearch(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        
+        if (!searchTerm) {
+          renderLists(allLists);
+          return;
+        }
+        
+        const filtered = allLists.filter(list => 
+          list.title.toLowerCase().includes(searchTerm) ||
+          list.content.toLowerCase().includes(searchTerm)
+        );
+        
+        renderLists(filtered);
+      }
+
+      // Show notification
+      function showNotification(type, message) {
+        const notification = document.createElement('div');
+        const bgColor = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+        notification.className = `fixed top-4 right-4 px-6 py-4 rounded-lg ${bgColor} text-white shadow-xl z-50 transition-all`;
+        notification.style.animation = 'slideIn 0.3s ease';
+        notification.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="text-xl">
+              ${type === 'success' ? '✓' : '✕'}
+            </div>
+            <div>
+              <div class="font-semibold">${type === 'success' ? 'Success!' : 'Error'}</div>
+              <div class="text-sm">${message}</div>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+          notification.style.animation = 'slideOut 0.3s ease';
+          setTimeout(() => notification.remove(), 300);
+        }, 3000);
+      }
+
+      // Escape HTML
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+    </script>
+
+    <style>
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    </style>
+  </body>
+</html>
