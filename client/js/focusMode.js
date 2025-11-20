@@ -108,21 +108,21 @@ function renderItemCards(items, type, container) {
       hour12: true
     });
 
-    const typeColor = type === 'assignment' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700';
+    const typeColor = type === 'assignment' ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200' : 'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-200';
     const typeLabel = type === 'assignment' ? '📝 Assignment' : '📊 Quiz';
 
     return `
       <button
         onclick="window.location.href='./focusMode.html?id=${encodeURIComponent(item.id)}&type=${encodeURIComponent(type)}'"
-        class="text-left w-full rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all"
+        class="text-left w-full rounded-xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 p-5 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-500 transition-all"
       >
         <div class="flex items-start justify-between mb-3">
-          <h3 class="text-base font-semibold text-slate-900 pr-2">${escapeHtml(item.title)}</h3>
+          <h3 class="text-base font-semibold text-slate-900 dark:text-slate-200 pr-2">${escapeHtml(item.title)}</h3>
           <span class="inline-flex items-center gap-1 rounded-lg ${typeColor} px-2 py-1 text-xs font-medium whitespace-nowrap">
             ${typeLabel}
           </span>
         </div>
-        <div class="space-y-1 text-sm text-slate-600">
+        <div class="space-y-1 text-sm text-slate-600 dark:text-slate-400">
           <div class="flex items-center gap-2">
             <span>⏰</span>
             <span>Due today at ${timeStr}</span>
@@ -156,15 +156,15 @@ function renderStudyBlockCards(studyBlocks, container) {
     return `
       <button
         onclick="window.location.href='./focusMode.html?id=${encodeURIComponent(block.id)}&type=study-block'"
-        class="text-left w-full rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all"
+        class="text-left w-full rounded-xl border border-slate-200 dark:border-neutral-600 bg-white dark:bg-neutral-900 p-5 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-500 transition-all"
       >
         <div class="flex items-start justify-between mb-3">
-          <h3 class="text-base font-semibold text-slate-900 pr-2">${escapeHtml(block.title)}</h3>
-          <span class="inline-flex items-center gap-1 rounded-lg bg-green-100 text-green-700 px-2 py-1 text-xs font-medium whitespace-nowrap">
+          <h3 class="text-base font-semibold text-slate-900 dark:text-slate-200 pr-2">${escapeHtml(block.title)}</h3>
+          <span class="inline-flex items-center gap-1 rounded-lg bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200 px-2 py-1 text-xs font-medium whitespace-nowrap">
             📚 Study Block
           </span>
         </div>
-        <div class="space-y-1 text-sm text-slate-600">
+        <div class="space-y-1 text-sm text-slate-600 dark:text-slate-400">
           <div class="flex items-center gap-2">
             <span>⏰</span>
             <span>${startTimeStr}${endTimeStr ? ' - ' + endTimeStr : ''}</span>
@@ -297,7 +297,7 @@ async function renderItemDetails(item, type) {
     metaItems.push(`<span>📚 Course ID: ${item.courseId}</span>`);
   }
 
-  metaEl.innerHTML = metaItems.join('<span class="text-slate-300">•</span>');
+  metaEl.innerHTML = metaItems.join('<span class="text-slate-300 dark:text-neutral-600">•</span>');
 
   // Description
   if (item.description) {
@@ -425,13 +425,13 @@ async function loadSessionHistory(id, type) {
       const completedLabel = session.completed ? '✅ Completed' : '⏸️ Stopped Early';
 
       return `
-        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
+        <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-neutral-800 rounded-lg border border-slate-200 dark:border-neutral-600">
           <div class="flex items-center gap-3">
-            <span class="text-xs font-medium text-slate-600">${typeLabel}</span>
-            <span class="text-sm text-slate-700">${durationStr}</span>
-            <span class="text-xs text-slate-500">${completedLabel}</span>
+            <span class="text-xs font-medium text-slate-600 dark:text-slate-400">${typeLabel}</span>
+            <span class="text-sm text-slate-700 dark:text-slate-200">${durationStr}</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400">${completedLabel}</span>
           </div>
-          <span class="text-xs text-slate-500">
+          <span class="text-xs text-slate-500 dark:text-slate-400">
             ${startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} at ${startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
           </span>
         </div>

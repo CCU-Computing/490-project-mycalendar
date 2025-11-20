@@ -1,6 +1,8 @@
 import { mountClassList } from "../components/ClassList.js";
 import { mountCalendar } from "../components/Calendar.js";
 import { api } from "./apiClient.js";
+import ToastNotification from "../components/ToastNotification.js";
+import { openPersonalEventModal } from "../components/PersonalEventModal.js";
 
 (function () {
 
@@ -48,36 +50,71 @@ import { api } from "./apiClient.js";
         await getCourses()
         await getColors();
 
-        // get study blocks from custom events
+        // get study blocks and personal events from custom events
         let studyBlocks = [];
+        let personalEvents = [];
         try {
-          const { events: studyBlockEvents } = await api.studyBlocks.getAll();
-          studyBlocks = (studyBlockEvents || []).map(sb => {
+          const { events: allCustomEvents } = await api.studyBlocks.getAll();
+
+          // Separate study blocks from personal events
+          const studyBlockEvents = (allCustomEvents || []).filter(ev => ev.event_type === 'study_block');
+          const personalEventsList = (allCustomEvents || []).filter(ev => ev.event_type === 'personal');
+
+          // Map study blocks
+          studyBlocks = studyBlockEvents.map(sb => {
             const startDate = new Date(sb.start_time);
             const endDate = sb.end_time ? new Date(sb.end_time) : null;
 
-            // For custom events: border = custom color set on creation, background = "custom" type color
-            const borderColor = sb.color || '#4F46E5'; // custom color from creation
-            const baseCustomTypeColor = typeColors['custom'] || '#8b5cf6'; // "custom" assignment type color
-            const backgroundColor = baseCustomTypeColor + '66'; // Add alpha channel (40% opacity)
+            // For study blocks: border = custom color, background = "custom" type color
+            const borderColor = sb.color || '#4F46E5';
+            const baseCustomTypeColor = typeColors['custom'] || '#8b5cf6';
+            const backgroundColor = baseCustomTypeColor + '66';
 
             return {
-              id: sb.id,
+              id: `study-${sb.id}`,
               title: sb.title,
               start: startDate.toISOString(),
               end: endDate ? endDate.toISOString() : null,
-              allDay: false,
+              allDay: sb.all_day === 1,
               backgroundColor: backgroundColor,
               borderColor: borderColor,
               extendedProps: {
                 type: 'study_block',
                 assignmentId: sb.moodle_assignment_id,
-                description: sb.description
+                description: sb.description,
+                eventId: sb.id,  // Real numeric ID for backend operations
+                color: sb.color
+              }
+            };
+          });
+
+          // Map personal events
+          personalEvents = personalEventsList.map(pe => {
+            const startDate = new Date(pe.start_time);
+            const endDate = pe.end_time ? new Date(pe.end_time) : null;
+
+            // For personal events: both border and background use custom color
+            const borderColor = pe.color || '#10b981';
+            const backgroundColor = (pe.color || '#10b981') + '66';
+
+            return {
+              id: `personal-${pe.id}`,
+              title: pe.title,
+              start: startDate.toISOString(),
+              end: endDate ? endDate.toISOString() : null,
+              allDay: pe.all_day === 1,
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
+              extendedProps: {
+                type: 'personal',
+                description: pe.description,
+                eventId: pe.id,  // Real numeric ID for backend operations
+                color: pe.color
               }
             };
           });
         } catch (e) {
-          console.error('Error loading study blocks:', e);
+          console.error('Error loading custom events:', e);
         }
 
         // iterate over every moodle event and convert the date
@@ -106,8 +143,8 @@ import { api } from "./apiClient.js";
           };
         });
 
-        // combine moodle events and study blocks
-        return [...moodleEvents, ...studyBlocks];
+        // combine moodle events, study blocks, and personal events
+        return [...moodleEvents, ...studyBlocks, ...personalEvents];
       },
     });
 
@@ -150,20 +187,48 @@ import { api } from "./apiClient.js";
       allCourses = courses;
     }
 
+    // event listener for adding calendar event
+    calendarAddEventBtn.addEventListener("click", () => {
+      openPersonalEventModal({
+        onSave: async (newEvent) => {
+          // Reload calendar to show new personal event
+          await calendar.reload();
+          ToastNotification("Personal event added successfully", "success");
+        }
+      });
+    });
+
     // event listener for refreshing calendar
-    calendarRefreshBtn.addEventListener("click", () => {
+    calendarRefreshBtn.addEventListener("click", async () => {
 
       // get calendar instance
       const calendarInstance = calendar.getInstance();
 
-      // remove all data from calendar <- may need to be corrected
+      // remove all data from calendar
       calendarInstance.removeAllEvents();
 
       // add loading states
       addLoadingStates();
-      
-      // reload calendar
-      calendar.reload().then(() => removeLoadingStates());
+
+      // try/catch for calendar reload
+      try {
+        // reload the calendar
+        await calendar.reload();
+
+        // remove loading states
+        removeLoadingStates();
+
+        // show calendar refresh success toast notification
+        ToastNotification("Calendar successfully refreshed", "success");
+      } catch (error) {
+        console.error('Error refreshing calendar:', error);
+
+        // remove loading states
+        removeLoadingStates();
+
+        // show calendar refresh error toast notification
+        ToastNotification("Failed to refresh calendar. Please try again.", "error");
+      }
     });
 
     // function for adding loading states

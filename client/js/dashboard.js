@@ -3,6 +3,7 @@ import { mountCalendar } from "../components/Calendar.js";
 import { mountUpcomingAssignments } from "../components/UpcomingAssignments.js";
 import { api } from "./apiClient.js";
 import ToastNotification from "../components/ToastNotification.js";
+import { openPersonalEventModal } from "../components/PersonalEventModal.js";
 
 (function () {
 
@@ -55,36 +56,71 @@ import ToastNotification from "../components/ToastNotification.js";
         await getCourses()
         await getColors();
 
-        // get study blocks from custom events
+        // get study blocks and personal events from custom events
         let studyBlocks = [];
+        let personalEvents = [];
         try {
-          const { events: studyBlockEvents } = await api.studyBlocks.getAll();
-          studyBlocks = (studyBlockEvents || []).map(sb => {
+          const { events: allCustomEvents } = await api.studyBlocks.getAll();
+
+          // Separate study blocks from personal events
+          const studyBlockEvents = (allCustomEvents || []).filter(ev => ev.event_type === 'study_block');
+          const personalEventsList = (allCustomEvents || []).filter(ev => ev.event_type === 'personal');
+
+          // Map study blocks
+          studyBlocks = studyBlockEvents.map(sb => {
             const startDate = new Date(sb.start_time);
             const endDate = sb.end_time ? new Date(sb.end_time) : null;
 
-            // For custom events: border = custom color set on creation, background = "custom" type color
-            const borderColor = sb.color || '#4F46E5'; // custom color from creation
-            const baseCustomTypeColor = typeColors['custom'] || '#8b5cf6'; // "custom" assignment type color
-            const backgroundColor = baseCustomTypeColor + '66'; // Add alpha channel (40% opacity)
+            // For study blocks: border = custom color, background = "custom" type color
+            const borderColor = sb.color || '#4F46E5';
+            const baseCustomTypeColor = typeColors['custom'] || '#8b5cf6';
+            const backgroundColor = baseCustomTypeColor + '66';
 
             return {
-              id: sb.id,
+              id: `study-${sb.id}`,
               title: sb.title,
               start: startDate.toISOString(),
               end: endDate ? endDate.toISOString() : null,
-              allDay: false,
+              allDay: sb.all_day === 1,
               backgroundColor: backgroundColor,
               borderColor: borderColor,
               extendedProps: {
                 type: 'study_block',
                 assignmentId: sb.moodle_assignment_id,
-                description: sb.description
+                description: sb.description,
+                eventId: sb.id,  // Real numeric ID for backend operations
+                color: sb.color
+              }
+            };
+          });
+
+          // Map personal events
+          personalEvents = personalEventsList.map(pe => {
+            const startDate = new Date(pe.start_time);
+            const endDate = pe.end_time ? new Date(pe.end_time) : null;
+
+            // For personal events: both border and background use custom color
+            const borderColor = pe.color || '#10b981';
+            const backgroundColor = (pe.color || '#10b981') + '66';
+
+            return {
+              id: `personal-${pe.id}`,
+              title: pe.title,
+              start: startDate.toISOString(),
+              end: endDate ? endDate.toISOString() : null,
+              allDay: pe.all_day === 1,
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
+              extendedProps: {
+                type: 'personal',
+                description: pe.description,
+                eventId: pe.id,  // Real numeric ID for backend operations
+                color: pe.color
               }
             };
           });
         } catch (e) {
-          console.error('Error loading study blocks:', e);
+          console.error('Error loading custom events:', e);
         }
 
         // iterate over every moodle event and convert the date
@@ -117,8 +153,8 @@ import ToastNotification from "../components/ToastNotification.js";
           };
         });
 
-        // combine moodle events and study blocks
-        return [...moodleEvents, ...studyBlocks];
+        // combine moodle events, study blocks, and personal events
+        return [...moodleEvents, ...studyBlocks, ...personalEvents];
       },
     });
 
@@ -427,85 +463,13 @@ import ToastNotification from "../components/ToastNotification.js";
     });
 
     // event listener for adding calendar event
-    calendarAddEventBtn.addEventListener("click", async() => {
-
-      // get calendar instance
-      const calendarInstance = calendar.getInstance();
-
-      // create a form for adding a new event
-      const formHtml = `
-        <form id="add-event-form">
-          <label for="event-title">Event Title:</label>
-          <input type="text" id="event-title" name="title"><br><br>
-          <label for="event-start-date">Start Date:</label>
-          <input type="date" id="event-start-date" name="startDate"><br><br>
-          <label for="event-end-date">End Date:</label>
-          <input type="date" id="event-end-date" name="endDate"><br><br>
-          <label for="event-description">Description:</label>
-          <textarea id="event-description" name="description"></textarea><br><br>
-          <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">Add Event</button>
-        </form>
-      `;
-
-      // create a modal for the form
-      const modalHtml = `
-        <div id="add-event-modal" class="fixed inset-0 z-50 hidden justify-center">
-          <div id="adModalBackdrop" class="absolute inset-0 bg-black bg-opacity-50"></div>
-          <div class="relative flex min-h-full items-center justify-center p-4">
-            <div class="relative w-full max-w-lg rounded-2xl bg-white dark:bg-neutral-900 shadow-xl">
-              <div class="mt-6 mr-6 mb-6 ml-6">  
-                <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-200 text-center">Add Event</h3>
-                ${formHtml}
-            </div>
-          </div>
-        </div>
-      `;
-
-      // add the modal to the body
-      document.body.insertAdjacentHTML('beforeend', modalHtml);
-
-      // show the modal
-      document.getElementById('add-event-modal').style.display = 'flex';
-
-      // add event listener for form submission
-      document.getElementById('add-event-form').addEventListener('submit', async(e) => {
-        e.preventDefault();
-
-        // get form data
-        const title = document.getElementById('event-title').value;
-        const startDate = document.getElementById('event-start-date').value;
-        const endDate = document.getElementById('event-end-date').value;
-        const description = document.getElementById('event-description').value;
-
-        // create a new event
-        const newEvent = {
-          title,
-          start: new Date(startDate).toISOString(),
-          end: new Date(endDate).toISOString(),
-          allDay: false,
-          backgroundColor: '#8b5cf6', // default color
-          borderColor: '#4F46E5', // default color
-          extendedProps: {
-            type: 'custom',
-            description
-          }
-        };
-
-        // add the new event to the allEvents array
-        allEvents.push(newEvent);
-
-        // reload the calendar
-        try {
-          await calendar.getEvents();
-        } catch (error) {
-          console.error('Error reloading calendar:', error);
+    calendarAddEventBtn.addEventListener("click", () => {
+      openPersonalEventModal({
+        onSave: async (newEvent) => {
+          // Reload calendar to show new personal event
+          await calendar.reload();
+          ToastNotification("Personal event added successfully", "success");
         }
-
-        // hide the modal
-        document.getElementById('add-event-modal').style.display = 'none';
-
-        // remove the modal from the body
-        document.getElementById('add-event-modal').remove();
       });
     });
 

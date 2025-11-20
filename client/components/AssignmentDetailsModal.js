@@ -237,8 +237,8 @@ function handleFocusModeClick() {
     return;
   }
 
-  // Navigate to focus mode page with assignment ID and type
-  const assignmentId = currentAssignmentData.id;
+  // Use numericId if available (from assignments page), otherwise use id (from calendar)
+  const assignmentId = currentAssignmentData.numericId || currentAssignmentData.id;
   const assignmentType = currentAssignmentData.type || 'assignment';
 
   window.location.href = `./focusMode.html?id=${encodeURIComponent(assignmentId)}&type=${encodeURIComponent(assignmentType)}`;

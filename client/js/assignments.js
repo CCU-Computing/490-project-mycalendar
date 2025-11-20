@@ -75,7 +75,8 @@ class AssignmentManager {
                 // Process assignments
                 for (const assignment of courseData.assignments || []) {
                     flatAssignments.push({
-                        id: `${assignment.type}:${assignment.id}`,
+                        id: `${assignment.type}:${assignment.id}`,  // Composite ID for display
+                        numericId: assignment.id,  // Real numeric ID for backend operations
                         type: assignment.type,
                         title: assignment.name,
                         course: courseShortname,
@@ -92,7 +93,8 @@ class AssignmentManager {
                 // Process quizzes
                 for (const quiz of courseData.quizzes || []) {
                     flatAssignments.push({
-                        id: `${quiz.type}:${quiz.id}`,
+                        id: `${quiz.type}:${quiz.id}`,  // Composite ID for display
+                        numericId: quiz.id,  // Real numeric ID for backend operations
                         type: quiz.type,
                         title: quiz.name,
                         course: courseShortname,

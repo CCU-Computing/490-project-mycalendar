@@ -131,8 +131,9 @@ function handleFocusModeClick() {
     return;
   }
 
-  // Navigate to focus mode page with study block ID
-  window.location.href = `./focusMode.html?id=${encodeURIComponent(currentStudyBlock.id)}&type=study-block`;
+  // Use eventId (real numeric ID) for focus mode navigation
+  const studyBlockId = currentStudyBlock.extendedProps?.eventId || currentStudyBlock.id;
+  window.location.href = `./focusMode.html?id=${encodeURIComponent(studyBlockId)}&type=study-block`;
 }
 
 /**
@@ -146,7 +147,9 @@ async function handleDeleteStudyBlock() {
   }
 
   try {
-    await api.studyBlocks.delete(currentStudyBlock.id);
+    // Use eventId (real numeric ID) for delete operation
+    const studyBlockId = currentStudyBlock.extendedProps?.eventId || currentStudyBlock.id;
+    await api.studyBlocks.delete(studyBlockId);
 
     closeStudyBlockDetailsModal();
 

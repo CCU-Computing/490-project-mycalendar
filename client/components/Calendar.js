@@ -218,7 +218,7 @@ export function mountCalendar({
           title: info.event.title,
           start: info.event.start,
           end: info.event.end,
-          color: info.event.backgroundColor || info.event.color,
+          color: info.event.borderColor || info.event.backgroundColor || info.event.color,
           extendedProps: info.event.extendedProps
         };
 
@@ -226,6 +226,32 @@ export function mountCalendar({
           // Reload calendar after deleting study block
           reload();
         });
+        return;
+      }
+
+      // Personal event click - show delete confirmation
+      if (eventType === 'personal') {
+        const eventTitle = info.event.title;
+        const eventId = info.event.extendedProps?.eventId || info.event.id;
+
+        if (confirm(`Delete "${eventTitle}"?`)) {
+          // Delete the personal event
+          import("../js/apiClient.js").then(({ api }) => {
+            api.studyBlocks.delete(eventId).then(() => {
+              // Reload calendar after deleting
+              reload();
+              // Show success notification
+              import("./ToastNotification.js").then(({ default: ToastNotification }) => {
+                ToastNotification("Personal event deleted successfully", "success");
+              });
+            }).catch((error) => {
+              console.error("Error deleting personal event:", error);
+              import("./ToastNotification.js").then(({ default: ToastNotification }) => {
+                ToastNotification("Failed to delete event", "error");
+              });
+            });
+          });
+        }
         return;
       }
     },

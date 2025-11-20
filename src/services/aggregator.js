@@ -14,12 +14,57 @@ function extractCourseTotal(gradeItemsPayload) {
     const usergrades = gradeItemsPayload?.usergrades?.[0];
     const items = usergrades?.gradeitems || [];
     const courseTotal = items.find((it) => it.itemtype === "course");
-    // prefer percentageformatted; fallback to gradeformatted
+
+    // Check if Moodle's course total is valid (not null, not 0, and has percentage)
+    const moodleTotal = courseTotal?.percentageformatted || courseTotal?.gradeformatted || null;
+    const moodleRaw = courseTotal?.graderaw ?? null;
+    const moodleMax = courseTotal?.grademax ?? null;
+
+    // If Moodle has a valid grade, use it
+    if (moodleTotal && moodleRaw !== null && moodleRaw !== 0) {
+      return {
+        courseTotalFormatted: moodleTotal,
+        courseTotalRaw: moodleRaw,
+        courseTotalMax: moodleMax,
+      };
+    }
+
+    // Otherwise, calculate from graded module items (assignments and quizzes)
+    const gradedItems = items.filter(
+      (item) =>
+        item.itemtype === "mod" &&
+        (item.itemmodule === "assign" || item.itemmodule === "quiz") &&
+        item.graderaw !== null &&
+        item.graderaw !== undefined &&
+        item.grademax !== null &&
+        item.grademax !== undefined &&
+        item.grademax > 0
+    );
+
+    if (gradedItems.length === 0) {
+      // No graded items yet, return Moodle's value even if null/0
+      return {
+        courseTotalFormatted: moodleTotal,
+        courseTotalRaw: moodleRaw,
+        courseTotalMax: moodleMax,
+      };
+    }
+
+    // Calculate average percentage from graded items
+    let totalPercentage = 0;
+    for (const item of gradedItems) {
+      const percentage = (item.graderaw / item.grademax) * 100;
+      totalPercentage += percentage;
+    }
+    const averagePercentage = totalPercentage / gradedItems.length;
+
+    // Format as percentage string to match Moodle's format
+    const calculatedFormatted = `${averagePercentage.toFixed(2)} %`;
+
     return {
-      courseTotalFormatted:
-        courseTotal?.percentageformatted || courseTotal?.gradeformatted || null,
-      courseTotalRaw: courseTotal?.graderaw ?? null,
-      courseTotalMax: courseTotal?.grademax ?? null,
+      courseTotalFormatted: calculatedFormatted,
+      courseTotalRaw: averagePercentage, // Store the calculated percentage
+      courseTotalMax: 100, // Percentage scale
     };
   } catch {
     return { courseTotalFormatted: null, courseTotalRaw: null, courseTotalMax: null };
