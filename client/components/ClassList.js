@@ -142,7 +142,7 @@ export function mountClassList({ containerId = "semesterClasses" } = {}) {
   let courseMetadata = {};
   let calculatedProgress = {};
 
-  // Modal refs (now guaranteed to exist)
+  // Modal refs 
   const modal = $("classModal");
   const mBackdrop = $("modalBackdrop");
   const mClose = $("mClose");
