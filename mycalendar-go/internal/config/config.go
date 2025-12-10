@@ -37,7 +37,7 @@ func Load() error {
 		DBPath:        getEnv("DB_PATH", "../data/mycalendar.db"),
 		SessionSecret: getEnv("SESSION_SECRET", generateDefaultSecret()),
 		CookieSecure:  getEnvBool("COOKIE_SECURE", false),
-		MoodleBaseURL: getEnv("MOODLE_BASE_URL", "https://moodle.snow.edu/webservice/rest/server.php"),
+		MoodleBaseURL: getEnv("MOODLE_BASE_URL", "https://moodle24-26.coastal.edu/webservice/rest/server.php"),
 		MoodleFormat:  getEnv("MOODLE_FORMAT", "json"),
 	}
 
